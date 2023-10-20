@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 20, 2023 at 11:17 AM
+-- Generation Time: Oct 20, 2023 at 04:48 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -57,7 +57,9 @@ CREATE TABLE `course` (
 --
 
 INSERT INTO `course` (`CourseID`, `CourseName`, `DepartmentName`) VALUES
+('CSC1101', 'INTRODUCTION TO COMPUTER STUDIES', 'CSE'),
 ('CSC1103', 'INTRODUCTION TO PROGRAMMING', 'CSE'),
+('CSC1204', 'DISCRETE MATHEMATICS', 'CSE'),
 ('CSC1205', 'OBJECT ORIENTED PROGRAMMING 1', 'CSE'),
 ('CSC2106', 'DATA STRUCTURE', 'CSE'),
 ('CSC2210', 'OBJECT ORIENTED PROGRAMMING 2', 'CSE'),
@@ -151,8 +153,7 @@ CREATE TABLE `prioritytime` (
 --
 
 INSERT INTO `prioritytime` (`FacultyID`, `Day`, `startTime`, `endTime`) VALUES
-('21-45388-3', 'Monday', '08:00:00', '12:00:00'),
-('21-45388-3', 'Wednesday', '08:00:00', '04:00:00');
+('21-45388-3', 'Monday', '08:00:00', '12:00:00');
 
 -- --------------------------------------------------------
 
@@ -177,18 +178,24 @@ CREATE TABLE `section` (
 INSERT INTO `section` (`SectionID`, `CourseID`, `Sec`, `Day`, `startTime`, `endTime`, `FacultyID`) VALUES
 ('oop1A', 'CSC1205', 'A', 'Sunday', '08:00:00', '11:00:00', 'Akib1234'),
 ('oop1A', 'CSC1205', 'A', 'Tuesday', '08:00:00', '10:00:00', 'Akib1234'),
-('oop2A', 'CSC2210', 'A', 'Monday', '11:00:00', '02:00:00', '21-45388-3'),
-('oop2A', 'CSC2210', 'A', 'Wednesday', '12:00:00', '02:00:00', '21-45388-3'),
-('wtA', 'CSC3215', 'A', 'Monday', '11:00:00', '02:00:00', '21-45388-3'),
-('wtA', 'CSC3215', 'A', 'Wednesday', '12:00:00', '02:00:00', '21-45388-3'),
-('algoC', 'CSC2211', 'C', 'Sunday', '08:00:00', '11:00:00', 'logno1234'),
-('algoC', 'CSC2211', 'C', 'Tuesday', '08:00:00', '10:00:00', 'logno1234'),
-('ipF', 'CSC1103', 'F', 'Monday', '02:00:00', '03:30:00', '21-45388-3'),
-('ipF', 'CSC1103', 'F', 'Wednesday', '02:00:00', '03:30:00', '21-45388-3'),
+('oop2A', 'CSC2210', 'A', 'Monday', '11:00:00', '14:00:00', 'Maria123'),
+('oop2A', 'CSC2210', 'A', 'Wednesday', '12:00:00', '14:00:00', 'Maria123'),
+('wtA', 'CSC3215', 'A', 'Monday', '11:00:00', '14:00:00', 'logno1234'),
+('wtA', 'CSC3215', 'A', 'Wednesday', '12:00:00', '14:00:00', 'logno1234'),
+('algoC', 'CSC2211', 'C', 'Sunday', '08:00:00', '11:00:00', '21-45388-3'),
+('algoC', 'CSC2211', 'C', 'Tuesday', '08:00:00', '10:00:00', '21-45388-3'),
+('ipF', 'CSC1103', 'F', 'Monday', '14:00:00', '15:30:00', 'Akib1234'),
+('ipF', 'CSC1103', 'F', 'Wednesday', '14:00:00', '15:30:00', 'Akib1234'),
 ('dsE', 'CSC2106', 'E', 'Sunday', '11:00:00', '12:30:00', 'Akib1234'),
 ('dsE', 'CSC2106', 'E', 'Tuesday', '11:00:00', '12:30:00', 'Akib1234'),
-('dsG', 'CSC2106', 'G', 'Monday', '08:00:00', '09:30:00', 'Akib1234'),
-('dsG', 'CSC2106', 'G', 'Wednesday', '08:00:00', '09:30:00', 'Akib1234');
+('dsG', 'CSC2106', 'G', 'Monday', '08:00:00', '09:30:00', 'Maria123'),
+('dsG', 'CSC2106', 'G', 'Wednesday', '08:00:00', '09:30:00', 'Maria123'),
+('cgH', 'CSC4118', 'H', 'Sunday', '14:00:00', '16:00:00', '21-45388-3'),
+('cgH', 'CSC4118', 'H', 'Tuesday', '14:00:00', '17:00:00', '21-45388-3'),
+('cgB', 'CSC4118', 'B', 'Monday', '08:00:00', '11:00:00', 'Akib1234'),
+('cgB', 'CSC4118', 'B', 'Wednesday', '08:00:00', '10:00:00', 'Akib1234'),
+('icsC', 'CSC1101', 'C', 'Monday', '08:00:00', '11:00:00', 'logno1234'),
+('icsF', 'CSC1101', 'F', 'Tuesday', '14:00:00', '17:00:00', 'Maria123');
 
 --
 -- Indexes for dumped tables

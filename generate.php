@@ -11,11 +11,9 @@ if (!$conn) {
 }
 
 if (isset($_POST['btnGenerate'])) {
-    // Step 1: Reset faculty assignments to start from scratch
     $resetAssignmentsQuery = "UPDATE section SET FacultyID = NULL";
     mysqli_query($conn, $resetAssignmentsQuery);
 
-    // Step 2: Retrieve the data from the 'prioritycourses' and 'section' tables
     $facultyPriorityCoursesQuery = "SELECT FacultyID, CourseID FROM prioritycourses";
     $facultyPriorityCoursesResult = mysqli_query($conn, $facultyPriorityCoursesQuery);
 
@@ -46,76 +44,75 @@ if (isset($_POST['btnGenerate'])) {
                     $sectionID = $section['SectionID'];
                     $courseID = $section['CourseID'];
 
-                    // Step 3: Check the time priority of faculty for this day
-                    $sectionDay = $section['Day'];
+                    // Step 3: Check if faculty exceeds 16 hours
+                    $totalHoursQuery = "SELECT SUM(TIME_TO_SEC(TIMEDIFF(EndTime, StartTime))) AS TotalHours FROM section WHERE FacultyID = '$facultyID'";
+                    $totalHoursResult = mysqli_query($conn, $totalHoursQuery);
+                    $totalHours = 0;
+
+                    if ($totalHoursResult && $row = mysqli_fetch_assoc($totalHoursResult)) {
+                        $totalHours = (int) $row['TotalHours'];
+                    }
+                    
                     $sectionStartTime = $section['StartTime'];
                     $sectionEndTime = $section['EndTime'];
-                    $facultyPriorityDayQuery = "SELECT FacultyID, Day, startTime, endTime FROM prioritytime 
+                    $sectionDuration = (int) strtotime($sectionEndTime) - (int) strtotime($sectionStartTime);
+
+                    if ($totalHours + $sectionDuration > 16 * 3600) {
+                        // Exceeded 16 hours, do not assign
+                        continue; // Skip to the next faculty
+                    } 
+                    else {
+                        // Check priority time
+                        $sectionDay = $section['Day'];
+                        $facultyPriorityDayQuery = "SELECT FacultyID, Day, startTime, endTime FROM prioritytime 
                                             WHERE FacultyID IN (" . implode(',', $facultyMembers) . ") 
                                             AND Day = '$sectionDay'";
-                    $facultyPriorityDayResult = mysqli_query($conn, $facultyPriorityDayQuery);
+                        $facultyPriorityDayResult = mysqli_query($conn, $facultyPriorityDayQuery);
 
-                    if ($facultyPriorityDayResult) {
-                        while ($priorityTime = mysqli_fetch_assoc($facultyPriorityDayResult)) {
-                            $facultyID = $priorityTime['FacultyID'];
-                            $facultyStartTime = $priorityTime['startTime'];
-                            $facultyEndTime = $priorityTime['endTime'];
+                        if ($facultyPriorityDayResult) {
+                            while ($priorityTime = mysqli_fetch_assoc($facultyPriorityDayResult)) {
+                                $facultyID = $priorityTime['FacultyID'];
+                                $facultyStartTime = $priorityTime['startTime'];
+                                $facultyEndTime = $priorityTime['endTime'];
 
-                            // Step 4: Check if the section course is a priority for this faculty
-                            if (isset($facultyPriorityCourses[$courseID])) {
-                                if ($facultyPriorityCourses[$courseID] == $facultyID) {
-                                    // Step 5: Check for time clashes with the faculty's other assignments
-                                    $clashQuery = "SELECT * FROM section 
-                                    WHERE FacultyID = '$facultyID'
-                                    AND Day = '$sectionDay'
-                                    AND ((StartTime < '$sectionEndTime' AND EndTime > '$sectionStartTime'))";
-                                    $clashResult = mysqli_query($conn, $clashQuery);
-                                    $totalHoursQuery = "SELECT SUM(TIME_TO_SEC(TIMEDIFF(EndTime, StartTime))) AS TotalHours 
-                                    FROM section WHERE FacultyID = '$facultyID'";
-                                    $totalHoursResult = mysqli_query($conn, $totalHoursQuery);
-                                    $totalHours = 0;
+                                // Check if the section course is a priority for this faculty
+                                if (isset($facultyPriorityCourses[$courseID])) {
+                                    if ($facultyPriorityCourses[$courseID] == $facultyID) {
+                                        // Check for time clashes with the faculty's other assignments
+                                        $clashQuery = "SELECT * FROM section 
+                                        WHERE FacultyID = '$facultyID'
+                                        AND Day = '$sectionDay'
+                                        AND ((StartTime < '$sectionEndTime' AND EndTime > '$sectionStartTime'))";
+                                        $clashResult = mysqli_query($conn, $clashQuery);
 
-                                    if ($totalHoursResult && $row = mysqli_fetch_assoc($totalHoursResult)) {
-                                        $totalHours = (int) $row['TotalHours'];
-                                    }
-
-                                    $sectionDuration = (int) strtotime($sectionEndTime) - (int) strtotime($sectionStartTime);
-
-                                    // Step 6: Check if total time per week doesn't exceed 16 hours
-                                    if ($totalHours + $sectionDuration <= 16 * 3600 && (!$clashResult || mysqli_num_rows($clashResult) === 0)) {
-                                        // Step 7: If all rules follow, assign faculty
-                                        $assignQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
-                                        mysqli_query($conn, $assignQuery);
-                                        break; // Faculty assigned, exit loop
+                                        if (!$clashResult || mysqli_num_rows($clashResult) === 0) {
+                                            // No time clashes, assign faculty
+                                            $assignQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
+                                            mysqli_query($conn, $assignQuery);
+                                            break; // Faculty assigned, exit loop
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
-
-                    // Step 8: If no time priority or not matching priority course, assign faculty randomly
-                    if (empty($facultyPriorityDayResult) || !mysqli_fetch_assoc($facultyPriorityDayResult)) {
-                        $facultyID = $facultyMembers[array_rand($facultyMembers)];
-                        $clashQuery = "SELECT * FROM section 
-                        WHERE FacultyID = '$facultyID'
-                        AND Day = '$sectionDay'
-                        AND ((StartTime < '$sectionEndTime' AND EndTime > '$sectionStartTime'))";
-                        
-                        $clashResult = mysqli_query($conn, $clashQuery);
-                        $totalHoursQuery = "SELECT SUM(TIME_TO_SEC(TIMEDIFF(EndTime, StartTime))) AS TotalHours 
-                        FROM section WHERE FacultyID = '$facultyID'";
-                        $totalHoursResult = mysqli_query($conn, $totalHoursQuery);
-                        $totalHours = 0;
-
-                        if ($totalHoursResult && $row = mysqli_fetch_assoc($totalHoursResult)) {
-                            $totalHours = (int) $row['TotalHours'];
+                        else{
+                            
                         }
 
-                        $sectionDuration = (int) strtotime($sectionEndTime) - (int) strtotime($sectionStartTime);
+                        // If no time priority or not matching priority course, assign faculty randomly
+                        if (empty($facultyPriorityDayResult) || !mysqli_fetch_assoc($facultyPriorityDayResult)) {
+                            $facultyID = $facultyMembers[array_rand($facultyMembers)];
+                            $clashQuery = "SELECT * FROM section 
+                            WHERE FacultyID = '$facultyID'
+                            AND Day = '$sectionDay'
+                            AND ((StartTime < '$sectionEndTime' AND EndTime > '$sectionStartTime'))";
+                            $clashResult = mysqli_query($conn, $clashQuery);
 
-                        if ($totalHours + $sectionDuration <= 16 * 3600 && (!$clashResult || mysqli_num_rows($clashResult) === 0)) {
-                            $assignQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
-                            mysqli_query($conn, $assignQuery);
+                            if (!$clashResult || mysqli_num_rows($clashResult) === 0) {
+                                // No time clashes, assign faculty randomly
+                                $assignQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
+                                mysqli_query($conn, $assignQuery);
+                            }
                         }
                     }
                 }
@@ -123,7 +120,6 @@ if (isset($_POST['btnGenerate'])) {
         }
     }
 }
-
 
 // Close the database connection
 mysqli_close($conn);
@@ -180,7 +176,7 @@ mysqli_close($conn);
         JOIN
             faculty ON section.FacultyID = faculty.FacultyID
         JOIN
-            course ON section.CourseID = course.CourseID ORDER BY `section`.`CourseID` DESC";
+            course ON section.CourseID = course.CourseID ORDER BY course.CourseName ASC";
 
         $result = mysqli_query($conn, $sql);
 
