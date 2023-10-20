@@ -1,0 +1,35 @@
+Table 1: department
+• DepartmentName (Primary Key)
+
+Table 2: course
+• CourseID (Primary Key)
+• CourseName
+• DepartmentName (Foreign Key, references Department)
+
+Table 3: section
+• SectionID (Foreign Key)
+• CourseID (Foreign Key, references Course)
+• Sec
+• startTime
+• endTime
+• Day
+
+Table 4: faculty
+• FacultyID (Primary Key)
+• FacultyName
+• Email
+
+Table 5: prioritycourses (Many-to-Many Relationship between Faculty and Course)
+• FacultyID (Foreign Key, references Faculty)
+• CourseID (Foreign Key, references Course)
+
+Table 6: prioritytime(Many-to-Many Relationship between Faculty and Section)
+• FacultyID (Foreign Key, references Faculty)
+• Day
+• startTime
+• endTime
+
+Table 7: admin
+• AdminID (Primary Key)
+• AdminName
+• Email

@@ -1,0 +1,17 @@
+Step 1: Reset faculty assignments to start from scratch
+
+Step 2: Retrieve the data from the 'prioritycourses' and 'section' tables
+Get the list of all faculty members
+Get the list of unassigned sections
+
+Step 3: Check the time priority of faculty for this day
+
+Step 4: Check if the section course is a priority for this faculty
+
+Step 5: Check for time clashes with the faculty's other assignments
+
+Step 6: Check if total time per week doesn't exceed 16 hours
+
+Step 7: If all rules follow, assign faculty
+
+Step 8: If no time priority or not matching priority course, assign faculty randomly
