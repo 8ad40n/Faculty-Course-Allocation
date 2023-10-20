@@ -10,6 +10,55 @@ if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
+
+
+
+// Query to get all faculty members
+$facultyQuery = "SELECT FacultyID, FacultyName FROM faculty";
+$facultyResult = mysqli_query($conn, $facultyQuery);
+
+if ($facultyResult) {
+    echo '<table border="1">
+            <tr>
+                <th>Faculty ID</th>
+                <th>Faculty Name</th>
+                <th>Total Hours Per Week</th>
+            </tr>';
+
+    while ($faculty = mysqli_fetch_assoc($facultyResult)) {
+        $facultyID = $faculty['FacultyID'];
+        $facultyName = $faculty['FacultyName'];
+
+        // Query to calculate the total hours for the faculty per week
+        $totalHoursQuery = "SELECT SUM(TIME_TO_SEC(TIMEDIFF(EndTime, StartTime))) AS TotalHours 
+                            FROM section 
+                            WHERE FacultyID = '$facultyID'";
+
+        $totalHoursResult = mysqli_query($conn, $totalHoursQuery);
+
+        if ($totalHoursResult) {
+            $row = mysqli_fetch_assoc($totalHoursResult);
+            $totalHours = $row['TotalHours'];
+
+            // Convert the total hours from seconds to hours
+            $totalHoursInHours = $totalHours / 3600;
+
+            echo '<tr>';
+            echo "<td>$facultyID</td>";
+            echo "<td>$facultyName</td>";
+            echo "<td>$totalHoursInHours hours</td>";
+            echo '</tr>';
+        }
+    }
+
+    echo '</table>';
+} else {
+    echo "Error fetching faculty data.";
+}
+
+
+
+
 if (isset($_POST['btnGenerate'])) {
     $resetAssignmentsQuery = "UPDATE section SET FacultyID = NULL";
     mysqli_query($conn, $resetAssignmentsQuery);
@@ -58,8 +107,7 @@ if (isset($_POST['btnGenerate'])) {
                     $sectionDuration = (int) strtotime($sectionEndTime) - (int) strtotime($sectionStartTime);
 
                     if ($totalHours + $sectionDuration > 16 * 3600) {
-                        // Exceeded 16 hours, do not assign
-                        continue; // Skip to the next faculty
+                        continue; 
                     } 
                     else {
                         // Check priority time
