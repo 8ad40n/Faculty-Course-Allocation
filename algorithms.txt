@@ -1,27 +1,160 @@
-Reset faculty assignments to start from scratch
-Get the list of all faculty members
-Get the list of unassigned sections
+DB:
 
-If(time exceed 16h){
-	Donot assign
-	}
-Else{
-	Check priority time
-	If(priority time match with available sec){
-		Check priority course
-		If(priority course matched with available sec)
+Course:
+	1. courseId
+	2. courseName
+	3. Section
+	4. Time
+	5. Day
+
+Faculty:
+	1. Name
+	2. Id
+	3. Email
+	4. priorityCourses
+	5. AssignCourseSec
+	6. Password
+
+Admin: 
+	1. Name
+	2. Id
+	3. Email
+	4. Password
+
+
+3NF:
+	
+Table 1: department
+• DepartmentName 
+
+Table 2: course
+• CourseID
+• CourseName
+• DepartmentName 
+
+Table 3: section
+• SectionID
+• CourseID 
+• Sec
+• startTime
+• endTime
+• Day
+
+Table 4: faculty
+• FacultyID 
+• FacultyName
+• Email
+
+Table 5: prioritycourses
+• FacultyID 
+• CourseID 
+
+Table 6: prioritytime
+• FacultyID 
+• Day
+• startTime
+• endTime
+
+Table 7: admin
+• AdminID (Primary Key)
+• AdminName
+• Email
+
+Table 8: userinfo
+• ID
+• Password
+• Type
+
+
+
+
+Psuesdocode:
+
+	check prioritytime of every faculty 
+	if(section of this time is available)
+	{
+		check prioritycourse of all faculty
+		the course's credit 3 or 1
+		if(1)
 		{
-			Then check is there any clash timing or not
-			If(clash time){
-				Do not assign faculty in this sec 
+			Totalhours check.
+			If(total hours<=16)
+			{
+				check clash time of section with faculty time 
+				if (no clash)
+				{
+					if (day =sunday)
+					{
+						check if there is any course,any sec of 1 credit available or not on tuesday
+					}
+					assign faculty one by one as all faculty can get almost same hours of time per week
 				}
-			Else{
-				Assign faculty
+			}
+		}
+		if(section of these prioritycourse is available)
+		{
+			Totalhours check.
+			If(total hours<=16)
+			{
+				check clash time of section with faculty time 
+				if (no clash)
+				{
+					assign faculty one by one as all faculty can get almost same hours of time per week
 				}
+			}
+			
 		}
-		Else:
-			Give them course random section
+	}
+	if(the section is still available means null in database table)
+	{
+		check prioritycourse of all faculty
+		if(section of these prioritycourse is available)
+		{
+			Totalhours check.
+			If(total hours<=16)
+			{
+				check clash time of section with faculty time 
+				if (no clash)
+				{
+					assign faculty one by one as all faculty can get almost same hours of time per week
+				}
+			}
+			
 		}
-	Else:
-		Give then section with random timing
-}
+	}
+	if(the section is still available means null in database table)
+	{
+		Totalhours check.
+			If(total hours<=16)
+			{
+				check clash time of section with faculty time 
+				if (no clash)
+				{
+					assign faculty one by one as all faculty can get almost same hours of time per week
+				}
+			}
+	}
+	if(the section is still available means null in database table)
+	{
+		sort the faculty on the basis of total hour of all faculty per week ascending order
+		check the time class of faculty 
+		if (no clash)
+		{
+			give course to faculty in ascending order on the basis of total hour
+		}
+	}
+
+
+faculty:
+tsf
+add prioritytime->edit
+add prioritycourse->edit
+password change
+section with search
+
+
+Login:
+show Password
+Reset Password
+
+
