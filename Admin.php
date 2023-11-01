@@ -206,6 +206,11 @@ if (isset($_POST['btnGenerate'])) {
     }
 }
 
+elseif(isset($_POST["btnSection"])) 
+{
+    header("Location: AddSection.php");
+}
+
 
 ?>
 
