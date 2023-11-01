@@ -1,8 +1,7 @@
 <?php
 include("dbConnect.php");
 
-if (isset($_POST['btnAdd']))
-{
+if (isset($_POST['btnAdd'])) {
     $sectionID = $_POST["SectionID"];
     $courseID = $_POST["CourseID"];
     $section = $_POST["Section"];
@@ -13,30 +12,38 @@ if (isset($_POST['btnAdd']))
     $startTime2 = $_POST["StartTime2"];
     $endTime2 = $_POST["EndTime2"];
 
-    $varifyQuery= "SELECT CourseID from course WHERE CourseID= '$courseID'";
-    $varifyResult= mysqli_query($conn, $varifyQuery);
 
-    if(mysqli_num_rows($varifyResult) > 0)
+    if (empty($sectionID) || empty($courseID) || empty($section) || empty($day1) || empty($startTime1) || empty($endTime1))
     {
-        echo "YES";
+        echo "Please fill in all the fields.";
     }
-    else{
-        echo "NO";
+    else
+    {
+        // Verify if the CourseID exists in the database
+        $verifyQuery = "SELECT CourseID FROM course WHERE CourseID = '$courseID'";
+        $verifyResult = mysqli_query($conn, $verifyQuery);
+        if (mysqli_num_rows($verifyResult) > 0) {
+
+            $addSectionQuery = "INSERT INTO section (SectionID, CourseID, Sec, Day, startTime, endTime)
+            VALUES ('$sectionID', '$courseID', '$section', '$day1', '$startTime1', '$endTime1');";
+            $addSectionResult = mysqli_query($conn, $addSectionQuery);
+        
+            $addSectionQuery1 = "INSERT INTO section (SectionID, CourseID, Sec, Day, startTime, endTime)
+            VALUES ('$sectionID', '$courseID', '$section', '$day2', '$startTime2', '$endTime2');";
+            $addSectionResult1 = mysqli_query($conn, $addSectionQuery1);
+    
+            if($addSectionResult || $addSectionResult1)
+            {
+                echo "The section ".$section." for ".$courseID. " has been added sucessfully"; 
+    
+            }
+        } else {
+            echo "CourseID does not exist.";
+        }
     }
-
-    // $addSectionQuery = "INSERT INTO section (SectionID, CourseID, Sec, Day, startTime, endTime)
-    // VALUES ('$sectionID','$courseID','$section','$day1','$startTime1','$endTime1');";
-    // $addSectionResult= mysqli_query($conn, $addSectionQuery);
-
-    // $addSectionQuery1 = "INSERT INTO section (SectionID, CourseID, Sec, Day, startTime, endTime)
-    // VALUES ('$sectionID','$courseID','$section','$day2','$startTime2','$endTime2');";
-    // $addSectionResult1= mysqli_query($conn, $addSectionQuery1);
-
+    
 }
-
-
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -46,42 +53,38 @@ if (isset($_POST['btnAdd']))
     <title>Document</title>
 </head>
 <body>
-    <form action="post">
+    <form action="" method="POST">
+        <h1>Add Section:</h1>
+        Section ID: <input type="text" name="SectionID"><br><br>
+        Course ID: <input type="text" name="CourseID"><br><br>
+        Section: <input type="text" name="Section"><br><br>
+        <hr>
+        First Day:
+        <select name="Day1">
+            <option value="sunday">Sunday</option>
+            <option value="monday">Monday</option>
+            <option value="tuesday">Tuesday</option>
+            <option value="wednesday">Wednesday</option>
+            <option value="thursday">Thursday</option>
+        </select><br><br>
+        Start Time: <input type="text" name="StartTime1"><br><br>
+        End Time: <input type="text" name="EndTime1"><br>
+        <small>Time Format: (hh:mm:ss)</small><br><br>
+        <hr>
+        Second Day:
+        <select name="Day2">
+            <option value="sunday">Sunday</option>
+            <option value="monday">Monday</option>
+            <option value="tuesday">Tuesday</option>
+            <option value="wednesday">Wednesday</option>
+            <option value="thursday">Thursday</option>
+        </select><br><br>
+        Start Time: <input type="text" name="StartTime2"><br><br>
+        End Time: <input type="text" name="EndTime2"><br>
+        <small>Time Format: (hh:mm:ss)</small><br><br>
+        <hr>
 
-    <h1>Add Section:</h1>
-    Section ID: <input type="text" name="SectionID"><br><br>
-    Course ID: <input type="text" name="CourseID"><br><br>
-    Section: <input type="text" name="Section"><br><br>
-    <hr>
-    First Day:
-    <select name="Day1">
-    <option value="sunday">Sunday</option>
-    <option value="monday">Monday</option>
-    <option value="tuesday">Tuesday</option>
-    <option value="wednesday">Wednesday</option>
-    <option value="thursday">Thursday</option>
-    </select><br><br>
-    Start Time: <input type="text" name="StartTime1"><br><br>
-    End Time: <input type="text" name="EndTime1"><br>
-    <small>Time Format:(hh:mm:ss)</small><br><br>
-    <hr>
-    Second Day:
-    <select name="Day2">
-    <option value="sunday">Sunday</option>
-    <option value="monday">Monday</option>
-    <option value="tuesday">Tuesday</option>
-    <option value="wednesday">Wednesday</option>
-    <option value="thursday">Thursday</option>
-    </select><br><br>
-    Start Time: <input type="text" name="StartTime2"><br><br>
-    End Time: <input type="text" name="EndTime2"><br>
-    <small>Time Format:(hh:mm:ss)</small><br><br>
-    <hr>
-
-    <button name="btnAdd">Add</button>
-
+        <button name="btnAdd">Add</button>
     </form>
-
-
 </body>
 </html>

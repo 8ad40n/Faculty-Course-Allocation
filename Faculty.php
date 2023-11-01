@@ -17,7 +17,7 @@
 include('dbConnect.php');
 session_start();
 if (isset($_POST['btnTSF'])) {
-  $id = $_SESSION['id'];
+  //$id = $_SESSION['id'];
   echo "<h1>TSF:</h1>";
   echo '<table border="1">
     <tr>
