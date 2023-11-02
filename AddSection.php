@@ -1,7 +1,8 @@
 <?php
 include("dbConnect.php");
-
+include("AdminDashboard.php");
 if (isset($_POST['btnAdd'])) {
+    
     $sectionID = $_POST["SectionID"];
     $courseID = $_POST["CourseID"];
     $section = $_POST["Section"];
@@ -22,7 +23,10 @@ if (isset($_POST['btnAdd'])) {
         // Verify if the CourseID exists in the database
         $verifyQuery = "SELECT CourseID FROM course WHERE CourseID = '$courseID'";
         $verifyResult = mysqli_query($conn, $verifyQuery);
-        if (mysqli_num_rows($verifyResult) > 0) {
+
+        $varifySection= "SELECT * FROM section WHERE CourseID = '$courseID' AND Sec='$section'";
+        $verifySectionResult = mysqli_query($conn, $varifySection);
+        if (mysqli_num_rows($verifyResult) > 0 && mysqli_num_rows($verifySectionResult)==0) {
 
             $addSectionQuery = "INSERT INTO section (SectionID, CourseID, Sec, Day, startTime, endTime)
             VALUES ('$sectionID', '$courseID', '$section', '$day1', '$startTime1', '$endTime1');";
@@ -38,7 +42,7 @@ if (isset($_POST['btnAdd'])) {
     
             }
         } else {
-            echo "CourseID does not exist.";
+            echo "Invalid.";
         }
     }
     
@@ -53,8 +57,11 @@ if (isset($_POST['btnAdd'])) {
     <title>Document</title>
 </head>
 <body>
-    <form action="" method="POST">
-        <h1>Add Section:</h1>
+    <fieldset>
+        <legend><h1>Add Section:</h1></legend>
+
+        <form action="" method="POST">
+        
         Section ID: <input type="text" name="SectionID"><br><br>
         Course ID: <input type="text" name="CourseID"><br><br>
         Section: <input type="text" name="Section"><br><br>
@@ -86,5 +93,6 @@ if (isset($_POST['btnAdd'])) {
 
         <button name="btnAdd">Add</button>
     </form>
+    </fieldset>
 </body>
 </html>

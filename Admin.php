@@ -1,6 +1,6 @@
 <?php
 include("dbConnect.php");
-
+include("AdminDashboard.php"); 
 if (isset($_POST['btnGenerate'])) {
     // Reset assignments for all sections
     $resetAssignmentsQuery = "UPDATE section SET FacultyID = NULL";
@@ -206,10 +206,6 @@ if (isset($_POST['btnGenerate'])) {
     }
 }
 
-elseif(isset($_POST["btnSection"])) 
-{
-    header("Location: AddSection.php");
-}
 
 
 ?>
@@ -223,13 +219,10 @@ elseif(isset($_POST["btnSection"]))
     <title>Course Assignment</title>
 </head>
 
-<body>
+
     <form method="POST">
         <button type="submit" name="btnGenerate">Generate Section</button>
-        <button type="submit" name="btnSection">Add Section</button>
-        <button type="submit" name="btnEditSection">Edit Section</button>
-        <button type="submit" name="btnAddFaculty">Add Faculty</button>
-        <button type="submit" name="btnEditFaculty">Edit Faculty Information</button>
+        
     </form>
 
     <?php
