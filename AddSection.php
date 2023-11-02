@@ -24,8 +24,9 @@ if (isset($_POST['btnAdd'])) {
         $verifyQuery = "SELECT CourseID FROM course WHERE CourseID = '$courseID'";
         $verifyResult = mysqli_query($conn, $verifyQuery);
 
-        $varifySection= "SELECT * FROM section WHERE CourseID = '$courseID' AND Sec='$section'";
+        $varifySection= "SELECT * FROM section WHERE CourseID = '$courseID' AND Sec='$section' AND SectionID='$sectionID'";
         $verifySectionResult = mysqli_query($conn, $varifySection);
+
         if (mysqli_num_rows($verifyResult) > 0 && mysqli_num_rows($verifySectionResult)==0) {
 
             $addSectionQuery = "INSERT INTO section (SectionID, CourseID, Sec, Day, startTime, endTime)

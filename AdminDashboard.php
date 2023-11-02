@@ -12,7 +12,7 @@
             <li><a href="AddSection.php">Add Section</a></li>
             <li><a href="#">Edit Section</a></li>
             <li><a href="AddFaculty.php">Add Faculty</a></li>
-            <li><a href="#">Edit Faculty Information</a></li>
+            <li><a href="EditFacultyInfo.php">Edit Faculty Information</a></li>
         </ul>
     </nav>
 </body>
