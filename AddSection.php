@@ -63,9 +63,9 @@ if (isset($_POST['btnAdd'])) {
 
         <form action="" method="POST">
         
-        Section ID: <input type="text" name="SectionID"><br><br>
-        Course ID: <input type="text" name="CourseID"><br><br>
-        Section: <input type="text" name="Section"><br><br>
+        Section ID:<br> <input type="text" name="SectionID"><br><br>
+        Course ID: <br><input type="text" name="CourseID"><br><br>
+        Section:<br> <input type="text" name="Section"><br><br>
         <hr>
         First Day:
         <select name="Day1">
@@ -75,8 +75,8 @@ if (isset($_POST['btnAdd'])) {
             <option value="Wednesday">Wednesday</option>
             <option value="Thursday">Thursday</option>
         </select><br><br>
-        Start Time: <input type="text" name="StartTime1"><br><br>
-        End Time: <input type="text" name="EndTime1"><br>
+        Start Time:<br> <input type="text" name="StartTime1"><br><br>
+        End Time: <br><input type="text" name="EndTime1"><br>
         <small>Time Format: (hh:mm:ss)</small><br><br>
         <hr>
         Second Day:
@@ -87,8 +87,8 @@ if (isset($_POST['btnAdd'])) {
             <option value="Wednesday">Wednesday</option>
             <option value="Thursday">Thursday</option>
         </select><br><br>
-        Start Time: <input type="text" name="StartTime2"><br><br>
-        End Time: <input type="text" name="EndTime2"><br>
+        Start Time:<br> <input type="text" name="StartTime2"><br><br>
+        End Time: <br><input type="text" name="EndTime2"><br>
         <small>Time Format: (hh:mm:ss)</small><br><br>
         <hr>
 

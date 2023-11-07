@@ -10,7 +10,7 @@ function getFacultyTotalHours($conn, $facultyID) {
 
     if ($totalHoursResult) {
         $row = mysqli_fetch_assoc($totalHoursResult);
-        return $row['TotalHours'] / 3600; // Convert to hours
+        return $row['TotalHours'] / 3600; 
     }
 
     return 0;
@@ -87,11 +87,11 @@ if (isset($_POST['btnGenerate'])) {
                         $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
                         mysqli_query($conn, $assignSectionQuery);
                     }
-                    elseif(!hasCourseClashes($conn, $facultyID, $startTime, $endTime))
-                    {
-                        $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
-                        mysqli_query($conn, $assignSectionQuery);
-                    }
+                    // elseif(!hasCourseClashes($conn, $facultyID, $startTime, $endTime))
+                    // {
+                    //     $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
+                    //     mysqli_query($conn, $assignSectionQuery);
+                    // }
                     
                     
                 }

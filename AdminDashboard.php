@@ -8,11 +8,13 @@
 <body>
     <nav>
         <ul>
-            <li><a href="Admin.php">Sections</a></li>
+            <h3>
+            <li><a href="TryAgain.php">Sections</a></li>
             <li><a href="AddSection.php">Add Section</a></li>
             <li><a href="#">Edit Section</a></li>
             <li><a href="AddFaculty.php">Add Faculty</a></li>
             <li><a href="EditFacultyInfo.php">Edit Faculty Information</a></li>
+            </h3>
         </ul>
     </nav>
 </body>

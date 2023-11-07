@@ -20,18 +20,17 @@ if(isset($_POST['login']))
     {
         $new=mysqli_fetch_assoc($res);
         $user=$new["Type"];
+        $_SESSION['id']=$new["ID"];
+
         if($user=="Admin")
         {
             header("location: AdminDashboard.php");
         }
         elseif($user=="Faculty")
         {
-            header("location: Faculty.php");
+            header("location: FacultyDashboard.php");
         }
-        while($r=mysqli_fetch_assoc($res))
-        {
-        $_SESSION['id']=$r["ID"];
-        }
+
     }
     else
     {
@@ -56,7 +55,8 @@ if(isset($_POST['forgot'])){
 </head>
 <body>
     <form method="post">
-    <center><h1>Login</h1></center>
+    <fieldset>
+        <legend><h1>Login</h1></legend>
     <script>
     function togglePassword() 
     {
@@ -71,12 +71,14 @@ if(isset($_POST['forgot'])){
     }
     }
     </script>
-     ID: <input type="text" name="id" placeholder="User Name"><br>
-     Password: <input type="password" name="pass" id="pass" placeholder="Password"><br>
+     ID:<br> <input type="text" name="id" placeholder="User Name"><br><br>
+     Password: <br><input type="password" name="pass" id="pass" placeholder="Password"><br>
      <input type="checkbox" id="showPassword" onclick="togglePassword()">
-     <label for="showPassword">Show Password</label><br>
+     <small>Show Password</small><br><br>
      <button name="login">Login</button>
      <button name="forgot">Forgot Password?</button>
+    </fieldset>
+    
     </form>
 </body>
 </html>

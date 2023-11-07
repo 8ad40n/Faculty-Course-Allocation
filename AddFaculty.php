@@ -58,10 +58,10 @@ if (isset($_POST["btnAddFaculty"])) {
                 }
             </script>
 
-            Faculty ID:<input type="text" name="facultyId"><br><br>
-            Faculty Name:<input type="text" name="name"><br><br>
-            Email:<input type="email" name="mail"><br><br>
-            Password:<input type="password" name="pass" id="pass"><br>
+            Faculty ID:<br><input type="text" name="facultyId"><br><br>
+            Faculty Name:<br><input type="text" name="name"><br><br>
+            Email:<br><input type="email" name="mail"><br><br>
+            Password:<br><input type="password" name="pass" id="pass"><br>
             <input type="checkbox" id="showPassword" onclick="togglePassword()">
             <label for="showPassword">Show Password</label><br><br>
             <button type="submit" name="btnAddFaculty">Add</button>
