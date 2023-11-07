@@ -87,11 +87,11 @@ if (isset($_POST['btnGenerate'])) {
                         $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
                         mysqli_query($conn, $assignSectionQuery);
                     }
-                    // elseif(!hasCourseClashes($conn, $facultyID, $startTime, $endTime))
-                    // {
-                    //     $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
-                    //     mysqli_query($conn, $assignSectionQuery);
-                    // }
+                    elseif(!hasCourseClashes($conn, $facultyID, $startTime, $endTime))
+                    {
+                        $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
+                        mysqli_query($conn, $assignSectionQuery);
+                    }
                     
                     
                 }
@@ -189,7 +189,7 @@ include('dbConnect.php');
         LEFT JOIN
             faculty ON section.FacultyID = faculty.FacultyID
         JOIN
-            course ON section.CourseID = course.CourseID ORDER BY faculty.FacultyName DESC";
+            course ON section.CourseID = course.CourseID ORDER BY faculty.FacultyName,section.Day DESC";
 
         $result = mysqli_query($conn, $sql);
 

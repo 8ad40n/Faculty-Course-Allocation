@@ -6,6 +6,7 @@ session_start();
 $id = $_SESSION['id'];
 
 if (isset($_GET["add"])) {
+    $facultyID = $id; 
     $day = $_GET["day"];
     $start = $_GET["start"];
     $end = $_GET["end"];
@@ -13,11 +14,11 @@ if (isset($_GET["add"])) {
     if (empty($start) || empty($end)) {
         echo "Please fill in all the fields.";
     } else {
-        $sql = "SELECT Day FROM prioritytime WHERE FacultyID='$id'";
+        $sql = "SELECT Day FROM prioritytime WHERE FacultyID='$facultyID' and Day ='$day'";
         $result = mysqli_query($conn, $sql);
         
         if (mysqli_num_rows($result) == 0) {
-            $addSectionQuery = "INSERT INTO prioritytime (FacultyID, Day, startTime, endTime) VALUES ('$id', '$day', '$start', '$end')";
+            $addSectionQuery = "INSERT INTO prioritytime (FacultyID, Day, startTime, endTime) VALUES ('$facultyID', '$day', '$start', '$end')";
             $addSectionResult = mysqli_query($conn, $addSectionQuery);
             
             if ($addSectionResult) {
@@ -26,14 +27,10 @@ if (isset($_GET["add"])) {
                 echo "Invalid!";
             }
         } else {
-            echo "You already have a priority time set on this day.";
+            echo "You already have a priority time set.";
         }
     }
 }
-
-$sql3="SELECT * FROM prioritytime WHERE FacultyID='$id";
-$r= mysqli_query($conn,$sql);
-
 ?>
 
 <!DOCTYPE html>
@@ -47,6 +44,7 @@ $r= mysqli_query($conn,$sql);
     <form method="get">
         <fieldset>
             <legend><h1>Set Priority Time</h1></legend>
+            Faculty ID: <br><input type="text" name="facultyID" value="<?php echo $id; ?>" readonly><br><br>
             Day:<br>
             <select name="day">
                 <option value="Sunday">Sunday</option>
@@ -60,24 +58,6 @@ $r= mysqli_query($conn,$sql);
             <small>Time Format = hh:mm:ss</small><br><br>
             <button type="submit" name="add">Add</button>
         </fieldset>
-
-
-    <table border="1" >
-    <tr>
-      <th>Day</th>
-      <th>Start Time</th>
-      <th>End Time</th>
-    </tr>
-    <?php while($r= mysqli_fetch_assoc($res)){ ?>
-    <tr>
-      <td><?php echo $r["Day"] ; ?></td>
-      <td><?php echo $r["startTime"] ; ?></td>
-      <td><?php echo $r["endTime"] ; ?></td>
-      <td><button type="submit" name="del" value="<?php echo $r["FacultyID"] ; ?>">Delete</button>   </td>
-    </tr>
-  <?php } ?>
-  </table>
-
     </form>
 </body>
 </html>
