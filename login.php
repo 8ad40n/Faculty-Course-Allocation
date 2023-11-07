@@ -42,9 +42,7 @@ if(isset($_POST['login']))
         echo "Please fill in all the fields.";
     }
 }
-if(isset($_POST['forgot'])){
-     header("location: PasswordVerification.php");
-} 
+
 ?>
 
 <!DOCTYPE html>
@@ -75,8 +73,8 @@ if(isset($_POST['forgot'])){
      Password: <br><input type="password" name="pass" id="pass" placeholder="Password"><br>
      <input type="checkbox" id="showPassword" onclick="togglePassword()">
      <small>Show Password</small><br><br>
-     <button name="login">Login</button>
-     <button name="forgot">Forgot Password?</button>
+     <button name="login">Login</button><br>
+     <a href="PasswordVerification.php">Forgot Password?</a>
     </fieldset>
     
     </form>

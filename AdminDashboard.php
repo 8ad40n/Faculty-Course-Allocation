@@ -9,6 +9,7 @@
     <nav>
         <ul>
             <h3>
+            <li><a href="AdminDashboard.php">Home</a></li>
             <li><a href="TryAgain.php">Sections</a></li>
             <li><a href="AddSection.php">Add Section</a></li>
             <li><a href="editSection.php">Edit Section</a></li>
