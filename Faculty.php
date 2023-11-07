@@ -45,7 +45,7 @@ if (isset($_POST['btnTSF'])) {
     course ON section.CourseID = course.CourseID
   WHERE
   /*session add korte hbe */
-    FacultyName = 'Sakib Hossain'
+    section.FacultyID = 'Maria123'
   ORDER BY
     course.CourseName ASC";
 

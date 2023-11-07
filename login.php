@@ -22,7 +22,7 @@ if(isset($_POST['login']))
         $user=$new["Type"];
         if($user=="Admin")
         {
-            header("location: Admin.php");
+            header("location: AdminDashboard.php");
         }
         elseif($user=="Faculty")
         {

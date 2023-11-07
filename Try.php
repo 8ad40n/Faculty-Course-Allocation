@@ -25,7 +25,7 @@ if (isset($_POST['btnGenerate'])) {
                 $endTime = $priorityTime['endTime'];
 
                 // Check total hours for this faculty
-                $totalHoursQuery = "SELECT SUM(TIME_TO_SEC(TIMEDIFF(EndTime, StartTime))) AS TotalHours 
+                $totalHoursQuery = "SELECT SUM(TIME_TO_SEC(TIMEDIFF(endTime, startTime))) AS TotalHours 
                             FROM section 
                             WHERE FacultyID = '$facultyID'";
                 $totalHoursResult = mysqli_query($conn, $totalHoursQuery);
@@ -44,12 +44,12 @@ if (isset($_POST['btnGenerate'])) {
                         $sectionAvailabilityResult = mysqli_query($conn, $checkSectionAvailabilityQuery);
 
                         while ($section = mysqli_fetch_assoc($sectionAvailabilityResult)) {
-                            $sectionStartTime = $section['startTime'];
-                            $sectionEndTime = $section['endTime'];
+                            $sectionstartTime = $section['startTime'];
+                            $sectionendTime = $section['endTime'];
                             $sectionCourseID = $section['CourseID'];
 
                             // Check if the section falls within the priority time
-                            if ($sectionStartTime >= $startTime && $sectionEndTime <= $endTime) {
+                            if ($sectionstartTime >= $startTime && $sectionendTime <= $endTime) {
                                 // Check if this section's course is a priority course for the faculty
                                 $priorityCourseQuery = "SELECT * FROM prioritycourses WHERE FacultyID = '$facultyID' AND CourseID = '$sectionCourseID'";
                                 $priorityCourseResult = mysqli_query($conn, $priorityCourseQuery);
@@ -57,9 +57,9 @@ if (isset($_POST['btnGenerate'])) {
                                 if ($priorityCourseResult && mysqli_num_rows($priorityCourseResult) > 0) {
                                     // Check for clashes with existing assignments
                                     $clashQuery = "SELECT SectionID FROM section WHERE FacultyID = '$facultyID' 
-                                        AND ((startTime >= '$sectionStartTime' AND startTime < '$sectionEndTime') 
-                                        OR (endTime > '$sectionStartTime' AND endTime <= '$sectionEndTime'))";
-                                    $clashResult = mysqli_query($conn, $clashQuery);
+                                    AND ((startTime >= '$sectionstartTime' AND startTime < '$sectionendTime') 
+                                    OR (endTime > '$sectionstartTime' AND endTime <= '$sectionendTime'))";
+                                    $clashResult = mysqli_query($conn,$clashQuery);    
 
                                     if (mysqli_num_rows($clashResult) == 0) {
                                         // Assign this section to the faculty since it's a priority course, and no clashes
@@ -101,7 +101,7 @@ if (isset($_POST['btnGenerate'])) {
                 $priorityCourseResult = mysqli_query($conn, $priorityCourseQuery);
 
                 // Check total hours for the faculty
-                $totalHoursQuery = "SELECT SUM(TIME_TO_SEC(TIMEDIFF(EndTime, StartTime))) AS TotalHours 
+                $totalHoursQuery = "SELECT SUM(TIME_TO_SEC(TIMEDIFF(endTime, startTime))) AS TotalHours 
                             FROM section 
                             WHERE FacultyID = '$facultyID'";
                 $totalHoursResult = mysqli_query($conn, $totalHoursQuery);
@@ -113,17 +113,17 @@ if (isset($_POST['btnGenerate'])) {
                     // Check if total hours are less than or equal to 16
                     if ($totalHours <= 18) {
                         // Check for clashes with existing assignments
-                        $sectionStartTimeQuery = "SELECT startTime FROM section WHERE SectionID = '$sectionID'";
-                        $sectionStartTimeResult = mysqli_query($conn, $sectionStartTimeQuery);
+                        $sectionstartTimeQuery = "SELECT startTime, endTime FROM section WHERE SectionID = '$sectionID'";
+                        $sectionstartTimeResult = mysqli_query($conn, $sectionstartTimeQuery);
 
-                        if ($sectionStartTimeResult && mysqli_num_rows($sectionStartTimeResult) > 0) {
-                            $row = mysqli_fetch_assoc($sectionStartTimeResult);
-                            $sectionStartTime = $row['startTime'];
-
+                        if ($sectionstartTimeResult && mysqli_num_rows($sectionstartTimeResult) > 0) {
+                            $row = mysqli_fetch_assoc($sectionstartTimeResult);
+                            $sectionstartTime = $row['startTime'];
+                            $sectionendTime = $row['endTime'];
                             // Check for clashes with existing assignments
                             $clashQuery = "SELECT SectionID FROM section WHERE FacultyID = '$facultyID' 
-                                AND ((startTime >= '$sectionStartTime' AND startTime < '$sectionStartTime + 3600') 
-                                OR (endTime > '$sectionStartTime' AND endTime <= '$sectionStartTime + 3600'))";
+                                        AND ((startTime >= '$sectionstartTime' AND startTime < '$sectionendTime') 
+                                        OR (endTime > '$sectionstartTime' AND endTime <= '$sectionendTime'))";
                             $clashResult = mysqli_query($conn, $clashQuery);
 
                             if (mysqli_num_rows($clashResult) == 0) {
@@ -248,7 +248,7 @@ if (isset($_POST['btnGenerate'])) {
                 $facultyName = $faculty['FacultyName'];
 
                 // Query to calculate the total hours for the faculty per week
-                $totalHoursQuery = "SELECT SUM(TIME_TO_SEC(TIMEDIFF(EndTime, StartTime))) AS TotalHours 
+                $totalHoursQuery = "SELECT SUM(TIME_TO_SEC(TIMEDIFF(endTime, startTime))) AS TotalHours 
                             FROM section 
                             WHERE FacultyID = '$facultyID'";
 
@@ -302,7 +302,7 @@ if (isset($_POST['btnGenerate'])) {
         LEFT JOIN
             faculty ON section.FacultyID = faculty.FacultyID
         JOIN
-            course ON section.CourseID = course.CourseID ORDER BY course.CourseName ASC";
+            course ON section.CourseID = course.CourseID ORDER BY faculty.FacultyName DESC";
 
         $result = mysqli_query($conn, $sql);
 
@@ -331,3 +331,115 @@ if (isset($_POST['btnGenerate'])) {
 </body>
 
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?php
+// ... Your existing code ...
+
+if (isset($_POST['btnGenerate'])) {
+    // Reset assignments for all sections
+    $resetAssignmentsQuery = "UPDATE section SET FacultyID = NULL";
+    mysqli_query($conn, $resetAssignmentsQuery);
+
+    // Get the list of all faculty members
+    $facultyQuery = "SELECT FacultyID, FacultyName FROM faculty";
+    $facultyResult = mysqli_query($conn, $facultyQuery);
+
+    if ($facultyResult) {
+        echo '<h1>Faculty Break Times:</h1>';
+        echo '<table border="1">
+            <tr>
+                <th>Faculty Name</th>
+                <th>Break Times (Day - Start Time - End Time)</th>
+            </tr>';
+
+        while ($faculty = mysqli_fetch_assoc($facultyResult)) {
+            $facultyID = $faculty['FacultyID'];
+            $facultyName = $faculty['FacultyName'];
+
+            // Fetch the sections assigned to this faculty
+            $facultySectionsQuery = "SELECT Day, startTime, endTime FROM section WHERE FacultyID = '$facultyID'";
+            $facultySectionsResult = mysqli_query($conn, $facultySectionsQuery);
+
+            if ($facultySectionsResult) {
+                // Convert the faculty's schedule into break times
+                $breakTimes = calculateBreakTimes($facultySectionsResult);
+
+                // Filter break times to be between 08:00:00 and 17:00:00
+                $breakTimes = filterBreakTimes($breakTimes);
+
+                // Display faculty break times in a table
+                echo '<tr>';
+                echo "<td>$facultyName</td>";
+                echo "<td>";
+                foreach ($breakTimes as $breakTime) {
+                    echo $breakTime['Day'] . " - " . $breakTime['startTime'] . " - " . $breakTime['endTime'] . "<br>";
+                }
+                echo "</td>";
+                echo '</tr>';
+            }
+        }
+
+        echo '</table>';
+    }
+}
+
+function calculateBreakTimes($sectionsResult) {
+    $breakTimes = array();
+
+    $currentDay = null;
+    $currentStartTime = null;
+    $currentEndTime = null;
+
+    while ($section = mysqli_fetch_assoc($sectionsResult)) {
+        if ($section['Day'] !== $currentDay) {
+            // Found a new day, save the previous day's break time
+            if ($currentDay !== null) {
+                $breakTimes[] = array(
+                    'Day' => $currentDay,
+                    'startTime' => $currentEndTime,
+                    'endTime' => $section['startTime']
+                );
+            }
+
+            // Initialize for the new day
+            $currentDay = $section['Day'];
+            $currentStartTime = $section['startTime'];
+            $currentEndTime = $section['endTime'];
+        } else {
+            // Extend the current day's end time
+            $currentEndTime = $section['endTime'];
+        }
+    }
+
+    return $breakTimes;
+}
+
+function filterBreakTimes($breakTimes) {
+    $filteredBreakTimes = array();
+
+    foreach ($breakTimes as $breakTime) {
+        if ($breakTime['startTime'] >= '08:00:00' && $breakTime['endTime'] <= '17:00:00') {
+            $filteredBreakTimes[] = $breakTime;
+        }
+    }
+
+    return $filteredBreakTimes;
+}
+
+// ... The rest of your code ...
+?>

@@ -8,7 +8,7 @@
 <body>
     <nav>
         <ul>
-            <li><a href="Admin.php">Generate Section</a></li>
+            <li><a href="Admin.php">Sections</a></li>
             <li><a href="AddSection.php">Add Section</a></li>
             <li><a href="#">Edit Section</a></li>
             <li><a href="AddFaculty.php">Add Faculty</a></li>

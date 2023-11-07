@@ -10,6 +10,12 @@ if(isset($_GET['del']))
 
     $sql2="Delete from userinfo where ID='$FacultyID'";
     mysqli_query($conn,$sql2);
+
+    $sql3="Delete from prioritytime where FacultyID='$FacultyID'";
+    mysqli_query($conn,$sql3);
+
+    $sql4="Delete from prioritycourses where FacultyID='$FacultyID'";
+    mysqli_query($conn,$sql4);
 }
 else if(isset($_GET['edit']))
 {

@@ -69,11 +69,11 @@ if (isset($_POST['btnAdd'])) {
         <hr>
         First Day:
         <select name="Day1">
-            <option value="sunday">Sunday</option>
-            <option value="monday">Monday</option>
-            <option value="tuesday">Tuesday</option>
-            <option value="wednesday">Wednesday</option>
-            <option value="thursday">Thursday</option>
+            <option value="Sunday">Sunday</option>
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
         </select><br><br>
         Start Time: <input type="text" name="StartTime1"><br><br>
         End Time: <input type="text" name="EndTime1"><br>
@@ -81,11 +81,11 @@ if (isset($_POST['btnAdd'])) {
         <hr>
         Second Day:
         <select name="Day2">
-            <option value="sunday">Sunday</option>
-            <option value="monday">Monday</option>
-            <option value="tuesday">Tuesday</option>
-            <option value="wednesday">Wednesday</option>
-            <option value="thursday">Thursday</option>
+            <option value="Sunday">Sunday</option>
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
         </select><br><br>
         Start Time: <input type="text" name="StartTime2"><br><br>
         End Time: <input type="text" name="EndTime2"><br>
