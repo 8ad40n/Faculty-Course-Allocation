@@ -7,10 +7,11 @@
 </head>
 <body>
     <form method="post">
-
         <?php
         include("dbConnect.php");
         include("FacultyDashboard.php");
+        session_start();
+        $id = $_SESSION['id'];
 
         echo '<h2>Select Courses:</h2>';
         // Fetch course names and CourseID from the course table
@@ -32,24 +33,67 @@
         <input type="submit" name="submit" value="Submit">
     </form>
 
+    <table border="1">
+        <tr>
+            <th>Faculty ID</th>
+            <th>Course ID</th>
+            <th>Course Name</th>
+
+        </tr>
+        <?php
+        $sql = "SELECT prioritycourses.*, course.CourseName FROM prioritycourses 
+        JOIN course ON prioritycourses.CourseID = course.CourseID
+        WHERE prioritycourses.FacultyID = '$id';";
+        $res = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            while ($r = mysqli_fetch_assoc($res)) {
+                echo "<tr>";
+                echo "<td>" . $r["FacultyID"] . "</td>";
+                echo "<td>" . $r["CourseID"] . "</td>";
+                echo "<td>" . $r["CourseName"] . "</td>";
+                echo '<td>
+                    <form method="post">
+                        <button type="submit" name="del" value="' . $r["CourseID"] . '">Delete</button>
+                    </form>
+                </td>';
+                echo "</tr>";
+            }
+        } else {
+            echo "<tr><td colspan='4'>No priority Courses found.</td></tr>";
+        }
+
+        if (isset($_POST['del'])) {
+            $FacultyID = $id;
+            $courseID = $_POST['del'];
+    
+            $sql3 = "DELETE FROM prioritycourses WHERE FacultyID='$FacultyID' and CourseID = '$courseID'";
+            mysqli_query($conn, $sql3);
+        }
+        ?>
+    </table>
+
     <?php
     include("dbConnect.php");
-    session_start();
-    $id = $_SESSION['id'];
-
+    
     if (isset($_POST['submit'])) {
         if (isset($_POST['selectedCourses']) && !empty($_POST['selectedCourses'])) {
+            $facultyID = $id;
             
-            $facultyID = $id; // Change this to the actual FacultyID
-
             foreach ($_POST['selectedCourses'] as $selectedCourseID) {
-                $insertQuery = "INSERT INTO prioritycourses (FacultyID, CourseID) VALUES ('$facultyID', '$selectedCourseID')";
-                $insertResult = mysqli_query($conn, $insertQuery);
+                // Check if the combination of FacultyID and CourseID already exists
+                $checkQuery = "SELECT * FROM prioritycourses WHERE FacultyID='$facultyID' AND CourseID='$selectedCourseID'";
+                $checkResult = mysqli_query($conn, $checkQuery);
+
+                if (mysqli_num_rows($checkResult) == 0) {
+                    // If not exists, then insert it
+                    $insertQuery = "INSERT INTO prioritycourses (FacultyID, CourseID) VALUES ('$facultyID', '$selectedCourseID')";
+                    $insertResult = mysqli_query($conn, $insertQuery);
+                }
             }
 
-            echo "<h3>Selected Courses have been added to the faculty.</h3>";
+            
         } else {
-            echo "No courses selected.";
+            echo "Try Again!";
         }
     }
     ?>

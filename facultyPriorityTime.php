@@ -57,7 +57,43 @@ if (isset($_GET["add"])) {
             End Time: <br><input type="text" name="end"><br>
             <small>Time Format = hh:mm:ss</small><br><br>
             <button type="submit" name="add">Add</button>
-        </fieldset>
+        </fieldset><br><br>
+
+        <table border="1">
+        <tr>
+            <th>Faculty ID</th>
+            <th>Day</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+        </tr>
+        <?php
+        $sql = "SELECT * FROM prioritytime where FacultyID='$id';";
+        $res = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            while ($r = mysqli_fetch_assoc($res)) {
+                echo "<tr>";
+                echo "<td>" . $r["FacultyID"] . "</td>";
+                echo "<td>" . $r["Day"] . "</td>";
+                echo "<td>" . $r["startTime"] . "</td>";
+                echo "<td>" . $r["endTime"] . "</td>";
+                echo '<td>
+                            <button type="submit" name="del" value="' . $r["Day"] . '">Delete</button>
+                     </td>';
+                echo "</tr>";
+            }
+        } else {
+            echo "<tr><td colspan='4'>No priority time found.</td></tr>";
+        }
+
+        if (isset($_GET['del'])) {
+            $FacultyID = $id;
+            $day= $_GET['del'];
+    
+            $sql3 = "DELETE FROM prioritytime WHERE FacultyID='$FacultyID' and Day = '$day'";
+            mysqli_query($conn, $sql3);
+        }
+        ?>
+    </table>
     </form>
 </body>
 </html>
