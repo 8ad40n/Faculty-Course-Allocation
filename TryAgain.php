@@ -61,7 +61,7 @@ if (isset($_POST['btnGenerate'])) {
             $facultyID = $faculty['FacultyID'];
             $totalHours = getFacultyTotalHours($conn, $facultyID);
 
-            if (is_numeric($totalHours) && $totalHours <= 18) {
+            if (is_numeric($totalHours) && $totalHours <= 16) {
                 // Iterate through available sections
                 $checkAvailableSectionsQuery = "SELECT SectionID, Day, startTime, endTime, CourseID FROM section WHERE FacultyID IS NULL";
                 $sectionAvailabilityResult = mysqli_query($conn, $checkAvailableSectionsQuery);
@@ -87,20 +87,43 @@ if (isset($_POST['btnGenerate'])) {
                         $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
                         mysqli_query($conn, $assignSectionQuery);
                     }
-                    elseif(!hasCourseClashes($conn, $facultyID, $startTime, $endTime))
-                    {
-                        $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
-                        mysqli_query($conn, $assignSectionQuery);
+                }
+            }
+        }
+
+        // Second loop
+        $facultyQuery1 = "SELECT FacultyID, FacultyName FROM faculty";
+        $facultyResult1 = mysqli_query($conn, $facultyQuery1);
+
+        if ($facultyResult1) {
+            while ($faculty = mysqli_fetch_assoc($facultyResult1)) {
+                $facultyID = $faculty['FacultyID'];
+                $totalHours = getFacultyTotalHours($conn, $facultyID);
+
+                if (is_numeric($totalHours) && $totalHours <= 16) {
+                    // Iterate through available sections again
+                    $checkAvailableSectionsQuery = "SELECT SectionID, Day, startTime, endTime, CourseID FROM section WHERE FacultyID IS NULL";
+                    $sectionAvailabilityResult = mysqli_query($conn, $checkAvailableSectionsQuery);
+
+                    while ($section = mysqli_fetch_assoc($sectionAvailabilityResult)) {
+                        $sectionID = $section['SectionID'];
+                        $day = $section['Day'];
+                        $startTime = $section['startTime'];
+                        $endTime = $section['endTime'];
+                        $courseID = $section['CourseID'];
+
+                        if (!hasCourseClashes($conn, $facultyID, $startTime, $endTime)) {
+                            $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
+                            mysqli_query($conn, $assignSectionQuery);
+                        }
                     }
-                    
-                    
                 }
             }
         }
     }
 }
-
 ?>
+
 
 
 

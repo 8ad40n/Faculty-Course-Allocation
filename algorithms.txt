@@ -6,6 +6,7 @@ Course:
 	3. Section
 	4. Time
 	5. Day
+	6. Credit
 
 Faculty:
 	1. Name
@@ -14,12 +15,14 @@ Faculty:
 	4. priorityCourses
 	5. AssignCourseSec
 	6. Password
+	7. Type
 
 Admin: 
 	1. Name
 	2. Id
 	3. Email
 	4. Password
+	5. Type
 
 
 3NF:
@@ -31,6 +34,7 @@ Table 2: course
 • CourseID
 • CourseName
 • DepartmentName 
+• Credit
 
 Table 3: section
 • SectionID
@@ -70,91 +74,40 @@ Table 8: userinfo
 
 Psuesdocode:
 
-	check prioritytime of every faculty 
-	if(section of this time is available)
+
+
+	Reset assignments for all sections -> FacultyID = null in section table
+	Get the list of all faculty members
+	faculty info in LOOP:
 	{
-		check prioritycourse of all faculty
-		the course's credit 3 or 1
-		if(1)
+		if total hours of the faculty is <=16
 		{
-			Totalhours check.
-			If(total hours<=16)
+			check section availability -> faculty not assigned
+			if (available)
 			{
-				check clash time of section with faculty time 
-				if (no clash)
+				if (PriorityTimeAvailable && hasPriorityCourse && has no Course time Clashes)
 				{
-					if (day =sunday)
-					{
-						check if there is any course,any sec of 1 credit available or not on tuesday
-					}
-					assign faculty one by one as all faculty can get almost same hours of time per week
+					Assign this section to the faculty
+				}
+				else if (hasPriorityCourse && has no Course time Clashes)
+				{
+					Assign this section to the faculty
 				}
 			}
 		}
-		if(section of these prioritycourse is available)
+	}
+
+	faculty info in LOOP:
+	{
+		if total hours of the faculty is <=16
 		{
-			Totalhours check.
-			If(total hours<=16)
+			check section availability -> faculty not assigned
+			if (available)
 			{
-				check clash time of section with faculty time 
-				if (no clash)
+				if (has no Course time Clashes)
 				{
-					assign faculty one by one as all faculty can get almost same hours of time per week
+					Assign this section to the faculty
 				}
 			}
-			
 		}
 	}
-	if(the section is still available means null in database table)
-	{
-		check prioritycourse of all faculty
-		if(section of these prioritycourse is available)
-		{
-			Totalhours check.
-			If(total hours<=16)
-			{
-				check clash time of section with faculty time 
-				if (no clash)
-				{
-					assign faculty one by one as all faculty can get almost same hours of time per week
-				}
-			}
-			
-		}
-	}
-	if(the section is still available means null in database table)
-	{
-		Totalhours check.
-			If(total hours<=16)
-			{
-				check clash time of section with faculty time 
-				if (no clash)
-				{
-					assign faculty one by one as all faculty can get almost same hours of time per week
-				}
-			}
-	}
-	if(the section is still available means null in database table)
-	{
-		sort the faculty on the basis of total hour of all faculty per week ascending order
-		check the time class of faculty 
-		if (no clash)
-		{
-			give course to faculty in ascending order on the basis of total hour
-		}
-	}
-
-
-faculty:
-tsf
-add prioritytime->edit
-add prioritycourse->edit
-password change
-section with search
-
-
-Login:
-show Password
-Reset Password
-
-
