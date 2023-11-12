@@ -6,14 +6,18 @@
     <title>Course Selection</title>
 </head>
 <body>
+
     <form method="post">
         <?php
         include("dbConnect.php");
         include("FacultyDashboard.php");
+
+        echo "<fieldset>
+        <legend><h2>Select Courses:</h2></legend>";
+        
         session_start();
         $id = $_SESSION['id'];
 
-        echo '<h2>Select Courses:</h2>';
         // Fetch course names and CourseID from the course table
         $sql = "SELECT CourseID, CourseName FROM course";
         $result = mysqli_query($conn, $sql);
@@ -97,5 +101,6 @@
         }
     }
     ?>
+    </fieldset>
 </body>
 </html>

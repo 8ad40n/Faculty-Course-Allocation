@@ -29,13 +29,31 @@ if (isset($_POST['btnAdd'])) {
 
         if (mysqli_num_rows($verifyResult) > 0 && mysqli_num_rows($verifySectionResult)==0) {
 
-            $addSectionQuery = "INSERT INTO section (SectionID, CourseID, Sec, Day, startTime, endTime)
-            VALUES ('$sectionID', '$courseID', '$section', '$day1', '$startTime1', '$endTime1');";
-            $addSectionResult = mysqli_query($conn, $addSectionQuery);
-        
-            $addSectionQuery1 = "INSERT INTO section (SectionID, CourseID, Sec, Day, startTime, endTime)
-            VALUES ('$sectionID', '$courseID', '$section', '$day2', '$startTime2', '$endTime2');";
-            $addSectionResult1 = mysqli_query($conn, $addSectionQuery1);
+            $sqlCredit= "SELECT * FROM section
+            INNER JOIN course ON section.CourseID = course.CourseID
+            WHERE course.CourseID = '$courseID';";
+            $creditResult = mysqli_query($conn, $sqlCredit);
+            $new=mysqli_fetch_assoc($creditResult);
+
+            $credit=$new["Credit"];
+            if($credit==1 || $credit== 2)
+            {
+                $addSectionQuery = "INSERT INTO section (SectionID, CourseID, Sec, Day, startTime, endTime)
+                VALUES ('$sectionID', '$courseID', '$section', '$day1', '$startTime1', '$endTime1');";
+                $addSectionResult = mysqli_query($conn, $addSectionQuery);
+            }
+            else
+            {
+                $addSectionQuery = "INSERT INTO section (SectionID, CourseID, Sec, Day, startTime, endTime)
+                VALUES ('$sectionID', '$courseID', '$section', '$day1', '$startTime1', '$endTime1');";
+                $addSectionResult = mysqli_query($conn, $addSectionQuery);
+
+                $addSectionQuery1 = "INSERT INTO section (SectionID, CourseID, Sec, Day, startTime, endTime)
+                VALUES ('$sectionID', '$courseID', '$section', '$day2', '$startTime2', '$endTime2');";
+                $addSectionResult1 = mysqli_query($conn, $addSectionQuery1);
+
+            }
+
     
             if($addSectionResult || $addSectionResult1)
             {

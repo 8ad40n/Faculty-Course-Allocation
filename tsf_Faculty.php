@@ -15,7 +15,6 @@
 include('dbConnect.php');
 include('FacultyDashboard.php');
 session_start();
-echo "{$_SESSION['id']}";
 
 //$id = $_SESSION['id'];
 echo "<h1>TSF:</h1>";

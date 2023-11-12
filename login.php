@@ -24,11 +24,11 @@ if(isset($_POST['login']))
 
         if($user=="Admin")
         {
-            header("location: AdminDashboard.php");
+            header("location: AdminHome.php");
         }
         elseif($user=="Faculty")
         {
-            header("location: FacultyDashboard.php");
+            header("location: FacultyHome.php");
         }
 
     }
@@ -74,7 +74,7 @@ if(isset($_POST['login']))
      <input type="checkbox" id="showPassword" onclick="togglePassword()">
      <small>Show Password</small><br><br>
      <button name="login">Login</button><br>
-     <a href="PasswordVerification.php">Forgot Password?</a>
+     <a href="EmailVerification.php">Forgot Password?</a>
     </fieldset>
     
     </form>

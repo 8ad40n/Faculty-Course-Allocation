@@ -9,7 +9,7 @@
     <nav>
         <ul>
             <h3>
-            <li><a href="FacultyDashboard.php">Home</a></li>
+            <li><a href="FacultyHome.php">Home</a></li>
             <li><a href="tsf_Faculty.php">TSF</a></li>
             <li><a href="facultyPriorityTime.php">Add Priority Time</a></li>
             <li><a href="AddPriorityCourse.php">Add Priority Courses</a></li>
