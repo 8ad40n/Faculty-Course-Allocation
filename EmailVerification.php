@@ -1,81 +1,73 @@
-<?php session_start(); ?>
 <?php
-
 include("dbConnect.php");
-use PHPMailer\PHPMailer\PHPMailer;
+include('smtp/PHPMailerAutoload.php');
+session_start(); 
 
-if (isset($_POST["register"])) {
-    $email = $_POST["email"];
+if(isset($_POST['send']))
+{
+    $otp=rand(100000,999999);
+    $receiverEmail=$_POST['email'];
+    $subject="Email Verification";
+    $emailbody="Your 6 Digit OTP Code: ";
 
-    $check_query = mysqli_query($connect, "SELECT * FROM faculty where Email = '$email'");
-    $rowCount = mysqli_num_rows($check_query);
+    $_SESSION['otp'] = $otp;
 
-    if (!empty($email)) {
-        if ($rowCount > 0) {
-            ?>
-            <script>
-                alert("User with email already exists!");
-            </script>
-            <?php
-        } else {
-            $password_hash = password_hash($password, PASSWORD_BCRYPT);
+    $sql= "select FacultyID from faculty where Email = '$receiverEmail' ";
+    $result=mysqli_query($conn,$sql);
+    $row=mysqli_fetch_array($result);
 
-            $result = mysqli_query($connect, "INSERT INTO login (email, password, status) VALUES ('$email', '$password_hash', 0)");
-            if ($result) {
-
-                $otp = rand(100000, 999999);
-                $_SESSION['otp'] = $otp;
-                $_SESSION['mail'] = $email;
-
-
-                
-                $mail = new PHPMailer(true);
-
-                // Configure the SMTP settings
-                $mail->isSMTP();
-                $mail->Host = 'smtp.gmail.com';
-                $mail->Port = 587;
-                $mail->SMTPAuth = true;
-                $mail->SMTPSecure = 'tls';
-                $mail->Username = 'your_email@gmail.com'; // Replace with your Gmail email
-                $mail->Password = 'your_password'; // Replace with your Gmail password
-
-                // Sender and recipient
-                $mail->setFrom('your_email@gmail.com', 'OTP Verification');
-                $mail->addAddress($_POST["email"]);
-
-                $mail->isHTML(true);
-                $mail->Subject = "Your verify code";
-                $mail->Body = "<p>Dear user, </p> <h3>Your verify OTP code is $otp <br></h3>";
-
-                if (!$mail->send()) {
-                    ?>
-                    <script>
-                        alert("<?php echo "Failed, Invalid Email " ?>");
-                    </script>
-                    <?php
-                } else {
-                    ?>
-                    <script>
-                        alert("<?php echo "Successfully, OTP sent to " . $email ?>");
-                    </script>
-                    <?php
-                }
-            }
-        }
+    if(mysqli_num_rows($result)== 1)
+    {
+        $_SESSION["facultyid"] = $row["FacultyID"];
+        smtp_mailer($receiverEmail,$subject,$emailbody.$otp);
     }
+    else
+    {
+        echo "Invalid Email! Please, Try Again.";
+    }
+
+
+    
+}
+
+
+function smtp_mailer($to,$subject, $msg){
+	$mail = new PHPMailer(); 
+	$mail->IsSMTP(); 
+	$mail->SMTPAuth = true; 
+	$mail->SMTPSecure = 'tls'; 
+	$mail->Host = "smtp.gmail.com";
+	$mail->Port = 587; 
+	$mail->IsHTML(true);
+	$mail->CharSet = 'UTF-8';
+	$mail->Username = "restaurentmanagement@gmail.com"; //write sender email address
+	$mail->Password = "gqebtkdusbtscblo"; //write app password of sender email
+	$mail->SetFrom("restaurentmanagement@gmail.com"); //write sender email address
+	$mail->Subject = $subject;
+	$mail->Body =$msg;
+	$mail->AddAddress($to);
+	$mail->SMTPOptions=array('ssl'=>array(
+		'verify_peer'=>false,
+		'verify_peer_name'=>false,
+		'allow_self_signed'=>false
+	));
+	if(!$mail->Send()){
+		echo $mail->ErrorInfo;
+	}else{
+        header('Location: EnterVerificationCode.php');
+	}
 }
 ?>
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Register Form</title>
+    <title>OTP Send</title>
 </head>
 <body>
-    <form action="post" method="POST"> <!-- Fixed the form method -->
+    <form method="POST"> 
         Email: <input type="email" name="email">
-        <input type="submit" value="Send Code" name="register">
+        <button name="send">Send OTP Code</button>
     </form>
 </body>
 </html>
