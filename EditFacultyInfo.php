@@ -3,6 +3,12 @@
 
 <head>
     <title>Edit Faculty</title>
+    <style>
+        img{
+            height: 80px;
+            width: 80px;
+        }
+    </style>
 </head>
 
 <body>
@@ -33,12 +39,13 @@
         $facultyName = $r["FacultyName"];
         $email = $r["Email"];
 
-        echo "<form method='post'>";
+        echo "<form method='post' enctype='multipart/form-data'>";
         echo "<br><br><br>";
-        echo "Faculty ID: <input type='text' name='facultyID' value='$FacultyID' readonly><br>";
-        echo "Faculty Name: <input type='text' name='facultyName' value='$facultyName'><br>";
-        echo "Email: <input type='email' name='email' value='$email'><br>";
-        
+        echo "Faculty ID: <br><input type='text' name='facultyID' value='$FacultyID' readonly><br>";
+        echo "Faculty Name:<br> <input type='text' name='facultyName' value='$facultyName'><br>";
+        echo "Email:<br> <input type='email' name='email' value='$email'><br>";
+        echo "<label for='picture'>Upload Your Picture:</label><br>";
+        echo "<input type='file' name='pic' accept='image/*'><br><br> ";
         echo '<button type="submit" name="EditSubmit" value="' . $FacultyID . '">Submit</button>';
         
 
@@ -48,7 +55,12 @@
         $facultyName = $_POST['facultyName']; 
         $email = $_POST['email'];
 
-        $Query = "UPDATE faculty SET FacultyName = '$facultyName', Email = '$email' WHERE FacultyID = '$FacultyID'";
+
+        $file_name = $_FILES["pic"]["name"];
+        $tempname = $_FILES["pic"]["tmp_name"];
+        $folder = 'Images/'.$file_name;
+
+        $Query = "UPDATE faculty SET FacultyName = '$facultyName', Email = '$email', Picture = '$file_name' WHERE FacultyID = '$FacultyID'";
         $a = mysqli_query($conn, $Query);
         if ($a) {
             echo $FacultyID . " has been Updated";
@@ -62,7 +74,8 @@
             <th>Faculty ID</th>
             <th>Faculty Name</th>
             <th>Email</th>
-            <th>Action</th>
+            <th>Image</th>
+            <th colspan= "2">Action</th>
         </tr>
         <?php
         $sql = "SELECT * FROM faculty;";
@@ -73,6 +86,9 @@
                 echo "<td>" . $r["FacultyID"] . "</td>";
                 echo "<td>" . $r["FacultyName"] . "</td>";
                 echo "<td>" . $r["Email"] . "</td>";
+                ?>
+                <td><img src="Images/<?php echo $r["Picture"] ?>"><br></td>
+                <?php
                 echo '<td>
                         <form method="post">
                             <button type="submit" name="edit" value="' . $r["FacultyID"] . '">Edit</button>

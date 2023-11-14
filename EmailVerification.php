@@ -25,9 +25,7 @@ if(isset($_POST['send']))
     {
         echo "Invalid Email! Please, Try Again.";
     }
-
-
-    
+   
 }
 
 

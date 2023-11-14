@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        img
+        {
+            height: 100px;
+            width: 100px;
+        }
+    </style>
 </head>
 <body>
 <?php
@@ -17,21 +24,25 @@ include("dbConnect.php");
 session_start();
 $id = $_SESSION['id'];
 
-$sql = "select * from faculty where FacultyID='$id'";
-$res= mysqli_query($conn,$sql);
+$sql = "SELECT * FROM faculty WHERE FacultyID='$id'";
+$res = mysqli_query($conn, $sql);
 $data = mysqli_fetch_assoc($res);
-    $name = $data['FacultyID'];
-    $email = $data['Email'];
-    
 
-    echo "<fieldset>
-    
-    <b>Name:</b>.$name.<br>
-    <b>ID:</b>.$id.<br>
-    <b>Email:</b>.$email.<br>"
+$name = $data['FacultyName']; // Fix the column name
+$email = $data['Email'];
+$image = $data['Picture'];
+
+echo "<fieldset>";
+?>
+<img src="Images/<?php echo $image ?>"><br>
+
+<?php
+echo "
+    <b>Name:</b>$name<br>
+    <b>ID:</b>$id<br>
+    <b>Email:</b>$email<br>";
 
 ?>
 </fieldset>
 </body>
 </html>
-

@@ -8,7 +8,12 @@ if (isset($_POST["btnAddFaculty"])) {
     $email = $_POST["mail"];
     $password = $_POST["pass"];
 
-    if (empty($facultyID) || empty($name) || empty($email) || empty($password)) {
+    $file_name = $_FILES["pic"]["name"];
+    $tempname = $_FILES["pic"]["tmp_name"];
+    $folder = 'Images/'.$file_name;
+
+
+    if (empty($facultyID) || empty($name) || empty($email) || empty($password) || empty($file_name)) {
         echo "Please fill in all the fields.";
     } else {
         // Check if the faculty ID already exists
@@ -17,8 +22,8 @@ if (isset($_POST["btnAddFaculty"])) {
 
         if (mysqli_num_rows($verifyResult) == 0) {
             // Insert faculty information
-            $addFacultyQuery = "INSERT INTO faculty (FacultyID, FacultyName, Email)
-            VALUES ('$facultyID', '$name', '$email')";
+            $addFacultyQuery = "INSERT INTO faculty (FacultyID, FacultyName, Email, Picture)
+            VALUES ('$facultyID', '$name', '$email', '$file_name')";
             $addFacultyResult = mysqli_query($conn, $addFacultyQuery);
 
             $addFacultyPassQuery = "INSERT INTO userinfo (ID, Password, Type)
@@ -27,9 +32,7 @@ if (isset($_POST["btnAddFaculty"])) {
 
             if ($addFacultyResult && $addFacultyPassResult) {
                 echo "Faculty added successfully.";
-            } else {
-                echo "Error adding faculty.";
-            }
+            } 
         } else {
             echo "Faculty ID already exists.";
         }
@@ -46,7 +49,7 @@ if (isset($_POST["btnAddFaculty"])) {
 <body>
     <fieldset>
         <legend><h1>Add Faculty:</h1></legend>
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <script>
                 function togglePassword() {
                     var passwordInput = document.getElementById("pass");
@@ -64,6 +67,8 @@ if (isset($_POST["btnAddFaculty"])) {
             Password:<br><input type="password" name="pass" id="pass"><br>
             <input type="checkbox" id="showPassword" onclick="togglePassword()">
             <label for="showPassword">Show Password</label><br><br>
+            <label for="picture">Upload Your Picture:</label><br>
+            <input type="file" name="pic" accept="image/*"><br><br>      
             <button type="submit" name="btnAddFaculty">Add</button>
         </form>
     </fieldset>
