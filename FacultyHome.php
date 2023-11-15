@@ -13,6 +13,7 @@
     </style>
 </head>
 <body>
+<form method="post">
 <?php
 include("FacultyDashboard.php");
 ?>
@@ -44,5 +45,27 @@ echo "
 
 ?>
 </fieldset>
+<br><br>
+<button name="logout">Logout</button>
+</form>
 </body>
 </html>
+
+
+<?php
+include("dbConnect.php");
+
+if(!isset($_SESSION['id'])) 
+{
+		header('location: login.php');
+}
+else{
+	if(isset($_POST['logout']))
+    {
+	session_destroy();
+	header('location: login.php');
+
+    }
+}
+
+?>

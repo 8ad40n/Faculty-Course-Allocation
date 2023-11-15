@@ -1,0 +1,71 @@
+h1{
+  
+    color: rgb(0, 0, 0);
+    font-family :'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    padding: 1px;
+    text-align: center;
+}
+fieldset{
+    border: 1px solid rgb(0, 0, 0);
+    width: 80%;
+    max-width: auto;
+    margin: auto;
+    position: absolute;
+    padding: 30px;
+    border: 1px solid #dddddd;
+    background-color: #ffffff;
+ 
+    
+}
+
+label{
+
+    color: #232120;
+    font-weight: bold;
+    display: block;
+    width: 150px;
+    float: left;
+    font-family :'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+}
+
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #181717;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #497FAF;
+    color: white;
+    padding: 10px 20px;
+    margin: 1px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    font-family : Comic Sans MS, Comic Sans, cursive ;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: #efefef;
+}
+form{
+    height: 520px;
+    width: 400px;
+    background-color: rgba(255,255,255,0.13);
+    position: absolute;
+    transform: translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.1);
+   
+    padding: 50px 35px;
+}

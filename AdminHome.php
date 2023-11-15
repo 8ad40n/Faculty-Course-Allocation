@@ -12,12 +12,14 @@
             width: 100px;
         }
     </style>
+    <link rel="stylesheet" href="CSS/AdminDashboard.css">
 
 </head>
 <body>
 <?php
 include("AdminDashboard.php");
 ?>
+<form method="post">
 <fieldset>
 <legend><h1>Welcome</h1></legend>
 <?php
@@ -43,9 +45,31 @@ $data = mysqli_fetch_assoc($res);
     <b>Name:</b>$name<br>
     <b>ID:</b>$id<br>
     <b>Email:</b>$email<br>"
+    
 
 ?>
 </fieldset>
+<br><br>
+<button name="logout">Logout</button>
+</form>
 </body>
 </html>
+
+<?php
+include("dbConnect.php");
+
+if(!isset($_SESSION['id'])) 
+{
+		header('location: login.php');
+}
+else{
+	if(isset($_POST['logout']))
+    {
+	session_destroy();
+	header('location: login.php');
+
+    }
+}
+
+?>
 

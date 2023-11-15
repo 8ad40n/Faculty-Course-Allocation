@@ -77,6 +77,7 @@ if (isset($_POST['del'])) {
                 <th>Day</th>
                 <th>Start Time</th>
                 <th>End Time</th>
+                <th colspan="2">Operations</th>
                 <!-- <th>Credit</th> -->
             </tr>
 

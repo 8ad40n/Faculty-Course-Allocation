@@ -45,32 +45,44 @@ if (isset($_POST["btnAddFaculty"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Faculty</title>
+    <link rel="stylesheet" href="CSS/AddFaculty.css">
 </head>
 <body>
-    <fieldset>
-        <legend><h1>Add Faculty:</h1></legend>
-        <form method="post" enctype="multipart/form-data">
-            <script>
-                function togglePassword() {
-                    var passwordInput = document.getElementById("pass");
-                    if (passwordInput.type == "password") {
-                        passwordInput.type = "text";
-                    } else {
-                        passwordInput.type = "password";
-                    }
-                }
-            </script>
 
-            Faculty ID:<br><input type="text" name="facultyId"><br><br>
-            Faculty Name:<br><input type="text" name="name"><br><br>
-            Email:<br><input type="email" name="mail"><br><br>
-            Password:<br><input type="password" name="pass" id="pass"><br>
-            <input type="checkbox" id="showPassword" onclick="togglePassword()">
-            <label for="showPassword">Show Password</label><br><br>
-            <label for="picture">Upload Your Picture:</label><br>
-            <input type="file" name="pic" accept="image/*"><br><br>      
-            <button type="submit" name="btnAddFaculty">Add</button>
-        </form>
-    </fieldset>
+    <div class="container">
+        <div class="login">
+            
+            <div class="content">
+                <img src="Images/AddFacutly.jpg" alt="Faculty Image">
+            </div>
+
+            <div class="loginform">
+                <h1>Add Faculty</h1>
+                <br>
+                <form method="post" enctype="multipart/form-data">
+                    <script>
+                        function togglePassword() {
+                            var passwordInput = document.getElementById("pass");
+                            if (passwordInput.type == "password") {
+                                passwordInput.type = "text";
+                            } else {
+                                passwordInput.type = "password";
+                            }
+                        }
+                    </script>
+                    <label><b> Faculty ID:<br><input type="text" name="facultyId"></b></label><br> 
+                    <label><b>Faculty Name:<br><input type="text" name="name"></b></label><br>
+                    <label><b>Email:<br><input type="email" name="mail"></b></label><br>
+                    <label><b>Password:<br><input type="password" name="pass" id="pass"></b></label><br>
+                    <input type="checkbox" id="showPassword" onclick="togglePassword()">
+                    <label for="showPassword">Show Password</label><br>
+                    <label for="picture">Upload Your Picture:</label>
+                    <input type="file" name="pic" accept="image/*"><br>  
+                    <button type="submit" name="btnAddFaculty">Add</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
 </body>
 </html>

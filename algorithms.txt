@@ -13,9 +13,10 @@ Faculty:
 	2. Id
 	3. Email
 	4. priorityCourses
-	5. AssignCourseSec
+	5. prioritytime
 	6. Password
 	7. Type
+	8. Picture
 
 Admin: 
 	1. Name
@@ -23,6 +24,7 @@ Admin:
 	3. Email
 	4. Password
 	5. Type
+	6. Picture
 
 
 3NF:
@@ -48,6 +50,7 @@ Table 4: faculty
 • FacultyID 
 • FacultyName
 • Email
+• Picture
 
 Table 5: prioritycourses
 • FacultyID 
@@ -63,6 +66,7 @@ Table 7: admin
 • AdminID (Primary Key)
 • AdminName
 • Email
+• Picture
 
 Table 8: userinfo
 • ID

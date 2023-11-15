@@ -14,7 +14,7 @@
             <li><a href="facultyPriorityTime.php">Add Priority Time</a></li>
             <li><a href="AddPriorityCourse.php">Add Priority Courses</a></li>
             <li><a href="changePasswordF.php">Change Password</a></li>
-            <li><a href="login.php">Logout</a></li>
+            <!-- <li><a href="login.php">Logout</a></li> -->
             </h3>
         </ul>
     </nav>

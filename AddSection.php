@@ -70,48 +70,71 @@ if (isset($_POST['btnAdd'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="CSS/AddSection.css">
 </head>
+
 <body>
     <fieldset>
-        <legend><h1>Add Section:</h1></legend>
+    <div class="container">
+            <div class="login">
+                <div class="content">
+                    <img src="Images/addSection.gif" alt="">
+                </div>
+                
 
-        <form action="" method="POST">
-        
-        Section ID:<br> <input type="text" name="SectionID"><br><br>
-        Course ID: <br><input type="text" name="CourseID"><br><br>
-        Section:<br> <input type="text" name="Section"><br><br>
-        <hr>
-        First Day:
-        <select name="Day1">
-            <option value="Sunday">Sunday</option>
-            <option value="Monday">Monday</option>
-            <option value="Tuesday">Tuesday</option>
-            <option value="Wednesday">Wednesday</option>
-            <option value="Thursday">Thursday</option>
-        </select><br><br>
-        Start Time:<br> <input type="text" name="StartTime1"><br><br>
-        End Time: <br><input type="text" name="EndTime1"><br>
-        <small>Time Format: (hh:mm:ss)</small><br><br>
-        <hr>
-        Second Day:
-        <select name="Day2">
-            <option value="Sunday">Sunday</option>
-            <option value="Monday">Monday</option>
-            <option value="Tuesday">Tuesday</option>
-            <option value="Wednesday">Wednesday</option>
-            <option value="Thursday">Thursday</option>
-        </select><br><br>
-        Start Time:<br> <input type="text" name="StartTime2"><br><br>
-        End Time: <br><input type="text" name="EndTime2"><br>
-        <small>Time Format: (hh:mm:ss)</small><br><br>
-        <hr>
+                <div class="loginform">
+                    <form action="" method="POST">
+                        <center><h1>Add Section</h1></center><br>
+                        <label for="secID">Section ID:</label>
+                        <br> <input type="text" name="SectionID"><br><br>
+                        <label for="courseID">Course ID:</label>
+                        <br><input type="text" name="CourseID"><br><br>
+                        <label for="sec">Section:</label>
+                        <br> <input type="text" name="Section"><br><br>
+                        <hr>
+                        <label for="firstDay">First Day:</label><br>
+                        <select name="Day1">
+                            <option value="Sunday">Sunday</option>
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                        </select><br><br>
+                        <label for="startDay">Start Time:</label>
+                        <br> <input type="text" name="StartTime1"><br><br>
+                        <label for="endDay">End Time:</label>
+                        <br><input type="text" name="EndTime1"><br>
+                        <small>Time Format: (hh:mm:ss)</small><br><br>
+                        <hr>
+                        <label for="secondDay">Second Day:</label><br>
+                        <select name="Day2">
+                            <option value="Sunday">Sunday</option>
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                        </select><br><br>
+                        <label for="startDay">Start Time:</label>
+                        <br> <input type="text" name="StartTime2"><br><br>
+                        <label for="endDay">End Time:</label>
+                        <br><input type="text" name="EndTime2"><br>
+                        <small>Time Format: (hh:mm:ss)</small><br><br>
+                        <hr>
 
-        <button name="btnAdd">Add</button>
-    </form>
+                        <button name="btnAdd">Add</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
     </fieldset>
 </body>
+
 </html>
+
+

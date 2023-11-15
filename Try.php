@@ -91,50 +91,36 @@ if (isset($_POST['btnGenerate'])) {
             }
         }
 
-        $checkAvailableSectionsQuery = "SELECT SectionID, Day, startTime, endTime, CourseID FROM section WHERE FacultyID IS NULL";
-        $sectionAvailabilityResult = mysqli_query($conn, $checkAvailableSectionsQuery);
+        // Second loop
+        $facultyQuery1 = "SELECT FacultyID, FacultyName FROM faculty";
+        $facultyResult1 = mysqli_query($conn, $facultyQuery1);
 
-        while ($section = mysqli_fetch_assoc($sectionAvailabilityResult)) {
-            $sectionID = $section['SectionID'];
-            $day = $section['Day'];
-            $startTime = $section['startTime'];
-            $endTime = $section['endTime'];
-            $courseID = $section['CourseID'];
-
-            // Create an array to track assigned faculty
-            $assignedFaculty = [];
-
-            // Keep track of whether this section was assigned
-            $sectionAssigned = false;
-
-            foreach ($facultyList as $faculty) {
+        if ($facultyResult1) {
+            while ($faculty = mysqli_fetch_assoc($facultyResult1)) {
                 $facultyID = $faculty['FacultyID'];
                 $totalHours = getFacultyTotalHours($conn, $facultyID);
 
-                if (!hasCourseClashes($conn, $facultyID, $startTime, $endTime) && $totalHours + ($endTime - $startTime) / 3600 <= 16) {
-                    // Assign this section to the faculty
-                    $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
-                    mysqli_query($conn, $assignSectionQuery);
+                if (is_numeric($totalHours) && $totalHours <= 16) {
+                    // Iterate through available sections again
+                    $checkAvailableSectionsQuery = "SELECT SectionID, Day, startTime, endTime, CourseID FROM section WHERE FacultyID IS NULL";
+                    $sectionAvailabilityResult = mysqli_query($conn, $checkAvailableSectionsQuery);
 
-                    // Mark the section as assigned
-                    $sectionAssigned = true;
+                    while ($section = mysqli_fetch_assoc($sectionAvailabilityResult)) {
+                        $sectionID = $section['SectionID'];
+                        $day = $section['Day'];
+                        $startTime = $section['startTime'];
+                        $endTime = $section['endTime'];
+                        $courseID = $section['CourseID'];
 
-                    // Update the total hours for the faculty
-                    $totalHours += ($endTime - $startTime) / 3600;
-                    break; // Assigned, exit the loop
+                        if (!hasCourseClashes($conn, $facultyID, $startTime, $endTime)) {
+                            $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
+                            mysqli_query($conn, $assignSectionQuery);
+                        }
+                    }
                 }
             }
-
-            if (!$sectionAssigned) {
-                // Handle the case where no faculty can be assigned to this section
-            }
         }
-
     }
-        
-
-
-    
 }
 ?>
 

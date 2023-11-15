@@ -132,6 +132,8 @@ if (isset($_POST['btnGenerate'])) {
 
 <head>
     <title>Course Assignment</title>
+    <link rel="stylesheet" href="CSS/AdminDashBoard.css">
+
 </head>
 
 
@@ -195,6 +197,7 @@ include('dbConnect.php');
                 <th>Start Time</th>
                 <th>End Time</th>
                 <th>Faculty Name</th>
+                <th colspan="2">Operations</th>
             </tr>';
 
         $sql = "SELECT
@@ -228,7 +231,7 @@ include('dbConnect.php');
                 echo "<td>" . $row["endTime"] . "</td>";
                 echo "<td>" . $row["FacultyName"] . "</td>";
                 echo '<td><button type="submit" name="edit" value="' . $row["SectionID"] . '">Edit</button></td>'; 
-                echo '<td><button type="submit" name="del" value="' . $row["SectionID"] . '">Cancel</button></td>'; 
+                echo '<td><button type="submit" name="del" value="' . $row["SectionID"] . '">Remove</button></td>'; 
 
                 
             }
