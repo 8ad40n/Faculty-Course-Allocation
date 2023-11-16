@@ -185,6 +185,9 @@ include('dbConnect.php');
         } else {
             echo "Error fetching faculty data.";
         }
+        echo "
+        <br><br>
+        <button name='btnClear'>Clear All</button>";
 
         echo "<h1>Data:</h1>";
         echo '<table border="1">
@@ -342,6 +345,11 @@ include('dbConnect.php');
                 echo $sectionID . " has been updated.";
             }
         }
+    }
+    elseif(isset($_POST["btnClear"]))
+    {
+        $resetAssignmentsQuery = "UPDATE section SET FacultyID = NULL";
+        mysqli_query($conn, $resetAssignmentsQuery);
     }
     
     

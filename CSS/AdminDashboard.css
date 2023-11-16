@@ -118,6 +118,7 @@ button[name="del"] {
   cursor: pointer;
 }
 
+
 button[name="del"]:hover {
   background-color: #d32f2f; 
   transform: scale(1.1);
@@ -152,7 +153,6 @@ th {
   color: white;
   font-size: 22px;
 }
-/*Stylling For Add Faculty*/
 
 button[name="logout"] {
   padding: 8px 16px;
@@ -164,3 +164,5 @@ button[name="logout"] {
   margin-left: 3px ;
   cursor: pointer;
 }
+
+

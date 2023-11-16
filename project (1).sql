@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 07, 2023 at 04:38 PM
+-- Generation Time: Nov 16, 2023 at 01:25 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -30,15 +30,16 @@ SET time_zone = "+00:00";
 CREATE TABLE `admin` (
   `AdminID` varchar(10) NOT NULL,
   `AdminName` varchar(15) NOT NULL,
-  `Email` varchar(30) NOT NULL
+  `Email` varchar(30) NOT NULL,
+  `Picture` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `admin`
 --
 
-INSERT INTO `admin` (`AdminID`, `AdminName`, `Email`) VALUES
-('21-45390-3', 'Badhon Nath Joy', 'bnathjoy@gmail.com');
+INSERT INTO `admin` (`AdminID`, `AdminName`, `Email`, `Picture`) VALUES
+('21-45390-3', 'Badhon Nath Joy', 'bnathjoy@gmail.com', 'joy.jpg');
 
 -- --------------------------------------------------------
 
@@ -98,18 +99,20 @@ INSERT INTO `department` (`DepartmentName`) VALUES
 CREATE TABLE `faculty` (
   `FacultyID` varchar(10) NOT NULL,
   `FacultyName` varchar(30) NOT NULL,
-  `Email` varchar(30) NOT NULL
+  `Email` varchar(30) NOT NULL,
+  `Picture` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `faculty`
 --
 
-INSERT INTO `faculty` (`FacultyID`, `FacultyName`, `Email`) VALUES
-('Akib1234', 'Akib Shahriar ', 'mls@gmail.com'),
-('logno1234', 'Hasin Anjum Logno', 'hal@gmail.com'),
-('Maria123', 'Maria Nawar', 'mn@gmail.com'),
-('subrina123', 'Subrina Islam Prity', 'sip@gmail.com');
+INSERT INTO `faculty` (`FacultyID`, `FacultyName`, `Email`, `Picture`) VALUES
+('21-45388-3', 'Sakib Hossain', 'shsakibhossain21@gmail.com', 'sakib.jpg'),
+('Akib1234', 'Akib Shahriar', 'akibshahrier0228@gmail.com', 'akib.jpg'),
+('logno1234', 'Hasin Anjum Logno', 'hasin.anjum19@gmail.com', 'logno.jpg'),
+('Maria123', 'Maria Nawar', 'mariannuha@gmail.com', 'maria.jpg'),
+('tanji123', 'Tanji Evan', 'tanji.evan23@gmail.com', 'tanji.jpg');
 
 -- --------------------------------------------------------
 
@@ -127,9 +130,12 @@ CREATE TABLE `prioritycourses` (
 --
 
 INSERT INTO `prioritycourses` (`FacultyID`, `CourseID`) VALUES
-('Akib1234', 'CSC2106'),
 ('logno1234', 'CSC3112'),
-('Maria123', 'CSC2211');
+('Maria123', 'CSC2211'),
+('Akib1234', 'CSC2106'),
+('Akib1234', 'CSC3215'),
+('Akib1234', 'CSC1101'),
+('Akib1234', 'CSC1103');
 
 -- --------------------------------------------------------
 
@@ -151,7 +157,7 @@ CREATE TABLE `prioritytime` (
 INSERT INTO `prioritytime` (`FacultyID`, `Day`, `startTime`, `endTime`) VALUES
 ('Maria123', 'Sunday', '08:00:00', '14:00:00'),
 ('logno1234', 'Wednesday', '09:30:00', '17:00:00'),
-('Akib1234', 'Thursday', '08:00:00', '17:00:00');
+('Akib1234', 'Sunday', '08:00:00', '17:00:00');
 
 -- --------------------------------------------------------
 
@@ -174,43 +180,37 @@ CREATE TABLE `section` (
 --
 
 INSERT INTO `section` (`SectionID`, `CourseID`, `Sec`, `Day`, `startTime`, `endTime`, `FacultyID`) VALUES
-('oop1A', 'CSC1205', 'A', 'Sunday', '08:00:00', '11:00:00', NULL),
-('oop1A', 'CSC1205', 'A', 'Tuesday', '08:00:00', '10:00:00', NULL),
-('oop2A', 'CSC2210', 'A', 'Monday', '11:00:00', '14:00:00', NULL),
-('oop2A', 'CSC2210', 'A', 'Wednesday', '12:00:00', '14:00:00', NULL),
-('wtA', 'CSC3215', 'A', 'Monday', '11:00:00', '14:00:00', NULL),
-('wtA', 'CSC3215', 'A', 'Wednesday', '12:00:00', '14:00:00', NULL),
+('oop1A', 'CSC1205', 'A', 'Sunday', '08:00:00', '11:00:00', '21-45388-3'),
+('oop1A', 'CSC1205', 'A', 'Tuesday', '08:00:00', '10:00:00', '21-45388-3'),
+('oop2A', 'CSC2210', 'A', 'Monday', '11:00:00', '14:00:00', '21-45388-3'),
+('oop2A', 'CSC2210', 'A', 'Wednesday', '12:00:00', '14:00:00', '21-45388-3'),
+('wtA', 'CSC3215', 'A', 'Monday', '11:00:00', '14:00:00', 'Maria123'),
+('wtA', 'CSC3215', 'A', 'Wednesday', '12:00:00', '14:00:00', 'Maria123'),
 ('algoC', 'CSC2211', 'C', 'Sunday', '08:00:00', '11:00:00', 'Maria123'),
 ('algoC', 'CSC2211', 'C', 'Tuesday', '08:00:00', '10:00:00', 'Maria123'),
-('ipF', 'CSC1103', 'F', 'Monday', '14:00:00', '15:30:00', NULL),
-('ipF', 'CSC1103', 'F', 'Wednesday', '14:00:00', '15:30:00', NULL),
+('ipF', 'CSC1103', 'F', 'Monday', '14:00:00', '15:30:00', '21-45388-3'),
+('ipF', 'CSC1103', 'F', 'Wednesday', '14:00:00', '15:30:00', '21-45388-3'),
 ('dsE', 'CSC2106', 'E', 'Sunday', '11:00:00', '12:30:00', 'Akib1234'),
 ('dsE', 'CSC2106', 'E', 'Tuesday', '11:00:00', '12:30:00', 'Akib1234'),
 ('dsG', 'CSC2106', 'G', 'Monday', '08:00:00', '09:30:00', 'Akib1234'),
 ('dsG', 'CSC2106', 'G', 'Wednesday', '08:00:00', '09:30:00', 'Akib1234'),
-('cgH', 'CSC4118', 'H', 'Sunday', '14:00:00', '16:00:00', NULL),
-('cgH', 'CSC4118', 'H', 'Tuesday', '14:00:00', '17:00:00', NULL),
-('cgB', 'CSC4118', 'B', 'Monday', '08:00:00', '11:00:00', NULL),
-('cgB', 'CSC4118', 'B', 'Wednesday', '08:00:00', '10:00:00', NULL),
-('icsC', 'CSC1101', 'C', 'Monday', '08:00:00', '11:00:00', NULL),
-('icsF', 'CSC1101', 'F', 'Tuesday', '14:00:00', '17:00:00', NULL),
-('dmH', 'CSC1204', 'H', 'Monday', '11:00:00', '12:30:00', NULL),
-('dmH', 'CSC1204', 'H', 'Wednesday', '11:00:00', '12:30:00', NULL),
-('dmA', 'CSC1204', 'A', 'Monday', '08:00:00', '09:30:00', NULL),
-('dmA', 'CSC1204', 'A', 'Wednesday', '08:00:00', '09:30:00', NULL),
-('sweB', 'CSC3112', 'B', 'Sunday', '08:00:00', '10:00:00', 'logno1234'),
-('sweB', 'CSC3112', 'B', 'Tuesday', '08:00:00', '11:00:00', 'logno1234'),
-('cadC', 'BAE2101', 'C', 'Wednesday', '08:00:00', '11:00:00', NULL),
-('cadD', 'BAE2101', 'D', 'Tuesday', '14:00:00', '17:00:00', NULL),
+('cgH', 'CSC4118', 'H', 'Sunday', '14:00:00', '16:00:00', 'logno1234'),
+('cgH', 'CSC4118', 'H', 'Tuesday', '14:00:00', '17:00:00', 'logno1234'),
+('cgB', 'CSC4118', 'B', 'Monday', '08:00:00', '11:00:00', 'logno1234'),
+('cgB', 'CSC4118', 'B', 'Wednesday', '08:00:00', '10:00:00', 'logno1234'),
+('icsF', 'CSC1101', 'F', 'Tuesday', '14:00:00', '17:00:00', 'Maria123'),
+('dmH', 'CSC1204', 'H', 'Monday', '11:00:00', '12:30:00', 'logno1234'),
+('dmH', 'CSC1204', 'H', 'Wednesday', '11:00:00', '12:30:00', 'logno1234'),
+('cadD', 'BAE2101', 'D', 'Tuesday', '14:00:00', '17:00:00', 'tanji123'),
 ('sweD', 'CSC3112', 'D', 'Monday', '12:30:00', '14:00:00', 'logno1234'),
 ('sweD', 'CSC3112', 'D', 'Wednesday', '12:30:00', '14:00:00', 'logno1234'),
-('phy2H', 'PHY1203', 'H', 'Sunday', '12:30:00', '14:00:00', NULL),
-('phy2H', 'PHY1203', 'H', 'Tuesday', '12:30:00', '14:00:00', NULL),
-('eng2A', 'ENG1202', 'A', 'Sunday', '11:00:00', '12:30:00', NULL),
-('eng2A', 'ENG1202', 'A', 'Tuesday', '11:00:00', '12:30:00', NULL),
-('icsA', 'CSC1101', 'A', 'Thursday', '08:00:00', '11:00:00', NULL),
-('algoA', 'CSC2211', 'A', 'Sunday', '08:00:00', '10:00:00', NULL),
-('algoA', 'CSC2211', 'A', 'Tuesday', '08:00:00', '11:00:00', NULL);
+('phy2H', 'PHY1203', 'H', 'Sunday', '12:30:00', '14:00:00', 'Akib1234'),
+('phy2H', 'PHY1203', 'H', 'Tuesday', '12:30:00', '14:00:00', 'Akib1234'),
+('icsA', 'CSC1101', 'A', 'Thursday', '08:00:00', '11:00:00', 'tanji123'),
+('cadH', 'BAE2101', 'H', 'Thursday', '11:00:00', '14:00:00', 'tanji123'),
+('wtE', 'CSC3215', 'E', 'Sunday', '14:00:00', '17:00:00', 'Akib1234'),
+('wtE', 'CSC3215', 'E', 'Tuesday', '14:00:00', '16:00:00', 'Akib1234'),
+('cadG', 'BAE2101', 'G', 'Thursday', '08:00:00', '11:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -229,10 +229,13 @@ CREATE TABLE `userinfo` (
 --
 
 INSERT INTO `userinfo` (`ID`, `Password`, `Type`) VALUES
-('Akib1234', '1234', 'Faculty'),
+('21-45388-3', '123', 'Faculty'),
+('21-45390-3', '123', 'Admin'),
+('Akib1234', '12345', 'Faculty'),
 ('logno1234', '123', 'Faculty'),
 ('Maria123', '123', 'Faculty'),
-('subrina123', '123', 'Faculty');
+('rr', '332', 'Faculty'),
+('tanji123', '123', 'Faculty');
 
 --
 -- Indexes for dumped tables

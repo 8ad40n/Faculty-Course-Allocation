@@ -59,64 +59,110 @@ if (isset($_POST['btnGenerate'])) {
     if ($facultyResult) {
         while ($faculty = mysqli_fetch_assoc($facultyResult)) {
             $facultyID = $faculty['FacultyID'];
-            $totalHours = getFacultyTotalHours($conn, $facultyID);
 
-            if (is_numeric($totalHours) && $totalHours <= 16) {
-                // Iterate through available sections
-                $checkAvailableSectionsQuery = "SELECT SectionID, Day, startTime, endTime, CourseID FROM section WHERE FacultyID IS NULL";
-                $sectionAvailabilityResult = mysqli_query($conn, $checkAvailableSectionsQuery);
+            // Check the available courses where FacultyID is null in the section table
+            $availableCoursesQuery = "SELECT * FROM section WHERE FacultyID IS NULL";
+            $availableCoursesResult = mysqli_query($conn, $availableCoursesQuery);
 
-                while ($section = mysqli_fetch_assoc($sectionAvailabilityResult)) {
-                    $sectionID = $section['SectionID'];
-                    $day = $section['Day'];
-                    $startTime = $section['startTime'];
-                    $endTime = $section['endTime'];
-                    $courseID = $section['CourseID'];
+            if ($availableCoursesResult && mysqli_num_rows($availableCoursesResult) > 0) {
+                while ($course = mysqli_fetch_assoc($availableCoursesResult)) {
+                    $sectionID = $course['SectionID'];
+                    $courseID = $course['CourseID'];
+                    $day = $course['Day'];
+                    $startTime = $course['startTime'];
+                    $endTime = $course['endTime'];
 
-                    // First, try the most specific rule
-                    if ((isPriorityTimeAvailable($conn, $facultyID, $day, $startTime, $endTime)
-                        && hasPriorityCourse($conn, $facultyID, $courseID))
-                        && !hasCourseClashes($conn, $facultyID, $startTime, $endTime)) {
-                        // Assign this section to the faculty
-                        $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
-                        mysqli_query($conn, $assignSectionQuery);
-                    }
-                    elseif( hasPriorityCourse($conn, $facultyID, $courseID)
-                    && !hasCourseClashes($conn, $facultyID, $startTime, $endTime))
-                    {
-                        $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
-                        mysqli_query($conn, $assignSectionQuery);
+                    // Check the priority time of the faculty
+                    if (isPriorityTimeAvailable($conn, $facultyID, $day, $startTime, $endTime)) {
+                        // Check the priority course of the faculty
+                        if (hasPriorityCourse($conn, $facultyID, $courseID)) {
+                            // Check if the faculty is assigned to the course
+                            if (!hasCourseClashes($conn, $facultyID, $startTime, $endTime)) {
+                                // Check if the total hours per week for the faculty will be <= 16
+                                $totalHours = getFacultyTotalHours($conn, $facultyID);
+                                if ($totalHours <= 16) {
+                                    // Assign this section to the faculty
+                                    $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
+                                    mysqli_query($conn, $assignSectionQuery);
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
+    }
 
-        // Second loop
-        $facultyQuery1 = "SELECT FacultyID, FacultyName FROM faculty";
-        $facultyResult1 = mysqli_query($conn, $facultyQuery1);
+    $facultyQuery1 = "SELECT FacultyID, FacultyName FROM faculty";
+    $facultyResult1 = mysqli_query($conn, $facultyQuery1);
 
-        if ($facultyResult1) {
-            while ($faculty = mysqli_fetch_assoc($facultyResult1)) {
-                $facultyID = $faculty['FacultyID'];
-                $totalHours = getFacultyTotalHours($conn, $facultyID);
+    if ($facultyResult1) {
+        while ($faculty = mysqli_fetch_assoc($facultyResult1)) {
+            $facultyID = $faculty['FacultyID'];
 
-                if (is_numeric($totalHours) && $totalHours <= 16) {
-                    // Iterate through available sections again
-                    $checkAvailableSectionsQuery = "SELECT SectionID, Day, startTime, endTime, CourseID FROM section WHERE FacultyID IS NULL";
-                    $sectionAvailabilityResult = mysqli_query($conn, $checkAvailableSectionsQuery);
+            // Check the available courses where FacultyID is null in the section table
+            $availableCoursesQuery = "SELECT * FROM section WHERE FacultyID IS NULL";
+            $availableCoursesResult = mysqli_query($conn, $availableCoursesQuery);
 
-                    while ($section = mysqli_fetch_assoc($sectionAvailabilityResult)) {
-                        $sectionID = $section['SectionID'];
-                        $day = $section['Day'];
-                        $startTime = $section['startTime'];
-                        $endTime = $section['endTime'];
-                        $courseID = $section['CourseID'];
+            if ($availableCoursesResult && mysqli_num_rows($availableCoursesResult) > 0) {
+                while ($course = mysqli_fetch_assoc($availableCoursesResult)) {
+                    $sectionID = $course['SectionID'];
+                    $courseID = $course['CourseID'];
+                    $day = $course['Day'];
+                    $startTime = $course['startTime'];
+                    $endTime = $course['endTime'];
 
+                    
+                    // Check the priority course of the faculty
+                    if (hasPriorityCourse($conn, $facultyID, $courseID)) {
+                        // Check if the faculty is assigned to the course
                         if (!hasCourseClashes($conn, $facultyID, $startTime, $endTime)) {
+                            // Check if the total hours per week for the faculty will be <= 16
+                            $totalHours = getFacultyTotalHours($conn, $facultyID);
+                            if ($totalHours <= 16) {
+                                // Assign this section to the faculty
+                                $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
+                                mysqli_query($conn, $assignSectionQuery);
+                            }
+                        }
+                    }
+                
+                }
+            }
+        }
+    }
+
+    $facultyQuery2 = "SELECT FacultyID, FacultyName FROM faculty";
+    $facultyResult2 = mysqli_query($conn, $facultyQuery2);
+
+    if ($facultyResult2) {
+        while ($faculty = mysqli_fetch_assoc($facultyResult2)) {
+            $facultyID = $faculty['FacultyID'];
+
+            // Check the available courses where FacultyID is null in the section table
+            $availableCoursesQuery = "SELECT * FROM section WHERE FacultyID IS NULL";
+            $availableCoursesResult = mysqli_query($conn, $availableCoursesQuery);
+
+            if ($availableCoursesResult && mysqli_num_rows($availableCoursesResult) > 0) {
+                while ($course = mysqli_fetch_assoc($availableCoursesResult)) {
+                    $sectionID = $course['SectionID'];
+                    $courseID = $course['CourseID'];
+                    $day = $course['Day'];
+                    $startTime = $course['startTime'];
+                    $endTime = $course['endTime'];
+
+                    // Check if the faculty is assigned to the course
+                    if (!hasCourseClashes($conn, $facultyID, $startTime, $endTime)) {
+                        // Check if the total hours per week for the faculty will be <= 16
+                        $totalHours = getFacultyTotalHours($conn, $facultyID);
+                        if ($totalHours <= 16) {
+                            // Assign this section to the faculty
                             $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
                             mysqli_query($conn, $assignSectionQuery);
                         }
                     }
+                    
+                
                 }
             }
         }
@@ -195,6 +241,7 @@ include('dbConnect.php');
                 <th>Start Time</th>
                 <th>End Time</th>
                 <th>Faculty Name</th>
+                <th colspan="2">Operations</th>
             </tr>';
 
         $sql = "SELECT
