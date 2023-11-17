@@ -55,12 +55,12 @@ function hasCourseClashes($conn, $facultyID, $startTime, $endTime,$day) {
 
     return (mysqli_num_rows($clashResult) > 0);
 }
+
 if(isset($_POST["btnClear"]))
 {
     $resetAssignmentsQuery = "UPDATE section SET FacultyID = NULL";
     mysqli_query($conn, $resetAssignmentsQuery);
 }
-    
 
 if (isset($_POST['btnGenerate'])) {
 
@@ -225,6 +225,67 @@ if (isset($_POST['btnGenerate'])) {
         }
     }
 }
+
+elseif (isset($_POST["search"])) {
+    $facultyName = $_POST["search"];
+
+    echo "<center><h2>Data for Faculty Name:</h2> $facultyName </center>";
+
+    echo '<table border="1">
+        <tr>
+            <th>Day</th>
+            <th>8AM-9:30AM</th>
+            <th>8AM-10AM</th>
+            <th>8AM-11AM</th>
+            <th>9:30AM-11AM</th>
+            <th>10AM-12PM</th>
+            <th>11AM-12:30PM</th>
+            <th>11AM-2PM</th>
+            <th>12:30PM-2PM</th>
+            <th>2PM-3:30PM</th>
+            <th>2PM-4PM</th>
+            <th>2PM-5PM</th>
+        </tr>';
+
+    $days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
+
+    foreach ($days as $day) {
+        echo "<tr><th>$day</th>";
+
+        $timeSlots = [
+            "08:00:00-09:30:00", "08:00:00-10:00:00", "08:00:00-11:00:00",
+            "09:30:00-11:00:00", "10:00:00-12:00:00", "11:00:00-12:30:00",
+            "11:00:00-14:00:00", "12:30:00-14:00:00", "14:00:00-15:30:00",
+            "14:00:00-16:00:00", "14:00:00-17:00:00",
+        ];
+
+        foreach ($timeSlots as $timeSlot) {
+            list($startTime, $endTime) = explode('-', $timeSlot);
+
+            $query = "SELECT c.CourseName, s.Sec 
+                      FROM section s
+                      JOIN course c ON s.CourseID = c.CourseID
+                      JOIN faculty f ON s.FacultyID = f.FacultyID
+                      WHERE s.Day = '$day' 
+                      AND s.startTime = '$startTime' 
+                      AND s.endTime = '$endTime' 
+                      AND f.FacultyName = '$facultyName'";
+            $result = mysqli_query($conn, $query);
+
+            if ($result && $row = mysqli_fetch_assoc($result)) {
+                $courseName = $row['CourseName'];
+                $section = $row['Sec'];
+                echo "<td>$courseName [$section]</td>";
+            } else {
+                echo "<td></td>";
+            }
+        }
+
+        echo "</tr>";
+    }
+
+    echo '</table>';
+}
 ?>
 
 
@@ -290,6 +351,17 @@ include('dbConnect.php');
         echo "
         <br><br>
         <button name='btnClear'>Clear All</button>";
+
+        echo "
+        <br><br>
+        <input type='text' name='search' placeholder='Search by faculty name'>";
+        echo "<button name='btnSearch'>Search</button>";
+
+
+
+
+
+
 
         echo "<h1>Data:</h1>";
         echo '<table border="1">
