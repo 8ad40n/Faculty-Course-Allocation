@@ -37,9 +37,10 @@ $data = mysqli_fetch_assoc($res);
 
     <?php
     echo "
-    <label><b>Name:</b>$name<br>
-    <label><b>ID:</b>$id<br>
-   <label> <b>Email:</b>$email<br></label>" 
+    <label><b>Name:</b>$name<br></label>
+    <label><b>ID:</b>$id<br></label>
+   <label> <b>Email:</b>$email<br></label>
+   <label><b>Role:</b>Admin<br></label>"; 
     
 
 ?>

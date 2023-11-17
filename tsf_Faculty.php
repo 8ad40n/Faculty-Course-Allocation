@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>Faculty</title>
+  <link rel="stylesheet" href="CSS/AdminDashboard.css">
 </head>
 <body>
    <form method="post">

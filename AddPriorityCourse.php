@@ -42,6 +42,7 @@
             <th>Faculty ID</th>
             <th>Course ID</th>
             <th>Course Name</th>
+            <th>Actions</th>
 
         </tr>
         <?php

@@ -9,12 +9,16 @@
             width: 80px;
         }
     </style>
+    <link rel="stylesheet" href="CSS/AdminDashboard.css">
 </head>
 
 <body>
+
     <?php 
     include("dbConnect.php");
     include("AdminDashboard.php");
+
+    echo "<center><h1>Faculty Info:</h1></center>";
 
     if (isset($_GET['del'])) {
         $FacultyID = $_GET['del'];

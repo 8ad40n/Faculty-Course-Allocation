@@ -62,7 +62,7 @@ if(isset($_POST["btnClear"]))
     mysqli_query($conn, $resetAssignmentsQuery);
 }
 
-if (isset($_POST['btnGenerate'])) {
+elseif (isset($_POST['btnGenerate'])) {
 
     $resetAssignmentsQuery = "UPDATE section SET FacultyID = NULL";
     mysqli_query($conn, $resetAssignmentsQuery);
@@ -229,63 +229,154 @@ if (isset($_POST['btnGenerate'])) {
 elseif (isset($_POST["search"])) {
     $facultyName = $_POST["search"];
 
-    echo "<center><h2>Data for Faculty Name:</h2> $facultyName </center>";
+    $sql= "select * from faculty where FacultyName='$facultyName'";
+    $result = mysqli_query($conn, $sql);
 
-    echo '<table border="1">
-        <tr>
-            <th>Day</th>
-            <th>8AM-9:30AM</th>
-            <th>8AM-10AM</th>
-            <th>8AM-11AM</th>
-            <th>9:30AM-11AM</th>
-            <th>10AM-12PM</th>
-            <th>11AM-12:30PM</th>
-            <th>11AM-2PM</th>
-            <th>12:30PM-2PM</th>
-            <th>2PM-3:30PM</th>
-            <th>2PM-4PM</th>
-            <th>2PM-5PM</th>
-        </tr>';
+    if(!empty($facultyName) && mysqli_num_rows($result) > 0) {
+        echo "<center><h2>Data for Faculty Name:</h2> $facultyName </center>";
 
-    $days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
+        echo '<table border="1">
+            <tr>
+                <th>Day</th>
+                <th>8AM-9:30AM</th>
+                <th>8AM-10AM</th>
+                <th>8AM-11AM</th>
+                <th>9:30AM-11AM</th>
+                <th>10AM-12PM</th>
+                <th>11AM-12:30PM</th>
+                <th>11AM-2PM</th>
+                <th>12:30PM-2PM</th>
+                <th>2PM-3:30PM</th>
+                <th>2PM-4PM</th>
+                <th>2PM-5PM</th>
+            </tr>';
 
-    foreach ($days as $day) {
-        echo "<tr><th>$day</th>";
+        $days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
 
-        $timeSlots = [
-            "08:00:00-09:30:00", "08:00:00-10:00:00", "08:00:00-11:00:00",
-            "09:30:00-11:00:00", "10:00:00-12:00:00", "11:00:00-12:30:00",
-            "11:00:00-14:00:00", "12:30:00-14:00:00", "14:00:00-15:30:00",
-            "14:00:00-16:00:00", "14:00:00-17:00:00",
-        ];
+        foreach ($days as $day) {
+            echo "<tr><th>$day</th>";
 
-        foreach ($timeSlots as $timeSlot) {
-            list($startTime, $endTime) = explode('-', $timeSlot);
+            $timeSlots = [
+                "08:00:00-09:30:00", "08:00:00-10:00:00", "08:00:00-11:00:00",
+                "09:30:00-11:00:00", "10:00:00-12:00:00", "11:00:00-12:30:00",
+                "11:00:00-14:00:00", "12:30:00-14:00:00", "14:00:00-15:30:00",
+                "14:00:00-16:00:00", "14:00:00-17:00:00",
+            ];
 
-            $query = "SELECT c.CourseName, s.Sec 
-                      FROM section s
-                      JOIN course c ON s.CourseID = c.CourseID
-                      JOIN faculty f ON s.FacultyID = f.FacultyID
-                      WHERE s.Day = '$day' 
-                      AND s.startTime = '$startTime' 
-                      AND s.endTime = '$endTime' 
-                      AND f.FacultyName = '$facultyName'";
-            $result = mysqli_query($conn, $query);
+            foreach ($timeSlots as $timeSlot) {
+                list($startTime, $endTime) = explode('-', $timeSlot);
 
-            if ($result && $row = mysqli_fetch_assoc($result)) {
-                $courseName = $row['CourseName'];
-                $section = $row['Sec'];
-                echo "<td>$courseName [$section]</td>";
-            } else {
-                echo "<td></td>";
+                $query = "SELECT c.CourseName, s.Sec 
+                        FROM section s
+                        JOIN course c ON s.CourseID = c.CourseID
+                        JOIN faculty f ON s.FacultyID = f.FacultyID
+                        WHERE s.Day = '$day' 
+                        AND s.startTime = '$startTime' 
+                        AND s.endTime = '$endTime' 
+                        AND f.FacultyName = '$facultyName'";
+                $result = mysqli_query($conn, $query);
+
+                if ($result && $row = mysqli_fetch_assoc($result)) {
+                    $courseName = $row['CourseName'];
+                    $section = $row['Sec'];
+                    echo "<td>$courseName [$section]</td>";
+                } else {
+                    echo "<td></td>";
+                }
             }
+
+            echo "</tr>";
         }
 
-        echo "</tr>";
+        echo '</table>';
     }
-
-    echo '</table>';
 }
+
+    if(isset($_POST['del'])) {
+        $SectionID = $_POST['del'];
+        $sql1 = "UPDATE section SET FacultyID = NULL WHERE SectionID = '$SectionID'";
+        $d = mysqli_query($conn, $sql1);
+        
+    }
+    
+
+    if (isset($_POST['edit'])) {
+        $SectionID = $_POST['edit'];
+        $sql1 = "SELECT * FROM section WHERE SectionID = '$SectionID'";
+        $d = mysqli_query($conn, $sql1);
+    
+        $r = mysqli_fetch_assoc($d);
+        $courseID = $r["CourseID"];
+        $section = $r["Sec"];
+        $facultyID = $r["FacultyID"];
+    
+        $sql2 = "SELECT * FROM course WHERE CourseID = '$courseID'";
+        $d1 = mysqli_query($conn, $sql2);
+    
+        $r1 = mysqli_fetch_assoc($d1);
+        $courseName = $r1["CourseName"];
+        $dept = $r1["DepartmentName"];
+    
+        echo "<form method='post'>";
+ 
+        echo "<h2>Edit Assignment:<h2>";
+        echo "<br>";
+        echo "<h4>Course ID: </h4><input type='text' name='courseID' value='$courseID' readonly><br>";
+        echo "<h4>Course Name:</h4><input type='text' name='courseName' value='$courseName' readonly><br>";
+        echo "<h4>Department:</h4><input type='text' name='dept' value='$dept' readonly><br>";
+        echo "<h4>Section: </h4><input type='text' name='sec' value='$section' readonly><br>";
+        echo "<h4>Faculty ID:</h4><input type='text' name='facultyID' value='$facultyID'><br>";
+        echo '<button type="submit" name="EditSubmit" value="' . $SectionID . '">Submit</button><br><br>'; 
+
+        echo "</form>";
+    } 
+
+    elseif (isset($_POST['EditSubmit'])) {
+        $facultyID = $_POST["facultyID"];
+        $sectionID = $_POST['EditSubmit'];
+    
+        // Get the details of the section you want to assign
+        $sectionDetailsQuery = "SELECT * FROM section WHERE SectionID = '$sectionID'";
+        $sectionDetailsResult = mysqli_query($conn, $sectionDetailsQuery);
+        $sectionDetails = mysqli_fetch_assoc($sectionDetailsResult);
+    
+        $day = $sectionDetails['Day'];
+        $start = $sectionDetails['startTime'];
+        $end = $sectionDetails['endTime'];
+    
+        // Check if the faculty has time clashes
+        $checkClashesQuery = "SELECT SectionID FROM section WHERE FacultyID = '$facultyID'";
+        $clashesResult = mysqli_query($conn, $checkClashesQuery);
+    
+        // Iterate through assigned sections
+        $hasClashes = false;
+        while ($clash = mysqli_fetch_assoc($clashesResult)) {
+            $clashSectionID = $clash['SectionID'];
+    
+            // Get the details of the assigned section
+            $sectionDetailsQuery = "SELECT * FROM section WHERE SectionID = '$clashSectionID'";
+            $sectionDetailsResult = mysqli_query($conn, $sectionDetailsQuery);
+            $clashSection = mysqli_fetch_assoc($sectionDetailsResult);
+    
+            // Compare the timings to check for clashes
+            if (($clashSection['Day'] == $day) &&
+                (($clashSection['startTime'] >= $start && $clashSection['startTime'] < $end) ||
+                ($clashSection['endTime'] > $start && $clashSection['endTime'] <= $end))) {
+                $hasClashes = true;
+                break;
+            }
+        }
+    
+        if ($hasClashes) {
+            echo "<script> alert('Time clash! Faculty cannot be assigned.');</script>";
+        } else {
+            $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
+            $a = mysqli_query($conn, $assignSectionQuery);
+            if ($a) {
+                echo $sectionID . " has been updated.";
+            }
+        }
+    }
 ?>
 
 
@@ -296,6 +387,7 @@ elseif (isset($_POST["search"])) {
 
 <head>
     <title>Course Assignment</title>
+    <link rel="stylesheet" href="CSS/TryAgain.css">
 </head>
 <body>
 
@@ -350,17 +442,12 @@ include('dbConnect.php');
 
         echo "
         <br><br>
-        <button name='btnClear'>Clear All</button>";
+        <button name='btnClear'>Clear All</button><br><br>";
 
         echo "
-        <br><br>
-        <input type='text' name='search' placeholder='Search by faculty name'>";
+        
+        <input type='text' name='search' placeholder='Search by faculty name'><br>";
         echo "<button name='btnSearch'>Search</button>";
-
-
-
-
-
 
 
         echo "<h1>Data:</h1>";
@@ -417,114 +504,6 @@ include('dbConnect.php');
         }
         echo '</table>';
 
-    if(isset($_POST['del'])) {
-        $SectionID = $_POST['del'];
-        $sql1 = "UPDATE section SET FacultyID = NULL WHERE SectionID = '$SectionID'";
-        $d = mysqli_query($conn, $sql1);
-        
-    }
-    
-
-    elseif (isset($_POST['edit'])) {
-        $SectionID = $_POST['edit'];
-        $sql1 = "SELECT * FROM section WHERE SectionID = '$SectionID'";
-        $d = mysqli_query($conn, $sql1);
-    
-        $r = mysqli_fetch_assoc($d);
-        $courseID = $r["CourseID"];
-        $section = $r["Sec"];
-        $facultyID = $r["FacultyID"];
-    
-        $sql2 = "SELECT * FROM course WHERE CourseID = '$courseID'";
-        $d1 = mysqli_query($conn, $sql2);
-    
-        $r1 = mysqli_fetch_assoc($d1);
-        $courseName = $r1["CourseName"];
-        $dept = $r1["DepartmentName"];
-    
-        echo "<form method='post'>";
-        echo "<br><br><br>";
-        echo "Course ID: <input type='text' name='courseID' value='$courseID' readonly>";
-        echo "Course Name: <input type='text' name='courseName' value='$courseName' readonly>";
-        echo "Department: <input type='text' name='dept' value='$dept' readonly>";
-        echo "Section: <input type='text' name='sec' value='$section' readonly>";
-        echo "Faculty ID: <input type='text' name='facultyID' value='$facultyID'><br>";
-        echo '<td><button type="submit" name="EditSubmit" value="' . $SectionID . '">Submit</button></td>'; 
-    
-        echo "</form>";
-    } 
-    // elseif (isset($_POST['EditSubmit'])) {
-    //     $facultyID = $_POST["facultyID"];
-    //     $sectionID = $_POST['EditSubmit']; 
-
-    //     $checkFacultyID= "Select FacultyID from faculty where FacultyID='$facultyID'";
-    //     $checkFacultyIDVerify= mysqli_query($conn, $checkFacultyID);
-
-       
-
-    //     if(mysqli_num_rows($checkFacultyIDVerify)== 1) {
-    //         $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
-    //         $a = mysqli_query($conn, $assignSectionQuery);
-    //         if ($a) {
-    //             echo $sectionID . " has been Updated";
-    //         }
-    //     }
-    //     else{
-    //         echo "Invalid FacultyID";
-    //     }
-    // }
-
-    elseif (isset($_POST['EditSubmit'])) {
-        $facultyID = $_POST["facultyID"];
-        $sectionID = $_POST['EditSubmit'];
-    
-        // Get the details of the section you want to assign
-        $sectionDetailsQuery = "SELECT * FROM section WHERE SectionID = '$sectionID'";
-        $sectionDetailsResult = mysqli_query($conn, $sectionDetailsQuery);
-        $sectionDetails = mysqli_fetch_assoc($sectionDetailsResult);
-    
-        $day = $sectionDetails['Day'];
-        $start = $sectionDetails['startTime'];
-        $end = $sectionDetails['endTime'];
-    
-        // Check if the faculty has time clashes
-        $checkClashesQuery = "SELECT SectionID FROM section WHERE FacultyID = '$facultyID'";
-        $clashesResult = mysqli_query($conn, $checkClashesQuery);
-    
-        // Iterate through assigned sections
-        $hasClashes = false;
-        while ($clash = mysqli_fetch_assoc($clashesResult)) {
-            $clashSectionID = $clash['SectionID'];
-    
-            // Get the details of the assigned section
-            $sectionDetailsQuery = "SELECT * FROM section WHERE SectionID = '$clashSectionID'";
-            $sectionDetailsResult = mysqli_query($conn, $sectionDetailsQuery);
-            $clashSection = mysqli_fetch_assoc($sectionDetailsResult);
-    
-            // Compare the timings to check for clashes
-            if (($clashSection['Day'] == $day) &&
-                (($clashSection['startTime'] >= $start && $clashSection['startTime'] < $end) ||
-                ($clashSection['endTime'] > $start && $clashSection['endTime'] <= $end))) {
-                $hasClashes = true;
-                break;
-            }
-        }
-    
-        if ($hasClashes) {
-            echo "Time clash! Faculty cannot be assigned.";
-        } else {
-            $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
-            $a = mysqli_query($conn, $assignSectionQuery);
-            if ($a) {
-                echo $sectionID . " has been updated.";
-            }
-        }
-    }
-    
-    
-    
-    
-    
     ?>
 </form>
 </body>

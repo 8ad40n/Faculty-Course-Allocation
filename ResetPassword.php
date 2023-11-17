@@ -33,6 +33,7 @@ if(isset($_POST["change"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Change Password</title>
+    <link rel="stylesheet" href="CSS/AdminDashboard.css">
 </head>
 <body>
     <form method="post">

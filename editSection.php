@@ -1,7 +1,7 @@
 <?php
 include("dbConnect.php");
 include("AdminDashboard.php");
-
+echo "<center><h1>Edit Section:</h1></center>";
 if (isset($_POST['del'])) {
     $sectionID = $_POST['del'];
     $sql1 = "DELETE FROM section WHERE SectionID = '$sectionID'";
@@ -48,9 +48,15 @@ if (isset($_POST['del'])) {
     $start = $_POST['startTime'];
     $end = $_POST['endTime'];
 
+    $sql = "select * from section where SectionID = '$sectionID'";
+    $res = mysqli_query($conn, $sql);
+    $r= mysqli_fetch_assoc($res);
+    $startDB= $r["startTime"];
+    $endDB= $r["endTime"];
+
     $updateSectionQuery = "UPDATE section 
                           SET Day = '$day', startTime = '$start', endTime = '$end'
-                          WHERE SectionID = '$sectionID'";
+                          WHERE SectionID = '$sectionID' and startTime= '$startDB' and endTime='$endDB'";
     $result = mysqli_query($conn, $updateSectionQuery);
 
     if ($result) {
@@ -68,6 +74,7 @@ if (isset($_POST['del'])) {
 </head>
 <body>
     <form method="POST">
+        
         <table border="1">
             <tr>
                 <th>Section ID</th>
@@ -85,7 +92,7 @@ if (isset($_POST['del'])) {
             $sql = "SELECT section.*, course.CourseName 
                     FROM section 
                     JOIN course ON section.CourseID = course.CourseID
-                    ORDER BY course.CourseName ASC;";
+                    ORDER BY section.SectionID ASC;";
             $result = mysqli_query($conn, $sql);
 
             if (mysqli_num_rows($result) > 0) {

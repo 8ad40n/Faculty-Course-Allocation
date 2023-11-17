@@ -39,6 +39,7 @@ if (isset($_GET["add"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Set Priority Time</title>
+    <link rel="stylesheet" href="CSS/AdminDashboard.css">
 </head>
 <body>
     <form method="get">
@@ -65,6 +66,7 @@ if (isset($_GET["add"])) {
             <th>Day</th>
             <th>Start Time</th>
             <th>End Time</th>
+            <th>Actions</th>
         </tr>
         <?php
         $sql = "SELECT * FROM prioritytime where FacultyID='$id';";

@@ -1,8 +1,8 @@
 body {
-  font-family: Agency FB;
-  margin: 0;
-  padding: 0;
-  background-color: #fff;
+  font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
 }
 
 header {
@@ -165,14 +165,28 @@ button[name="logout"] {
   cursor: pointer;
 }
 
-button[name="btnClear"] {
+
+input {
+  margin-bottom: 10px;
+  padding: 8px;
+  padding-right: 18px;
+  padding-left: 18px;
+  border: 2px solid #ef4a23;
+  border-radius: 4px;
+  transition: border 0.2s;
+}
+
+input:hover {
+  border: 2px solid #45a049; /* Change border color on hover */
+}
+
+button[name="EditSubmit"] {
   padding: 8px 16px;
   font-size: 14px;
-  background-color: #f44336; 
+  background-color: rgb(18, 158, 97); 
   color: #fff;
   border: none;
   border-radius: 5px;
   margin-left: 3px ;
   cursor: pointer;
 }
-

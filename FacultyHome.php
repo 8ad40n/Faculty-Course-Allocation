@@ -4,13 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        img
-        {
-            height: 100px;
-            width: 100px;
-        }
-    </style>
+    <link rel="stylesheet" href="CSS/AdminHome.css">
 </head>
 <body>
 <form method="post">
@@ -29,19 +23,21 @@ $sql = "SELECT * FROM faculty WHERE FacultyID='$id'";
 $res = mysqli_query($conn, $sql);
 $data = mysqli_fetch_assoc($res);
 
-$name = $data['FacultyName']; // Fix the column name
+$name = $data['FacultyName']; 
 $email = $data['Email'];
 $image = $data['Picture'];
 
 echo "<fieldset>";
 ?>
+<div class="content">
 <img src="Images/<?php echo $image ?>"><br>
-
+</div>
 <?php
 echo "
-    <b>Name:</b>$name<br>
-    <b>ID:</b>$id<br>
-    <b>Email:</b>$email<br>";
+<label><b>Name:</b>$name<br></label>
+<label><b>ID:</b>$id<br></label>
+<label> <b>Email:</b>$email<br></label>
+<label><b>Role:</b>Faculty<br></label>"; 
 
 ?>
 </fieldset>

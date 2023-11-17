@@ -44,7 +44,7 @@ if (isset($_POST["btnAddFaculty"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Faculty</title>
+    <title>Add Faculty:</title>
     <link rel="stylesheet" href="CSS/AddFaculty.css">
 </head>
 <body>

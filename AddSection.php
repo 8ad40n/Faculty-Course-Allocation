@@ -89,7 +89,7 @@ if (isset($_POST['btnAdd'])) {
 
                 <div class="loginform">
                     <form action="" method="POST">
-                        <center><h1>Add Section</h1></center><br>
+                        <center><h1>Add Section:</h1></center><br>
                         <label for="secID">Section ID:</label>
                         <br> <input type="text" name="SectionID"><br><br>
                         <label for="courseID">Course ID:</label>
