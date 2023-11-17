@@ -18,54 +18,69 @@ include('FacultyDashboard.php');
 session_start();
 
 //$id = $_SESSION['id'];
-echo "<h1>TSF:</h1>";
-echo '<table border="1">
-  <tr>
-    <th>Course ID</th>
-    <th>Course Name</th>
-    <th>Section</th>
-    <th>Day</th>
-    <th>Start Time</th>
-    <th>End Time</th>
-  </tr>';
+echo "<center><h1>TSF:</h1></center>";
 
-$sql = "SELECT
-  section.SectionID,
-  section.CourseID,
-  course.CourseName,
-  section.Sec,
-  section.Day,
-  section.startTime,
-  section.endTime
-FROM
-  section
-LEFT JOIN
-  faculty ON section.FacultyID = faculty.FacultyID
-JOIN
-  course ON section.CourseID = course.CourseID
-WHERE 
-  section.FacultyID = '{$_SESSION['id']}'
-ORDER BY
-section.Day,section.startTime ASC";
-
+$sql= "select * from faculty where FacultyID='{$_SESSION['id']}'";
 $result = mysqli_query($conn, $sql);
 
-if ($result && mysqli_num_rows($result) > 0) {
-  while ($row = mysqli_fetch_assoc($result)) {
-    echo "<tr>";
-    echo "<td>" . $row["CourseID"] . "</td>";
-    echo "<td>" . $row["CourseName"] . "</td>";
-    echo "<td>" . $row["Sec"] . "</td>";
-    echo "<td>" . $row["Day"] . "</td>";
-    echo "<td>" . $row["startTime"] . "</td>";
-    echo "<td>" . $row["endTime"] . "</td>";
-    echo "</tr>";
-  }
-} else {
-  echo "<tr><td colspan='6'>No assignments found.</td></tr>";
-}
+if(mysqli_num_rows($result) > 0) {
+    echo '<table border="1">
+        <tr>
+            <th>Day</th>
+            <th>8AM-9:30AM</th>
+            <th>8AM-10AM</th>
+            <th>8AM-11AM</th>
+            <th>9:30AM-11AM</th>
+            <th>10AM-12PM</th>
+            <th>11AM-12:30PM</th>
+            <th>11AM-2PM</th>
+            <th>12PM-2PM</th>
+            <th>12:30PM-2PM</th>
+            <th>2PM-3:30PM</th>
+            <th>2PM-4PM</th>
+            <th>2PM-5PM</th>
+        </tr>';
 
+    $days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
+
+    foreach ($days as $day) {
+        echo "<tr><th>$day</th>";
+
+        $timeSlots = [
+            "08:00:00-09:30:00", "08:00:00-10:00:00", "08:00:00-11:00:00",
+            "09:30:00-11:00:00", "10:00:00-12:00:00", "11:00:00-12:30:00",
+            "11:00:00-14:00:00", "12:00:00-14:00:00", "12:30:00-14:00:00", 
+            "14:00:00-15:30:00", "14:00:00-16:00:00", "14:00:00-17:00:00",
+        ];
+
+        foreach ($timeSlots as $timeSlot) {
+            list($startTime, $endTime) = explode('-', $timeSlot);
+
+            $query = "SELECT c.CourseName, s.Sec 
+                    FROM section s
+                    JOIN course c ON s.CourseID = c.CourseID
+                    JOIN faculty f ON s.FacultyID = f.FacultyID
+                    WHERE s.Day = '$day' 
+                    AND s.startTime = '$startTime' 
+                    AND s.endTime = '$endTime' 
+                    AND f.FacultyID = '{$_SESSION['id']}'";
+            $result = mysqli_query($conn, $query);
+
+            if ($result && $row = mysqli_fetch_assoc($result)) {
+                $courseName = $row['CourseName'];
+                $section = $row['Sec'];
+                echo "<td>$courseName [$section]</td>";
+            } else {
+                echo "<td></td>";
+            }
+        }
+
+        echo "</tr>";
+    }
+
+    echo '</table>';
+}
 mysqli_close($conn);
-echo '</table>';
+
 
 ?>
