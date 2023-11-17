@@ -4,15 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-
-    <style>
-        img
-        {
-            height: 100px;
-            width: 100px;
-        }
-    </style>
-    <link rel="stylesheet" href="CSS/AdminDashboard.css">
+    
+    <link rel="stylesheet" href="CSS/AdminHome.css">
 
 </head>
 <body>
@@ -20,8 +13,8 @@
 include("AdminDashboard.php");
 ?>
 <form method="post">
-<fieldset>
-<legend><h1>Welcome</h1></legend>
+
+<label for="Welcome"><h1>Welcome!</h1></label>
 <?php
 include("dbConnect.php");
 
@@ -38,18 +31,20 @@ $data = mysqli_fetch_assoc($res);
 
     echo "<fieldset>";
     ?>
+    <div class="content">
     <img src="Images/<?php echo $image ?>"><br>
+    </div>
 
     <?php
     echo "
-    <b>Name:</b>$name<br>
-    <b>ID:</b>$id<br>
-    <b>Email:</b>$email<br>"
+    <label><b>Name:</b>$name<br>
+    <label><b>ID:</b>$id<br>
+   <label> <b>Email:</b>$email<br></label>" 
     
 
 ?>
-</fieldset>
-<br><br>
+
+<br>
 <button name="logout">Logout</button>
 </form>
 </body>
@@ -72,4 +67,3 @@ else{
 }
 
 ?>
-

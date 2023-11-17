@@ -48,19 +48,17 @@ function hasCourseClashes($conn, $facultyID, $startTime, $endTime) {
 }
 
 if (isset($_POST['btnGenerate'])) {
-    // Reset assignments for all sections
+
     $resetAssignmentsQuery = "UPDATE section SET FacultyID = NULL";
     mysqli_query($conn, $resetAssignmentsQuery);
 
-    // Get the list of all faculty members
-    $facultyQuery = "SELECT FacultyID, FacultyName FROM faculty";
+    $facultyQuery = "SELECT FacultyID, FacultyName FROM faculty ORDER BY TotalHours ASC";
     $facultyResult = mysqli_query($conn, $facultyQuery);
 
     if ($facultyResult) {
         while ($faculty = mysqli_fetch_assoc($facultyResult)) {
             $facultyID = $faculty['FacultyID'];
 
-            // Check the available courses where FacultyID is null in the section table
             $availableCoursesQuery = "SELECT * FROM section WHERE FacultyID IS NULL";
             $availableCoursesResult = mysqli_query($conn, $availableCoursesQuery);
 
@@ -72,18 +70,34 @@ if (isset($_POST['btnGenerate'])) {
                     $startTime = $course['startTime'];
                     $endTime = $course['endTime'];
 
-                    // Check the priority time of the faculty
                     if (isPriorityTimeAvailable($conn, $facultyID, $day, $startTime, $endTime)) {
-                        // Check the priority course of the faculty
+
                         if (hasPriorityCourse($conn, $facultyID, $courseID)) {
-                            // Check if the faculty is assigned to the course
+
                             if (!hasCourseClashes($conn, $facultyID, $startTime, $endTime)) {
-                                // Check if the total hours per week for the faculty will be <= 16
+
                                 $totalHours = getFacultyTotalHours($conn, $facultyID);
                                 if ($totalHours <= 16) {
-                                    // Assign this section to the faculty
+
                                     $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
                                     mysqli_query($conn, $assignSectionQuery);
+
+                                    $totalHoursQuery = "SELECT SUM(TIME_TO_SEC(TIMEDIFF(endTime, startTime))) AS TotalHours 
+                                    FROM section 
+                                    WHERE FacultyID = '$facultyID'";
+
+                                    $totalHoursResult = mysqli_query($conn, $totalHoursQuery);
+
+                                    if ($totalHoursResult) {
+                                        $row = mysqli_fetch_assoc($totalHoursResult);
+                                        $totalHours = $row['TotalHours'];
+
+                                        $totalHoursInHours = $totalHours / 3600;
+
+                                        $updateTotalHoursQuery = "UPDATE faculty SET TotalHours = '$totalHoursInHours' WHERE FacultyID = '$facultyID'";
+                                        mysqli_query($conn, $updateTotalHoursQuery);
+                                    }                                    
+
                                 }
                             }
                         }
@@ -93,14 +107,13 @@ if (isset($_POST['btnGenerate'])) {
         }
     }
 
-    $facultyQuery1 = "SELECT FacultyID, FacultyName FROM faculty";
+    $facultyQuery1 = "SELECT FacultyID, FacultyName FROM faculty ORDER BY TotalHours ASC";
     $facultyResult1 = mysqli_query($conn, $facultyQuery1);
 
     if ($facultyResult1) {
         while ($faculty = mysqli_fetch_assoc($facultyResult1)) {
             $facultyID = $faculty['FacultyID'];
 
-            // Check the available courses where FacultyID is null in the section table
             $availableCoursesQuery = "SELECT * FROM section WHERE FacultyID IS NULL";
             $availableCoursesResult = mysqli_query($conn, $availableCoursesQuery);
 
@@ -113,16 +126,31 @@ if (isset($_POST['btnGenerate'])) {
                     $endTime = $course['endTime'];
 
                     
-                    // Check the priority course of the faculty
                     if (hasPriorityCourse($conn, $facultyID, $courseID)) {
-                        // Check if the faculty is assigned to the course
+
                         if (!hasCourseClashes($conn, $facultyID, $startTime, $endTime)) {
-                            // Check if the total hours per week for the faculty will be <= 16
+
                             $totalHours = getFacultyTotalHours($conn, $facultyID);
+
                             if ($totalHours <= 16) {
-                                // Assign this section to the faculty
                                 $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
                                 mysqli_query($conn, $assignSectionQuery);
+
+                                $totalHoursQuery = "SELECT SUM(TIME_TO_SEC(TIMEDIFF(endTime, startTime))) AS TotalHours 
+                                                    FROM section 
+                                                    WHERE FacultyID = '$facultyID'";
+
+                                $totalHoursResult = mysqli_query($conn, $totalHoursQuery);
+
+                                if ($totalHoursResult) {
+                                    $row = mysqli_fetch_assoc($totalHoursResult);
+                                    $totalHours = $row['TotalHours'];
+
+                                    $totalHoursInHours = $totalHours / 3600;
+
+                                    $updateTotalHoursQuery = "UPDATE faculty SET TotalHours = '$totalHoursInHours' WHERE FacultyID = '$facultyID'";
+                                    mysqli_query($conn, $updateTotalHoursQuery);
+                                }
                             }
                         }
                     }
@@ -132,18 +160,18 @@ if (isset($_POST['btnGenerate'])) {
         }
     }
 
-    $facultyQuery2 = "SELECT FacultyID, FacultyName FROM faculty";
+    $facultyQuery2 = "SELECT FacultyID, FacultyName FROM faculty ORDER BY TotalHours ASC";
     $facultyResult2 = mysqli_query($conn, $facultyQuery2);
 
     if ($facultyResult2) {
         while ($faculty = mysqli_fetch_assoc($facultyResult2)) {
             $facultyID = $faculty['FacultyID'];
 
-            // Check the available courses where FacultyID is null in the section table
+            
             $availableCoursesQuery = "SELECT * FROM section WHERE FacultyID IS NULL";
             $availableCoursesResult = mysqli_query($conn, $availableCoursesQuery);
 
-            if ($availableCoursesResult && mysqli_num_rows($availableCoursesResult) > 0) {
+            if (mysqli_num_rows($availableCoursesResult) > 0) {
                 while ($course = mysqli_fetch_assoc($availableCoursesResult)) {
                     $sectionID = $course['SectionID'];
                     $courseID = $course['CourseID'];
@@ -151,17 +179,31 @@ if (isset($_POST['btnGenerate'])) {
                     $startTime = $course['startTime'];
                     $endTime = $course['endTime'];
 
-                    // Check if the faculty is assigned to the course
                     if (!hasCourseClashes($conn, $facultyID, $startTime, $endTime)) {
-                        // Check if the total hours per week for the faculty will be <= 16
+
                         $totalHours = getFacultyTotalHours($conn, $facultyID);
                         if ($totalHours <= 16) {
-                            // Assign this section to the faculty
+
                             $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
                             mysqli_query($conn, $assignSectionQuery);
+
+                            $totalHoursQuery = "SELECT SUM(TIME_TO_SEC(TIMEDIFF(endTime, startTime))) AS TotalHours 
+                                                FROM section 
+                                                WHERE FacultyID = '$facultyID'";
+
+                            $totalHoursResult = mysqli_query($conn, $totalHoursQuery);
+
+                            if ($totalHoursResult) {
+                                $row = mysqli_fetch_assoc($totalHoursResult);
+                                $totalHours = $row['TotalHours'];
+
+                                $totalHoursInHours = $totalHours / 3600;
+
+                                $updateTotalHoursQuery = "UPDATE faculty SET TotalHours = '$totalHoursInHours' WHERE FacultyID = '$facultyID'";
+                                mysqli_query($conn, $updateTotalHoursQuery);
+                            }
                         }
-                    }
-                    
+                    }      
                 
                 }
             }
@@ -179,7 +221,7 @@ if (isset($_POST['btnGenerate'])) {
 <head>
     <title>Course Assignment</title>
 </head>
-
+<body>
 
     <form method="POST">
         <button type="submit" name="btnGenerate">Generate Section</button>
@@ -230,6 +272,10 @@ include('dbConnect.php');
             echo "Error fetching faculty data.";
         }
 
+        echo "
+        <br><br>
+        <button name='btnClear'>Clear All</button>";
+
         echo "<h1>Data:</h1>";
         echo '<table border="1">
             <tr>
@@ -259,7 +305,7 @@ include('dbConnect.php');
         LEFT JOIN
             faculty ON section.FacultyID = faculty.FacultyID
         JOIN
-            course ON section.CourseID = course.CourseID ORDER BY faculty.FacultyName,section.Day DESC";
+            course ON section.CourseID = course.CourseID ORDER BY faculty.FacultyName,section.Day,course.CourseName DESC";
 
         $result = mysqli_query($conn, $sql);
 
@@ -386,6 +432,11 @@ include('dbConnect.php');
                 echo $sectionID . " has been updated.";
             }
         }
+    }
+    elseif(isset($_POST["btnClear"]))
+    {
+        $resetAssignmentsQuery = "UPDATE section SET FacultyID = NULL";
+        mysqli_query($conn, $resetAssignmentsQuery);
     }
     
     

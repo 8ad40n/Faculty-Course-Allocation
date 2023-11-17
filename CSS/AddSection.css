@@ -6,13 +6,14 @@
 
 .login {
     width: 1100px;
+    
     overflow: hidden;
     border-radius: 80px;
     display: flex;
 }
 
 .content {
-    flex-basis: 80%;
+    flex-basis: 65%;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -21,7 +22,7 @@
 
 .content img {
     width: 100%;
-    height: 120%;
+    height: 850px;
     padding-top: 0px;
 }
 

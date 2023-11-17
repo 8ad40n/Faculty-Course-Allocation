@@ -51,6 +51,7 @@ Table 4: faculty
 • FacultyName
 • Email
 • Picture
+• TotalHours
 
 Table 5: prioritycourses
 • FacultyID 
@@ -78,40 +79,64 @@ Table 8: userinfo
 
 Psuesdocode:
 
-
-
 	Reset assignments for all sections -> FacultyID = null in section table
 	Get the list of all faculty members
-	faculty info in LOOP:
+	while ($faculty = mysqli_fetch_assoc($facultyResult))
 	{
-		if total hours of the faculty is <=16
+		check section availability -> faculty not assigned
+		while ($course = mysqli_fetch_assoc($availableCoursesResult)) 
 		{
-			check section availability -> faculty not assigned
-			if (available)
+			if (PriorityTimeAvailable)
 			{
-				if (PriorityTimeAvailable && hasPriorityCourse && has no Course time Clashes)
+				if(hasPriorityCourse)
 				{
-					Assign this section to the faculty
-				}
-				else if (hasPriorityCourse && has no Course time Clashes)
-				{
-					Assign this section to the faculty
+					if(!hasCourseClashes)
+					{
+						if ($totalHours <= 16)
+						{
+							Assign him
+						}
+					}
 				}
 			}
 		}
 	}
 
-	faculty info in LOOP:
+	Get the list of all faculty members -> ORDER BY TotalHours ASC
+	while ($faculty = mysqli_fetch_assoc($facultyResult))
 	{
-		if total hours of the faculty is <=16
+		check section availability -> faculty not assigned
+		while ($course = mysqli_fetch_assoc($availableCoursesResult)) 
 		{
-			check section availability -> faculty not assigned
-			if (available)
+			
+			if(hasPriorityCourse)
 			{
-				if (has no Course time Clashes)
+				if(!hasCourseClashes)
 				{
-					Assign this section to the faculty
+					if ($totalHours <= 16)
+					{
+						Assign him
+					}
 				}
 			}
+			
 		}
 	}
+
+	Get the list of all faculty members -> ORDER BY TotalHours ASC
+	while ($faculty = mysqli_fetch_assoc($facultyResult))
+	{
+		check section availability -> faculty not assigned
+		while ($course = mysqli_fetch_assoc($availableCoursesResult)) 
+		{
+			if(!hasCourseClashes)
+			{
+				if ($totalHours <= 16)
+				{
+					Assign him
+				}
+			}
+			
+		}
+	}
+	

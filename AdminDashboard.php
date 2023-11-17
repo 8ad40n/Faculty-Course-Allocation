@@ -17,7 +17,7 @@
         <ul>
             <h3>
             <li><a href="AdminHome.php">Home</a></li>
-            <li><a href="TryAgain.php">Sections</a></li>
+            <li><a href="Try.php">Sections</a></li>
             <li><a href="AddSection.php">Add Section</a></li>
             <li><a href="editSection.php">Edit Section</a></li>
             <li><a href="AddFaculty.php">Add Faculty</a></li>

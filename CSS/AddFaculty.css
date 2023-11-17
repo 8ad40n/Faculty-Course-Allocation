@@ -59,14 +59,43 @@
 showPassword
   {
     margin-top: 10px;
+    margin-bottom:100px ;
   }
   
   label 
   {
     font-size: larger;
+    font-weight: bold;
   }
   
-  input {
+  input[type="file"] {
+    margin-bottom: 10px;
+    padding: 8px;
+    padding-right: 10px;
+    padding-left: 90px;
+    
+  
+  }
+  
+  input[type="text"] {
+    margin-bottom: 10px;
+    padding: 8px;
+    padding-right: 18px;
+    padding-left: 18px;
+    border: 2px solid #ef4a23;
+    border-radius: 4px;
+  }
+  input[type="email"] {
+    margin-bottom: 10px;
+    padding: 8px;
+    padding-right: 18px;
+    padding-left: 18px;
+    border: 2px solid #ef4a23;
+    border-radius: 4px;
+  }
+
+  input[type="password"] {
+
     margin-bottom: 10px;
     padding: 8px;
     padding-right: 18px;
@@ -74,9 +103,17 @@ showPassword
     border: 2px solid #ef4a23;
     border-radius: 4px;
     
+   
+  }
+  input:hover[type="text"] {
+    border: 2px solid #45a049; /* Change border color on hover */
+  }
+ 
+  input:hover[type="email"] {
+    border: 2px solid #45a049; /* Change border color on hover */
   }
 
-    input:hover {
+    input:hover[type="password"] {
     border: 2px solid #45a049; /* Change border color on hover */
   }
   

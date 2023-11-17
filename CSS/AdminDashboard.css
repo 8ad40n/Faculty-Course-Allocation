@@ -59,9 +59,9 @@ nav a {
 nav a:hover {
   background-color: #ef4a23; /* Change the background color  when hovering */
 
-  /* line-height: 45px;
+  line-height: 45px;
   padding-left: 45px; 
-  padding-right: 45px;  */
+  padding-right: 45px;  
   text-decoration: none; /* Remove the default underline from links */
   color: #f6f8fa; /* Set the text color to dark blue */
 }
