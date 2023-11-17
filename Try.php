@@ -38,14 +38,29 @@ function hasPriorityCourse($conn, $facultyID, $courseID) {
     return ($priorityCourseResult && mysqli_num_rows($priorityCourseResult) > 0);
 }
 
-function hasCourseClashes($conn, $facultyID, $startTime, $endTime) {
+// function hasCourseClashes($conn, $facultyID, $startTime, $endTime) {
+//     $clashQuery = "SELECT SectionID FROM section WHERE FacultyID = '$facultyID' 
+//                     AND ((startTime >= '$startTime' AND startTime <= '$endTime') 
+//                     OR (endTime > '$startTime' AND endTime < '$endTime'))";
+//     $clashResult = mysqli_query($conn, $clashQuery);
+
+//     return (mysqli_num_rows($clashResult) > 0);
+// }
+
+function hasCourseClashes($conn, $facultyID, $startTime, $endTime,$day) {
     $clashQuery = "SELECT SectionID FROM section WHERE FacultyID = '$facultyID' 
-                    AND ((startTime >= '$startTime' AND startTime < '$endTime') 
-                    OR (endTime > '$startTime' AND endTime <= '$endTime'))";
+                     AND Day = '$day' AND ((startTime >= '$startTime' AND startTime <= '$endTime') 
+                    OR (endTime > '$startTime' AND endTime < '$endTime'))";
     $clashResult = mysqli_query($conn, $clashQuery);
 
     return (mysqli_num_rows($clashResult) > 0);
 }
+if(isset($_POST["btnClear"]))
+{
+    $resetAssignmentsQuery = "UPDATE section SET FacultyID = NULL";
+    mysqli_query($conn, $resetAssignmentsQuery);
+}
+    
 
 if (isset($_POST['btnGenerate'])) {
 
@@ -74,10 +89,10 @@ if (isset($_POST['btnGenerate'])) {
 
                         if (hasPriorityCourse($conn, $facultyID, $courseID)) {
 
-                            if (!hasCourseClashes($conn, $facultyID, $startTime, $endTime)) {
+                            if (!hasCourseClashes($conn, $facultyID, $startTime, $endTime,$day)) {
 
                                 $totalHours = getFacultyTotalHours($conn, $facultyID);
-                                if ($totalHours <= 16) {
+                                if ($totalHours <= 13) {
 
                                     $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
                                     mysqli_query($conn, $assignSectionQuery);
@@ -128,11 +143,11 @@ if (isset($_POST['btnGenerate'])) {
                     
                     if (hasPriorityCourse($conn, $facultyID, $courseID)) {
 
-                        if (!hasCourseClashes($conn, $facultyID, $startTime, $endTime)) {
+                        if (!hasCourseClashes($conn, $facultyID, $startTime, $endTime,$day)) {
 
                             $totalHours = getFacultyTotalHours($conn, $facultyID);
 
-                            if ($totalHours <= 16) {
+                            if ($totalHours <= 13) {
                                 $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
                                 mysqli_query($conn, $assignSectionQuery);
 
@@ -179,10 +194,10 @@ if (isset($_POST['btnGenerate'])) {
                     $startTime = $course['startTime'];
                     $endTime = $course['endTime'];
 
-                    if (!hasCourseClashes($conn, $facultyID, $startTime, $endTime)) {
+                    if (!hasCourseClashes($conn, $facultyID, $startTime, $endTime,$day)) {
 
                         $totalHours = getFacultyTotalHours($conn, $facultyID);
-                        if ($totalHours <= 16) {
+                        if ($totalHours <= 13) {
 
                             $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
                             mysqli_query($conn, $assignSectionQuery);
@@ -432,11 +447,6 @@ include('dbConnect.php');
                 echo $sectionID . " has been updated.";
             }
         }
-    }
-    elseif(isset($_POST["btnClear"]))
-    {
-        $resetAssignmentsQuery = "UPDATE section SET FacultyID = NULL";
-        mysqli_query($conn, $resetAssignmentsQuery);
     }
     
     
