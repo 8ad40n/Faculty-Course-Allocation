@@ -34,7 +34,7 @@ if (isset($_POST['del'])) {
         echo "Section ID: <br><input type='text' name='sectionID' value='$sectionID' readonly><br><br>";
         echo "Course ID: <br><input type='text' name='courseID' value='$courseID' readonly><br><br>";
         echo "Course Name: <br><input type='text' name='courseName' value='$courseName' readonly><br><br>";
-        echo "Section: <br><input type='text' name='sec' value='$section'><br><br>";
+        echo "Section: <br><input type='text' name='sec' value='$section' readonly><br><br>";
         echo "Day:<br> <input type='text' name='day' value='$day'><br><br>";
         echo "Start Time:<br> <input type='text' name='startTime' value='$start'><br><br>";
         echo "End Time: <br><input type='text' name='endTime' value='$end'><br><br>";

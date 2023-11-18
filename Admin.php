@@ -49,7 +49,7 @@ function hasPriorityCourse($conn, $facultyID, $courseID) {
 
 function hasCourseClashes($conn, $facultyID, $startTime, $endTime,$day) {
     $clashQuery = "SELECT SectionID FROM section WHERE FacultyID = '$facultyID' 
-                     AND Day = '$day' AND ((startTime >= '$startTime' AND startTime <= '$endTime') 
+                    AND Day = '$day' AND ((startTime >= '$startTime' AND startTime <= '$endTime') 
                     OR (endTime > '$startTime' AND endTime < '$endTime'))";
     $clashResult = mysqli_query($conn, $clashQuery);
 
@@ -250,7 +250,7 @@ elseif (isset($_POST['btnGenerate'])) {
     }
 }
 
-elseif (isset($_POST["search"])) {
+elseif (isset($_POST["btnSearch"])) {
     $facultyName = $_POST["search"];
 
     $sql= "select * from faculty where FacultyName='$facultyName'";
@@ -261,7 +261,7 @@ elseif (isset($_POST["search"])) {
 
         echo '<table border="1">
             <tr>
-                <th>Day</th>
+                <th>Day\Time</th>
                 <th>8AM-9:30AM</th>
                 <th>8AM-10AM</th>
                 <th>8AM-11AM</th>
@@ -504,7 +504,7 @@ include('dbConnect.php');
         LEFT JOIN
             faculty ON section.FacultyID = faculty.FacultyID
         JOIN
-            course ON section.CourseID = course.CourseID ORDER BY faculty.FacultyName,section.Day,course.CourseName DESC";
+            course ON section.CourseID = course.CourseID ORDER BY faculty.FacultyName ASC,course.CourseName ASC";
 
         $result = mysqli_query($conn, $sql);
 
