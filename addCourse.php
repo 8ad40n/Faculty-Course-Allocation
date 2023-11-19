@@ -38,7 +38,6 @@ if (isset($_POST["btnAdd"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Courses:</title>
     <link rel="stylesheet" href="CSS/AddFaculty.css">
-    <link rel="stylesheet" href="CSS/AdminDashboard.css">
 </head>
 <body>
     <div class="container">
