@@ -49,7 +49,7 @@ function hasPriorityCourse($conn, $facultyID, $courseID) {
 
 function hasCourseClashes($conn, $facultyID, $startTime, $endTime,$day) {
     $clashQuery = "SELECT SectionID FROM section WHERE FacultyID = '$facultyID' 
-                     AND Day = '$day' AND ((startTime >= '$startTime' AND startTime <= '$endTime') 
+                    AND Day = '$day' AND ((startTime >= '$startTime' AND startTime <= '$endTime') 
                     OR (endTime > '$startTime' AND endTime < '$endTime'))";
     $clashResult = mysqli_query($conn, $clashQuery);
 
@@ -67,7 +67,7 @@ elseif (isset($_POST['btnGenerate'])) {
     $resetAssignmentsQuery = "UPDATE section SET FacultyID = NULL";
     mysqli_query($conn, $resetAssignmentsQuery);
 
-    $facultyQuery = "SELECT FacultyID, FacultyName FROM faculty ORDER BY TotalHours ASC";
+    $facultyQuery = "SELECT FacultyID, FacultyName FROM faculty ORDER BY FacultyID DESC, TotalHours ASC";
     $facultyResult = mysqli_query($conn, $facultyQuery);
 
     if ($facultyResult) {
@@ -92,7 +92,16 @@ elseif (isset($_POST['btnGenerate'])) {
                             if (!hasCourseClashes($conn, $facultyID, $startTime, $endTime,$day)) {
 
                                 $totalHours = getFacultyTotalHours($conn, $facultyID);
-                                if ($totalHours <= 13) {
+
+                                $q= "SELECT SUM(TIME_TO_SEC(TIMEDIFF(endTime, startTime))) AS TotalHours 
+                                    FROM section 
+                                    WHERE SectionID = '$sectionID'";
+                                    $r = mysqli_query($conn, $q);
+                                    $r1 = mysqli_fetch_assoc($r);
+                                    $time = $r1['TotalHours'];
+                                    $hour = $time / 3600;
+
+                                if (($totalHours + $hour) <= 16) {
 
                                     $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
                                     mysqli_query($conn, $assignSectionQuery);
@@ -122,7 +131,7 @@ elseif (isset($_POST['btnGenerate'])) {
         }
     }
 
-    $facultyQuery1 = "SELECT FacultyID, FacultyName FROM faculty ORDER BY TotalHours ASC";
+    $facultyQuery1 = "SELECT FacultyID, FacultyName FROM faculty ORDER BY FacultyID DESC, TotalHours ASC";
     $facultyResult1 = mysqli_query($conn, $facultyQuery1);
 
     if ($facultyResult1) {
@@ -147,7 +156,15 @@ elseif (isset($_POST['btnGenerate'])) {
 
                             $totalHours = getFacultyTotalHours($conn, $facultyID);
 
-                            if ($totalHours <= 13) {
+                                $q= "SELECT SUM(TIME_TO_SEC(TIMEDIFF(endTime, startTime))) AS TotalHours 
+                                FROM section 
+                                WHERE SectionID = '$sectionID'";
+                                $r = mysqli_query($conn, $q);
+                                $r1 = mysqli_fetch_assoc($r);
+                                $time = $r1['TotalHours'];
+                                $hour = $time / 3600;
+                                    
+                                if (($totalHours + $hour) <= 16) {
                                 $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
                                 mysqli_query($conn, $assignSectionQuery);
 
@@ -175,7 +192,7 @@ elseif (isset($_POST['btnGenerate'])) {
         }
     }
 
-    $facultyQuery2 = "SELECT FacultyID, FacultyName FROM faculty ORDER BY TotalHours ASC";
+    $facultyQuery2 = "SELECT FacultyID, FacultyName FROM faculty ORDER BY FacultyID DESC, TotalHours ASC";
     $facultyResult2 = mysqli_query($conn, $facultyQuery2);
 
     if ($facultyResult2) {
@@ -197,8 +214,15 @@ elseif (isset($_POST['btnGenerate'])) {
                     if (!hasCourseClashes($conn, $facultyID, $startTime, $endTime,$day)) {
 
                         $totalHours = getFacultyTotalHours($conn, $facultyID);
-                        if ($totalHours <= 13) {
-
+                        $q= "SELECT SUM(TIME_TO_SEC(TIMEDIFF(endTime, startTime))) AS TotalHours 
+                        FROM section 
+                        WHERE SectionID = '$sectionID'";
+                        $r = mysqli_query($conn, $q);
+                        $r1 = mysqli_fetch_assoc($r);
+                        $time = $r1['TotalHours'];
+                        $hour = $time / 3600;
+                                    
+                        if (($totalHours + $hour) <= 16) {
                             $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
                             mysqli_query($conn, $assignSectionQuery);
 
@@ -226,31 +250,25 @@ elseif (isset($_POST['btnGenerate'])) {
     }
 }
 
-elseif (isset($_POST["search"])) {
+elseif (isset($_POST["btnSearch"])) {
     $facultyName = $_POST["search"];
 
-    $sql= "select * from faculty where FacultyName='$facultyName'";
+    $sql = "SELECT * FROM faculty WHERE FacultyName='$facultyName'";
     $result = mysqli_query($conn, $sql);
 
-    if(!empty($facultyName) && mysqli_num_rows($result) > 0) {
+    if (!empty($facultyName) && mysqli_num_rows($result) > 0) {
         echo "<center><h2>Data for Faculty Name:</h2> $facultyName </center>";
 
         echo '<table border="1">
-            <tr>
-                <th>Day</th>
-                <th>8AM-9:30AM</th>
-                <th>8AM-10AM</th>
-                <th>8AM-11AM</th>
-                <th>9:30AM-11AM</th>
-                <th>10AM-12PM</th>
-                <th>11AM-12:30PM</th>
-                <th>11AM-2PM</th>
-                <th>12PM-2PM</th>
-                <th>12:30PM-2PM</th>
-                <th>2PM-3:30PM</th>
-                <th>2PM-4PM</th>
-                <th>2PM-5PM</th>
-            </tr>';
+                <tr>
+                    <th>Day\Time</th>
+                    <th>8AM-9:30AM</th>
+                    <th>9:30AM-11AM</th>
+                    <th>11AM-12:30PM</th>
+                    <th>12:30PM-2PM</th>
+                    <th>2PM-3:30PM</th>
+                    <th>2PM-5PM</th>
+                </tr>';
 
         $days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
 
@@ -258,32 +276,34 @@ elseif (isset($_POST["search"])) {
             echo "<tr><th>$day</th>";
 
             $timeSlots = [
-                "08:00:00-09:30:00", "08:00:00-10:00:00", "08:00:00-11:00:00",
-                "09:30:00-11:00:00", "10:00:00-12:00:00", "11:00:00-12:30:00",
-                "11:00:00-14:00:00", "12:00:00-14:00:00", "12:30:00-14:00:00", 
-                "14:00:00-15:30:00", "14:00:00-16:00:00", "14:00:00-17:00:00",
+                "08:00:00-09:30:00", "09:30:00-11:00:00",
+                "11:00:00-12:30:00", "12:30:00-14:00:00",
+                "14:00:00-15:30:00", "14:00:00-17:00:00",
             ];
 
             foreach ($timeSlots as $timeSlot) {
                 list($startTime, $endTime) = explode('-', $timeSlot);
 
-                $query = "SELECT c.CourseName, s.Sec 
+                $query = "SELECT c.CourseName, s.Sec, s.startTime, s.endTime 
                         FROM section s
                         JOIN course c ON s.CourseID = c.CourseID
                         JOIN faculty f ON s.FacultyID = f.FacultyID
                         WHERE s.Day = '$day' 
-                        AND s.startTime = '$startTime' 
-                        AND s.endTime = '$endTime' 
+                        AND ('$startTime' > s.startTime AND '$startTime' < s.endTime OR '$endTime' > s.startTime AND '$endTime' < s.endTime)
                         AND f.FacultyName = '$facultyName'";
+
                 $result = mysqli_query($conn, $query);
 
-                if ($result && $row = mysqli_fetch_assoc($result)) {
+                echo "<td>";
+
+                while ($row = mysqli_fetch_assoc($result)) {
                     $courseName = $row['CourseName'];
                     $section = $row['Sec'];
-                    echo "<td>$courseName [$section]</td>";
-                } else {
-                    echo "<td></td>";
+                    $classTime = $row['startTime'] . '-' . $row['endTime'];
+                    echo "$courseName [$section]<br>[Time: $classTime]<br>";
                 }
+
+                echo "</td>";
             }
 
             echo "</tr>";
@@ -292,6 +312,7 @@ elseif (isset($_POST["search"])) {
         echo '</table>';
     }
 }
+
 
     if(isset($_POST['del'])) {
         $SectionID = $_POST['del'];
@@ -344,7 +365,7 @@ elseif (isset($_POST["search"])) {
         $day = $sectionDetails['Day'];
         $start = $sectionDetails['startTime'];
         $end = $sectionDetails['endTime'];
-    
+
         // Check if the faculty has time clashes
         $checkClashesQuery = "SELECT SectionID FROM section WHERE FacultyID = '$facultyID'";
         $clashesResult = mysqli_query($conn, $checkClashesQuery);
@@ -390,12 +411,13 @@ elseif (isset($_POST["search"])) {
     <title>Course Assignment</title>
     <link rel="stylesheet" href="CSS/TryAgain.css">
 </head>
+
 <body>
 
     <form method="POST">
         <button type="submit" name="btnGenerate">Generate Section</button>
 
-<?php
+        <?php
 include('dbConnect.php');
         echo "<h1>Total Hours:</h1>";
         // Query to get all faculty members
@@ -480,7 +502,7 @@ include('dbConnect.php');
         LEFT JOIN
             faculty ON section.FacultyID = faculty.FacultyID
         JOIN
-            course ON section.CourseID = course.CourseID ORDER BY faculty.FacultyName,section.Day,course.CourseName DESC";
+            course ON section.CourseID = course.CourseID ORDER BY faculty.FacultyName ASC,course.CourseName ASC";
 
         $result = mysqli_query($conn, $sql);
 
@@ -506,7 +528,7 @@ include('dbConnect.php');
         echo '</table>';
 
     ?>
-</form>
+    </form>
 </body>
 
 </html>

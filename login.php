@@ -34,12 +34,12 @@ if(isset($_POST['login']))
     }
     else
     {
-        echo "Try Again";
+        echo "<script>alert('Wrong password. Please try again.');</script>";
     }
 }
     else
     {
-        echo "Please fill in all the fields.";
+        echo "<script>alert('Please fill in all the fields.');</script>";
     }
 }
 

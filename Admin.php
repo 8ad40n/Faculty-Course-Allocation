@@ -67,7 +67,7 @@ elseif (isset($_POST['btnGenerate'])) {
     $resetAssignmentsQuery = "UPDATE section SET FacultyID = NULL";
     mysqli_query($conn, $resetAssignmentsQuery);
 
-    $facultyQuery = "SELECT FacultyID, FacultyName FROM faculty ORDER BY TotalHours ASC";
+    $facultyQuery = "SELECT FacultyID, FacultyName FROM faculty ORDER BY FacultyID ASC, TotalHours ASC";
     $facultyResult = mysqli_query($conn, $facultyQuery);
 
     if ($facultyResult) {
@@ -131,7 +131,7 @@ elseif (isset($_POST['btnGenerate'])) {
         }
     }
 
-    $facultyQuery1 = "SELECT FacultyID, FacultyName FROM faculty ORDER BY TotalHours ASC";
+    $facultyQuery1 = "SELECT FacultyID, FacultyName FROM faculty ORDER BY FacultyID ASC, TotalHours  ASC";
     $facultyResult1 = mysqli_query($conn, $facultyQuery1);
 
     if ($facultyResult1) {
@@ -262,18 +262,13 @@ elseif (isset($_POST["btnSearch"])) {
         echo '<table border="1">
             <tr>
                 <th>Day\Time</th>
-                <th>8AM-9:30AM</th>
-                <th>8AM-10AM</th>
-                <th>8AM-11AM</th>
-                <th>9:30AM-11AM</th>
-                <th>10AM-12PM</th>
-                <th>11AM-12:30PM</th>
-                <th>11AM-2PM</th>
-                <th>12PM-2PM</th>
-                <th>12:30PM-2PM</th>
-                <th>2PM-3:30PM</th>
-                <th>2PM-4PM</th>
-                <th>2PM-5PM</th>
+                <th colspan="6">8AM-11AM</th>
+                
+                <th colspan="6">11AM-2PM</th>
+                <th colspan="6">2PM-5PM</th>
+                
+                
+                
             </tr>';
 
         $days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
@@ -282,32 +277,37 @@ elseif (isset($_POST["btnSearch"])) {
             echo "<tr><th>$day</th>";
 
             $timeSlots = [
-                "08:00:00-09:30:00", "08:00:00-10:00:00", "08:00:00-11:00:00",
-                "09:30:00-11:00:00", "10:00:00-12:00:00", "11:00:00-12:30:00",
-                "11:00:00-14:00:00", "12:00:00-14:00:00", "12:30:00-14:00:00", 
-                "14:00:00-15:30:00", "14:00:00-16:00:00", "14:00:00-17:00:00",
+                "08:00:00-08:30:00", "08:30:00-09:00:00", "09:00:00-09:30:00", "09:30:00-10:00:00",
+                "10:00:00-10:30:00", "10:30:00-11:00:00", "11:00:00-11:30:00", "11:30:00-12:00:00",
+                "12:00:00-12:30:00", "12:30:00-13:00:00", "13:00:00-13:30:00", "13:30:00-14:00:00",
+                "14:00:00-14:30:00", "14:30:00-15:00:00", "15:00:00-15:30:00", "15:30:00-16:00:00",
+                "16:00:00-16:30:00", "16:30:00-17:00:00",
             ];
 
             foreach ($timeSlots as $timeSlot) {
                 list($startTime, $endTime) = explode('-', $timeSlot);
 
-                $query = "SELECT c.CourseName, s.Sec 
+                $query = "SELECT c.CourseName, s.Sec, s.startTime, s.endTime
                         FROM section s
                         JOIN course c ON s.CourseID = c.CourseID
                         JOIN faculty f ON s.FacultyID = f.FacultyID
                         WHERE s.Day = '$day' 
-                        AND s.startTime = '$startTime' 
-                        AND s.endTime = '$endTime' 
+                        AND '$startTime' BETWEEN s.startTime and s.endTime
+                        AND '$endTime' BETWEEN s.startTime and s.endTime
                         AND f.FacultyName = '$facultyName'";
                 $result = mysqli_query($conn, $query);
 
                 if ($result && $row = mysqli_fetch_assoc($result)) {
                     $courseName = $row['CourseName'];
                     $section = $row['Sec'];
-                    echo "<td>$courseName [$section]</td>";
+                    $classTime = $row['startTime'] . '-' . $row['endTime'];
+
+                    
+                    echo "<td >$courseName [$section]<br>[Time: $classTime] </td>";
                 } else {
                     echo "<td></td>";
                 }
+                
             }
 
             echo "</tr>";
@@ -414,12 +414,13 @@ elseif (isset($_POST["btnSearch"])) {
     <title>Course Assignment</title>
     <link rel="stylesheet" href="CSS/TryAgain.css">
 </head>
+
 <body>
 
     <form method="POST">
         <button type="submit" name="btnGenerate">Generate Section</button>
 
-<?php
+        <?php
 include('dbConnect.php');
         echo "<h1>Total Hours:</h1>";
         // Query to get all faculty members
@@ -530,7 +531,7 @@ include('dbConnect.php');
         echo '</table>';
 
     ?>
-</form>
+    </form>
 </body>
 
 </html>

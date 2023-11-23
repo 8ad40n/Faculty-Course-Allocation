@@ -53,8 +53,9 @@ if (isset($_POST['del'])) {
     $r= mysqli_fetch_assoc($res);
     $startDB= $r["startTime"];
     $endDB= $r["endTime"];
+    $dayDB = $r["Day"];
 
-    $updateSectionQuery = "UPDATE section 
+    $updateSectionQuery ="UPDATE section 
                           SET Day = '$day', startTime = '$start', endTime = '$end'
                           WHERE SectionID = '$sectionID' and startTime= '$startDB' and endTime='$endDB'";
     $result = mysqli_query($conn, $updateSectionQuery);
@@ -69,12 +70,14 @@ if (isset($_POST['del'])) {
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Edit Section</title>
 </head>
+
 <body>
     <form method="POST">
-        
+
         <table border="1">
             <tr>
                 <th>Section ID</th>
@@ -116,4 +119,5 @@ if (isset($_POST['del'])) {
         </table>
     </form>
 </body>
+
 </html>
