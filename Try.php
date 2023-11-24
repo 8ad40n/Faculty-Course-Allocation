@@ -284,12 +284,16 @@ elseif (isset($_POST["btnSearch"])) {
             foreach ($timeSlots as $timeSlot) {
                 list($startTime, $endTime) = explode('-', $timeSlot);
 
+                // $clashQuery = "SELECT SectionID FROM section WHERE FacultyID = '$facultyID' 
+                //     AND Day = '$day' AND ((startTime >= '$startTime' AND startTime <= '$endTime') 
+                //     OR (endTime > '$startTime' AND endTime < '$endTime'))";
+
                 $query = "SELECT c.CourseName, s.Sec, s.startTime, s.endTime 
                         FROM section s
                         JOIN course c ON s.CourseID = c.CourseID
                         JOIN faculty f ON s.FacultyID = f.FacultyID
                         WHERE s.Day = '$day' 
-                        AND ('$startTime' > s.startTime AND '$startTime' < s.endTime OR '$endTime' > s.startTime AND '$endTime' < s.endTime)
+                        AND ((startTime >= '$startTime' AND s.startTime <= '$endTime') OR (s.endTime > '$startTime' AND s.endTime < '$endTime'))
                         AND f.FacultyName = '$facultyName'";
 
                 $result = mysqli_query($conn, $query);
