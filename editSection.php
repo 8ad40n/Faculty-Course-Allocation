@@ -2,6 +2,7 @@
 include("dbConnect.php");
 include("AdminDashboard.php");
 echo "<center><h1>Edit Section:</h1></center>";
+
 if (isset($_POST['del'])) {
     $sectionID = $_POST['del'];
     $sql1 = "DELETE FROM section WHERE SectionID = '$sectionID'";
@@ -17,7 +18,7 @@ if (isset($_POST['del'])) {
     $sql1 = "SELECT section.*, course.CourseName 
              FROM section 
              JOIN course ON section.CourseID = course.CourseID
-             WHERE SectionID = '$sectionID'";
+             WHERE section.SectionID = '$sectionID'";
     $result = mysqli_query($conn, $sql1);
 
     if ($result && mysqli_num_rows($result) > 0) {
@@ -76,22 +77,22 @@ if (isset($_POST['del'])) {
 </head>
 
 <body>
-    <form method="POST">
+    <div class="main">
+        <form method="post">
+            <table border="1">
+                <tr>
+                    <th>Section ID</th>
+                    <th>Course ID</th>
+                    <th>Course Name</th>
+                    <th>Section</th>
+                    <th>Day</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th colspan="2">Operations</th>
+                    <!-- <th>Credit</th> -->
+                </tr>
 
-        <table border="1">
-            <tr>
-                <th>Section ID</th>
-                <th>Course ID</th>
-                <th>Course Name</th>
-                <th>Section</th>
-                <th>Day</th>
-                <th>Start Time</th>
-                <th>End Time</th>
-                <th colspan="2">Operations</th>
-                <!-- <th>Credit</th> -->
-            </tr>
-
-            <?php
+                <?php
             $sql = "SELECT section.*, course.CourseName 
                     FROM section 
                     JOIN course ON section.CourseID = course.CourseID
@@ -108,16 +109,17 @@ if (isset($_POST['del'])) {
                     echo "<td>" . $row["Day"] . "</td>";
                     echo "<td>" . $row["startTime"] . "</td>";
                     echo "<td>" . $row["endTime"] . "</td>";
-                    //echo "<td>" . $row["Credit"] . "</td>";
                     echo '<td><button type="submit" name="edit" value="' . $row["SectionID"] . '">Edit</button></td>';
                     echo '<td><button type="submit" name="del" value="' . $row["SectionID"] . '">Delete</button></td>';
+                    echo "</tr>";
                 }
             } else {
                 echo "<tr><td colspan='8'>No assignments found.</td></tr>";
             }
             ?>
-        </table>
-    </form>
+            </table>
+        </form>
+    </div>
 </body>
 
 </html>

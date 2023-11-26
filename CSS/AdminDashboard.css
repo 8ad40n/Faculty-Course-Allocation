@@ -1,8 +1,8 @@
 body {
   font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
 }
 
 header {
@@ -17,59 +17,50 @@ header img {
   max-width: 100%;
   height: auto;
   margin: auto; /* Centers the image horizontally */
-
 }
-/*Styling Navigation Bar*/ 
+/*Styling Navigation Bar*/
+
+/* 
 nav {
   position: sticky;
-  top: 80px; /* Adjust the top position to overlap the header slightly */
-  z-index: 999; /* Ensure the navigation bar stays on top of other elements */
+  top: 80px; 
+  z-index: 999; 
   background-color: #000102;
   color: white;
-  padding:6px;
+  padding: 6px;
   text-align: center;
 }
-/*top: 0; ensures that they stick to the top of the page.
-z-index: 1000; is added to ensure the header and nav are layered above other elements on the page.
 
-/* Defaut bullet point rmv kore ,nah dileo hoy*/
 nav ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-/*List er item modify korar jonno*/
 nav li {
-  display: inline-block;/* Make the list items display as inline-blocks to position them horizontally next to each other */
-  margin: 0 50px; 
-  /*The CSS property margin: 0 50px; sets the margins of an element to 0 pixels on the top and bottom, and 10 pixels on the left and right.*/
-}
-/*Styling inside items*/
-nav a {
- color: white;
-  text-decoration: none; /*removes default underline*/
-  font-size: 22px;
-  background-color: transparent; /* Set the default background color to transparent */
-  padding: 10px; /* Add some padding to create some space around the link text */
-  text-decoration: none; /* Remove the default underline from links */
+  display: inline-block; 
+  margin: 0 50px;
 
+}
+nav a {
+  color: white;
+  text-decoration: none; 
+  font-size: 22px;
+  background-color: transparent;
+  padding: 10px; 
+  text-decoration: none; 
 }
 
 nav a:hover {
-  background-color: #ef4a23; /* Change the background color  when hovering */
+  background-color: #ef4a23;
 
   line-height: 45px;
-  padding-left: 45px; 
-  padding-right: 45px;  
-  text-decoration: none; /* Remove the default underline from links */
-  color: #f6f8fa; /* Set the text color to dark blue */
-}
+  padding-left: 45px;
+  padding-right: 45px;
+  text-decoration: none; 
+  color: #f6f8fa;
+} */
 
-/* styling for the TryAgain page */
-
-
-/* Center the content of the form and add some top margin */
 form {
   text-align: center;
   margin-top: 20px;
@@ -81,7 +72,7 @@ button[name="btnGenerate"] {
   background-color: #4caf50;
   color: #fff;
   border: none;
-  border-radius: 5px; /*For rounded Corners*/
+  border-radius: 5px;
   cursor: pointer;
 }
 
@@ -93,38 +84,34 @@ button[name="btnGenerate"]:hover {
 button[name="edit"] {
   padding: 8px 16px;
   font-size: 14px;
-  background-color: #4caf50; 
+  background-color: #4caf50;
   color: #fff;
   border: none;
- border-radius: 5px;
- margin-left: 5px ;
- cursor: pointer;
- 
+  border-radius: 5px;
+  margin-left: 5px;
+  cursor: pointer;
 }
 
 button[name="edit"]:hover {
-  background-color: #45a049; 
+  background-color: #45a049;
   transform: scale(1.1);
 }
 
 button[name="del"] {
   padding: 8px 16px;
   font-size: 14px;
-  background-color: #f44336; 
+  background-color: #f44336;
   color: #fff;
   border: none;
   border-radius: 5px;
-  margin-left: 3px ;
+  margin-left: 3px;
   cursor: pointer;
 }
 
-
 button[name="del"]:hover {
-  background-color: #d32f2f; 
+  background-color: #d32f2f;
   transform: scale(1.1);
 }
-
-
 
 table {
   width: 100%;
@@ -132,7 +119,9 @@ table {
   margin-top: 20px;
 }
 
-table, th, td {
+table,
+th,
+td {
   border: 3px solid #ddd;
 }
 
@@ -144,12 +133,12 @@ td {
 }
 
 tr:hover {
-  background-color: #d6d7d6; 
+  background-color: #d6d7d6;
 }
 
 th {
-  background-color:rgb(32, 92, 165);
-  padding :15px;
+  background-color: rgb(32, 92, 165);
+  padding: 15px;
   color: white;
   font-size: 22px;
 }
@@ -157,14 +146,13 @@ th {
 button[name="logout"] {
   padding: 8px 16px;
   font-size: 14px;
-  background-color: #f44336; 
+  background-color: #f44336;
   color: #fff;
   border: none;
   border-radius: 5px;
-  margin-left: 3px ;
+  margin-left: 3px;
   cursor: pointer;
 }
-
 
 input {
   margin-bottom: 10px;
@@ -183,10 +171,54 @@ input:hover {
 button[name="EditSubmit"] {
   padding: 8px 16px;
   font-size: 14px;
-  background-color: rgb(18, 158, 97); 
+  background-color: rgb(18, 158, 97);
   color: #fff;
   border: none;
   border-radius: 5px;
-  margin-left: 3px ;
+  margin-left: 3px;
   cursor: pointer;
+}
+
+.sidenav {
+  position: sticky;
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: rgb(32, 92, 165);
+  overflow-x: hidden;
+  padding-top: 150px;
+  border-style: solid;
+}
+
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #eeeeee;
+  display: block;
+  padding-bottom: 25px;
+  border-style: solid;
+}
+
+.sidenav a:hover {
+  color: #e9e9e9;
+  background-color: #020101;
+}
+
+.main {
+  margin-left: 265px; /* Same as the width of the sidenav */
+  font-size: 20px; /* Increased text to enable scrolling */
+  padding: px 10px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {
+    padding-top: 15px;
+  }
+  .sidenav a {
+    font-size: 18px;
+  }
 }

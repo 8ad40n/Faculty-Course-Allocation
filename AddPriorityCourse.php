@@ -63,10 +63,10 @@ if (isset($_POST['submit'])) {
 </head>
 
 <body>
+    <div class="main">
+        <form method="post">
 
-    <form method="post">
-
-        <?php
+            <?php
         include("dbConnect.php");
 
         echo "<fieldset>
@@ -85,10 +85,10 @@ if (isset($_POST['submit'])) {
             echo "No faculty found.";
         }
         ?>
-        <br>
-        </fieldset>
+            <br>
+            </fieldset>
 
-        <?php
+            <?php
 
         echo "<fieldset>
             <legend>
@@ -111,20 +111,20 @@ if (isset($_POST['submit'])) {
             echo "No courses found.";
             }
             ?>
-        <br>
-        <input type="submit" name="submit" value="Submit">
-        </fieldset>
-    </form>
+            <br>
+            <input type="submit" name="submit" value="Submit">
+            </fieldset>
+        </form>
 
-    <table border="1">
-        <tr>
-            <th>Faculty ID</th>
-            <th>Course ID</th>
-            <th>Course Name</th>
-            <th>Actions</th>
+        <table border="1">
+            <tr>
+                <th>Faculty ID</th>
+                <th>Course ID</th>
+                <th>Course Name</th>
+                <th>Actions</th>
 
-        </tr>
-        <?php
+            </tr>
+            <?php
         $sql = "SELECT prioritycourses.*, course.CourseName FROM prioritycourses 
         JOIN course ON prioritycourses.CourseID = course.CourseID;";
         $res = mysqli_query($conn, $sql);
@@ -148,8 +148,9 @@ if (isset($_POST['submit'])) {
 
         
         ?>
-    </table>
+        </table>
 
+    </div>
 
 </body>
 

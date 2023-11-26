@@ -257,6 +257,7 @@ elseif (isset($_POST["btnSearch"])) {
     $result = mysqli_query($conn, $sql);
 
     if(!empty($facultyName) && mysqli_num_rows($result) > 0) {
+        echo "<div class='main'>";
         echo "<center><h2>Data for Faculty Name:</h2> $facultyName </center>";
 
         echo '<table border="1">
@@ -314,6 +315,7 @@ elseif (isset($_POST["btnSearch"])) {
         }
 
         echo '</table>';
+        echo '</div>';
     }
 }
 
@@ -416,11 +418,12 @@ elseif (isset($_POST["btnSearch"])) {
 </head>
 
 <body>
+    <div class="main">
 
-    <form method="POST">
-        <button type="submit" name="btnGenerate">Generate Section</button>
+        <form method="POST">
+            <button type="submit" name="btnGenerate">Generate Section</button>
 
-        <?php
+            <?php
 include('dbConnect.php');
         echo "<h1>Total Hours:</h1>";
         // Query to get all faculty members
@@ -531,7 +534,8 @@ include('dbConnect.php');
         echo '</table>';
 
     ?>
-    </form>
+        </form>
+    </div>
 </body>
 
 </html>

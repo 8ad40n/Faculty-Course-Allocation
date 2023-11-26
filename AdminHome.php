@@ -1,21 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    
+
     <link rel="stylesheet" href="CSS/AdminHome.css">
 
 </head>
+
 <body>
-<?php
+    <?php
 include("AdminDashboard.php");
 ?>
-<form method="post">
+    <div class="main">
 
-<label for="Welcome"><h1>Welcome!</h1></label>
-<?php
+        <form method="post">
+
+            <label for="Welcome">
+                <h1>Welcome!</h1>
+            </label>
+            <?php
 include("dbConnect.php");
 
 session_start();
@@ -31,11 +38,11 @@ $data = mysqli_fetch_assoc($res);
 
     echo "<fieldset>";
     ?>
-    <div class="content">
-    <img src="Images/<?php echo $image ?>"><br>
-    </div>
+            <div class="content">
+                <img src="Images/<?php echo $image ?>"><br>
+            </div>
 
-    <?php
+            <?php
     echo "
     <label><b>Name:</b>$name<br></label>
     <label><b>ID:</b>$id<br></label>
@@ -45,10 +52,12 @@ $data = mysqli_fetch_assoc($res);
 
 ?>
 
-<br>
-<button name="logout">Logout</button>
-</form>
+            <br>
+            <button name="logout">Logout</button>
+        </form>
+    </div>
 </body>
+
 </html>
 
 <?php

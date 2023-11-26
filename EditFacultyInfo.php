@@ -4,19 +4,21 @@
 <head>
     <title>Edit Faculty</title>
     <style>
-        img{
-            height: 80px;
-            width: 80px;
-        }
+    img {
+        height: 80px;
+        width: 80px;
+    }
     </style>
     <link rel="stylesheet" href="CSS/AdminDashboard.css">
 </head>
 
 <body>
 
+
     <?php 
     include("dbConnect.php");
     include("AdminDashboard.php");
+    echo '<div class="main">';
 
     echo "<center><h1>Faculty Info:</h1></center>";
 
@@ -79,7 +81,7 @@
             <th>Faculty Name</th>
             <th>Email</th>
             <th>Image</th>
-            <th colspan= "2">Action</th>
+            <th colspan="2">Action</th>
         </tr>
         <?php
         $sql = "SELECT * FROM faculty;";
@@ -91,8 +93,8 @@
                 echo "<td>" . $r["FacultyName"] . "</td>";
                 echo "<td>" . $r["Email"] . "</td>";
                 ?>
-                <td><img src="Images/<?php echo $r["Picture"] ?>"><br></td>
-                <?php
+        <td><img src="Images/<?php echo $r["Picture"] ?>"><br></td>
+        <?php
                 echo '<td>
                         <form method="post">
                             <button type="submit" name="edit" value="' . $r["FacultyID"] . '">Edit</button>
@@ -110,6 +112,7 @@
         }
         ?>
     </table>
+    </div>
 </body>
 
 </html>
