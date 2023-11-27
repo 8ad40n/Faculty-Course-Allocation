@@ -11,7 +11,7 @@
 
 
 <body>
-    <header>
+    <header class="aiubPic">
         <img src="Images/AIUB.png" alt="Header Image">
     </header>
     <nav>

@@ -253,62 +253,65 @@ elseif (isset($_POST['btnGenerate'])) {
 elseif (isset($_POST["btnSearch"])) {
     $facultyName = $_POST["search"];
 
-    $sql= "select * from faculty where FacultyName='$facultyName'";
+    $sql = "SELECT * FROM faculty WHERE FacultyName='$facultyName'";
     $result = mysqli_query($conn, $sql);
 
-    if(!empty($facultyName) && mysqli_num_rows($result) > 0) {
+    if (!empty($facultyName) && mysqli_num_rows($result) > 0) {
         echo "<div class='main'>";
         echo "<center><h2>Data for Faculty Name:</h2> $facultyName </center>";
 
         echo '<table border="1">
-            <tr>
-                <th>Day\Time</th>
-                <th colspan="6">8AM-11AM</th>
-                
-                <th colspan="6">11AM-2PM</th>
-                <th colspan="6">2PM-5PM</th>
-                
-                
-                
-            </tr>';
+                <tr>
+                    <th>Time</th>
+                    <th>Sunday</th>
+                    <th>Monday</th>
+                    <th>Tuesday</th>
+                    <th>Wednesday</th>
+                    <th>Thursday</th>
+                </tr>';
 
-        $days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
+        $timeSlots = [
+            "08:00:00-08:30:00", "08:30:00-09:00:00", "09:00:00-09:30:00", "09:30:00-10:00:00",
+            "10:00:00-10:30:00", "10:30:00-11:00:00", "11:00:00-11:30:00", "11:30:00-12:00:00",
+            "12:00:00-12:30:00", "12:30:00-13:00:00", "13:00:00-13:30:00", "13:30:00-14:00:00",
+            "14:00:00-14:30:00", "14:30:00-15:00:00", "15:00:00-15:30:00", "15:30:00-16:00:00",
+            "16:00:00-16:30:00", "16:30:00-17:00:00",
+        ];
+        // $time = [
+        //     "08:00 AM", "08:30 AM", "09:00 AM", "09:30 AM",
+        //     "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM",
+        //     "12:00 PM", "12:30 PM", "01:00 PM", "01:30 PM",
+        //     "02:00 PM", "02:30 PM", "03:00 PM", "03:30 PM",
+        //     "04:00 PM", "04:30 PM",
+        // ];
 
-        foreach ($days as $day) {
-            echo "<tr><th>$day</th>";
+        foreach ($timeSlots as $timeSlot) {
+            echo "<tr><th>$timeSlot</th>";
 
-            $timeSlots = [
-                "08:00:00-08:30:00", "08:30:00-09:00:00", "09:00:00-09:30:00", "09:30:00-10:00:00",
-                "10:00:00-10:30:00", "10:30:00-11:00:00", "11:00:00-11:30:00", "11:30:00-12:00:00",
-                "12:00:00-12:30:00", "12:30:00-13:00:00", "13:00:00-13:30:00", "13:30:00-14:00:00",
-                "14:00:00-14:30:00", "14:30:00-15:00:00", "15:00:00-15:30:00", "15:30:00-16:00:00",
-                "16:00:00-16:30:00", "16:30:00-17:00:00",
-            ];
+            $days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
 
-            foreach ($timeSlots as $timeSlot) {
-                list($startTime, $endTime) = explode('-', $timeSlot);
+            foreach ($days as $day) {
+                echo "<td>";
 
                 $query = "SELECT c.CourseName, s.Sec, s.startTime, s.endTime
-                        FROM section s
-                        JOIN course c ON s.CourseID = c.CourseID
-                        JOIN faculty f ON s.FacultyID = f.FacultyID
-                        WHERE s.Day = '$day' 
-                        AND '$startTime' BETWEEN s.startTime and s.endTime
-                        AND '$endTime' BETWEEN s.startTime and s.endTime
-                        AND f.FacultyName = '$facultyName'";
+                          FROM section s
+                          JOIN course c ON s.CourseID = c.CourseID
+                          JOIN faculty f ON s.FacultyID = f.FacultyID
+                          WHERE s.Day = '$day' 
+                          AND ('$timeSlot' BETWEEN s.startTime AND s.endTime)
+                          AND f.FacultyName = '$facultyName'";
                 $result = mysqli_query($conn, $query);
 
-                if ($result && $row = mysqli_fetch_assoc($result)) {
-                    $courseName = $row['CourseName'];
-                    $section = $row['Sec'];
-                    $classTime = $row['startTime'] . '-' . $row['endTime'];
-
-                    
-                    echo "<td >$courseName [$section]<br>[Time: $classTime] </td>";
-                } else {
-                    echo "<td></td>";
+                if ($result && mysqli_num_rows($result) > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $courseName = $row['CourseName'];
+                        $section = $row['Sec'];
+                        $classTime = $row['startTime'] . '-' . $row['endTime'];
+                        echo "$courseName [$section]<br>[Time: $classTime]";
+                    }
                 }
-                
+
+                echo "</td>";
             }
 
             echo "</tr>";
