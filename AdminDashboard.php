@@ -19,7 +19,8 @@
             <h3>
                 <div class="sidenav">
                     <li><a href="AdminHome.php">Home</a></li>
-                    <li><a href="Admin.php">Sections</a></li>
+                    <li><a href="Admin.php">Allocate Courses</a></li>
+                    <li><a href="tsf_Admin.php">Faculty TSF</a></li>
                     <li><a href="addCourse.php">Add Course</a></li>
                     <li><a href="AddSection.php">Add Section</a></li>
                     <li><a href="editSection.php">Edit Section</a></li>

@@ -86,7 +86,7 @@ elseif (isset($_POST['btnGenerate'])) {
                     $endTime = $course['endTime'];
 
                     if (isPriorityTimeAvailable($conn, $facultyID, $day, $startTime, $endTime)) {
-
+                    
                         if (hasPriorityCourse($conn, $facultyID, $courseID)) {
 
                             if (!hasCourseClashes($conn, $facultyID, $startTime, $endTime,$day)) {
@@ -149,28 +149,29 @@ elseif (isset($_POST['btnGenerate'])) {
                     $startTime = $course['startTime'];
                     $endTime = $course['endTime'];
 
-                    
+
                     if (hasPriorityCourse($conn, $facultyID, $courseID)) {
 
                         if (!hasCourseClashes($conn, $facultyID, $startTime, $endTime,$day)) {
 
                             $totalHours = getFacultyTotalHours($conn, $facultyID);
 
-                                $q= "SELECT SUM(TIME_TO_SEC(TIMEDIFF(endTime, startTime))) AS TotalHours 
+                            $q= "SELECT SUM(TIME_TO_SEC(TIMEDIFF(endTime, startTime))) AS TotalHours 
                                 FROM section 
                                 WHERE SectionID = '$sectionID'";
                                 $r = mysqli_query($conn, $q);
                                 $r1 = mysqli_fetch_assoc($r);
                                 $time = $r1['TotalHours'];
                                 $hour = $time / 3600;
-                                    
-                                if (($totalHours + $hour) <= 16) {
+
+                            if (($totalHours + $hour) <= 16) {
+
                                 $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
                                 mysqli_query($conn, $assignSectionQuery);
 
                                 $totalHoursQuery = "SELECT SUM(TIME_TO_SEC(TIMEDIFF(endTime, startTime))) AS TotalHours 
-                                                    FROM section 
-                                                    WHERE FacultyID = '$facultyID'";
+                                FROM section 
+                                WHERE FacultyID = '$facultyID'";
 
                                 $totalHoursResult = mysqli_query($conn, $totalHoursQuery);
 
@@ -182,10 +183,12 @@ elseif (isset($_POST['btnGenerate'])) {
 
                                     $updateTotalHoursQuery = "UPDATE faculty SET TotalHours = '$totalHoursInHours' WHERE FacultyID = '$facultyID'";
                                     mysqli_query($conn, $updateTotalHoursQuery);
-                                }
+                                }                                    
+
                             }
                         }
                     }
+                    
                 
                 }
             }
@@ -250,77 +253,77 @@ elseif (isset($_POST['btnGenerate'])) {
     }
 }
 
-elseif (isset($_POST["btnSearch"])) {
-    $facultyName = $_POST["search"];
+// elseif (isset($_POST["btnSearch"])) {
+//     $facultyName = $_POST["search"];
 
-    $sql = "SELECT * FROM faculty WHERE FacultyName='$facultyName'";
-    $result = mysqli_query($conn, $sql);
+//     $sql = "SELECT * FROM faculty WHERE FacultyName='$facultyName'";
+//     $result = mysqli_query($conn, $sql);
 
-    if (!empty($facultyName) && mysqli_num_rows($result) > 0) {
-        echo "<div class='main'>";
-        echo "<center><h2>Data for Faculty Name:</h2> $facultyName </center>";
+//     if (!empty($facultyName) && mysqli_num_rows($result) > 0) {
+//         echo "<div class='main'>";
+//         echo "<center><h2>Data for Faculty Name:</h2> $facultyName </center>";
 
-        echo '<table border="1">
-                <tr>
-                    <th>Time</th>
-                    <th>Sunday</th>
-                    <th>Monday</th>
-                    <th>Tuesday</th>
-                    <th>Wednesday</th>
-                    <th>Thursday</th>
-                </tr>';
+//         echo '<table border="1">
+//                 <tr>
+//                     <th>Time</th>
+//                     <th>Sunday</th>
+//                     <th>Monday</th>
+//                     <th>Tuesday</th>
+//                     <th>Wednesday</th>
+//                     <th>Thursday</th>
+//                 </tr>';
 
-        $timeSlots = [
-            "08:00:00-08:30:00", "08:30:00-09:00:00", "09:00:00-09:30:00", "09:30:00-10:00:00",
-            "10:00:00-10:30:00", "10:30:00-11:00:00", "11:00:00-11:30:00", "11:30:00-12:00:00",
-            "12:00:00-12:30:00", "12:30:00-13:00:00", "13:00:00-13:30:00", "13:30:00-14:00:00",
-            "14:00:00-14:30:00", "14:30:00-15:00:00", "15:00:00-15:30:00", "15:30:00-16:00:00",
-            "16:00:00-16:30:00", "16:30:00-17:00:00",
-        ];
-        // $time = [
-        //     "08:00 AM", "08:30 AM", "09:00 AM", "09:30 AM",
-        //     "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM",
-        //     "12:00 PM", "12:30 PM", "01:00 PM", "01:30 PM",
-        //     "02:00 PM", "02:30 PM", "03:00 PM", "03:30 PM",
-        //     "04:00 PM", "04:30 PM",
-        // ];
+//         $timeSlots = [
+//             "08:00:00-08:30:00", "08:30:00-09:00:00", "09:00:00-09:30:00", "09:30:00-10:00:00",
+//             "10:00:00-10:30:00", "10:30:00-11:00:00", "11:00:00-11:30:00", "11:30:00-12:00:00",
+//             "12:00:00-12:30:00", "12:30:00-13:00:00", "13:00:00-13:30:00", "13:30:00-14:00:00",
+//             "14:00:00-14:30:00", "14:30:00-15:00:00", "15:00:00-15:30:00", "15:30:00-16:00:00",
+//             "16:00:00-16:30:00", "16:30:00-17:00:00",
+//         ];
+//         // $time = [
+//         //     "08:00 AM", "08:30 AM", "09:00 AM", "09:30 AM",
+//         //     "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM",
+//         //     "12:00 PM", "12:30 PM", "01:00 PM", "01:30 PM",
+//         //     "02:00 PM", "02:30 PM", "03:00 PM", "03:30 PM",
+//         //     "04:00 PM", "04:30 PM",
+//         // ];
 
-        foreach ($timeSlots as $timeSlot) {
-            echo "<tr><th>$timeSlot</th>";
+//         foreach ($timeSlots as $timeSlot) {
+//             echo "<tr><th>$timeSlot</th>";
 
-            $days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
+//             $days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
 
-            foreach ($days as $day) {
-                echo "<td>";
+//             foreach ($days as $day) {
+                
 
-                $query = "SELECT c.CourseName, s.Sec, s.startTime, s.endTime
-                          FROM section s
-                          JOIN course c ON s.CourseID = c.CourseID
-                          JOIN faculty f ON s.FacultyID = f.FacultyID
-                          WHERE s.Day = '$day' 
-                          AND ('$timeSlot' BETWEEN s.startTime AND s.endTime)
-                          AND f.FacultyName = '$facultyName'";
-                $result = mysqli_query($conn, $query);
+//                 $query = "SELECT c.CourseName, s.Sec, s.startTime, s.endTime
+//                           FROM section s
+//                           JOIN course c ON s.CourseID = c.CourseID
+//                           JOIN faculty f ON s.FacultyID = f.FacultyID
+//                           WHERE s.Day = '$day' 
+//                           AND ('$timeSlot' BETWEEN s.startTime AND s.endTime)
+//                           AND f.FacultyName = '$facultyName'";
+//                 $result = mysqli_query($conn, $query);
+//                 echo "<td rowspan='3'>";
+//                 if ($result && mysqli_num_rows($result) > 0) {
+//                     while ($row = mysqli_fetch_assoc($result)) {
+//                         $courseName = $row['CourseName'];
+//                         $section = $row['Sec'];
+//                         $classTime = $row['startTime'] . '-' . $row['endTime'];
+//                         echo "$courseName [$section]<br>[Time: $classTime]";
+//                     }
+//                 }
 
-                if ($result && mysqli_num_rows($result) > 0) {
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $courseName = $row['CourseName'];
-                        $section = $row['Sec'];
-                        $classTime = $row['startTime'] . '-' . $row['endTime'];
-                        echo "$courseName [$section]<br>[Time: $classTime]";
-                    }
-                }
+//                 echo "</td>";
+//             }
 
-                echo "</td>";
-            }
+//             echo "</tr>";
+//         }
 
-            echo "</tr>";
-        }
-
-        echo '</table>';
-        echo '</div>';
-    }
-}
+//         echo '</table>';
+//         echo '</div>';
+//     }
+// }
 
     if(isset($_POST['del'])) {
         $SectionID = $_POST['del'];
@@ -418,6 +421,7 @@ elseif (isset($_POST["btnSearch"])) {
 <head>
     <title>Course Assignment</title>
     <link rel="stylesheet" href="CSS/TryAgain.css">
+
 </head>
 
 <body>
@@ -476,14 +480,18 @@ include('dbConnect.php');
         <br><br>
         <button name='btnClear'>Clear All</button><br><br>";
 
-        echo "
+        // echo "
         
-        <input type='text' name='search' placeholder='Search by faculty name'><br>";
-        echo "<button name='btnSearch'>Search</button>";
+        // <input type='text' name='search' id='search' placeholder='Search by faculty name'><br>";
+        
+        // echo "<button name='btnSearch'>Search</button>";
 
 
         echo "<h1>Data:</h1>";
-        echo '<table border="1">
+
+        echo "<input type='text' class='form-control' placeholder='Search...' id='search_field'>";
+        
+        echo '<table id="myTable" border="1">
             <tr>
                 <th>Course ID</th>
                 <th>Course Name</th>
@@ -539,6 +547,28 @@ include('dbConnect.php');
     ?>
         </form>
     </div>
+
+    <script src='https://code.jquery.com/jquery-1.12.4.min.js'></script>
+
+    <script src="js/index.js"></script>
+
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36251023-1']);
+    _gaq.push(['_setDomainName', 'jqueryscript.net']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') +
+            '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
 </body>
 
 </html>
