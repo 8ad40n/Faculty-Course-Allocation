@@ -12,7 +12,8 @@
 
 <body>
     <header class="aiubPic">
-        <img src="Images/AIUB.png" alt="Header Image">
+        <a href="AdminHome.php"><img src="Images/AIUB.png" alt="Header Image"></a>
+
     </header>
     <nav>
         <ul>

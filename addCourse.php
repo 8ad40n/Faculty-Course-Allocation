@@ -9,7 +9,9 @@ if (isset($_POST["btnAdd"])) {
     $credit = $_POST["credit"];
 
     if (empty($courseID) || empty($name) || empty($dept) || empty($credit)) {
-        echo "Please fill in all the fields.";
+        echo "<script>alert('Please fill in all the fields.');</script>";
+
+        
     } else {
         $verifyQuery = "SELECT * FROM course WHERE CourseID = '$courseID'";
         $res = mysqli_query($conn, $verifyQuery);
@@ -20,12 +22,13 @@ if (isset($_POST["btnAdd"])) {
             $r = mysqli_query($conn, $addCourseQuery);
 
             if ($r) {
-                echo "New course added successfully.";
+                echo "<script>alert('New course added successfully.');</script>";
             } else {
                 echo "Error adding course: " . mysqli_error($conn);
             }
         } else {
-            echo "This course already exists.";
+            echo "<script>alert('This course already exists.');</script>";
+            
         }
 
     }
