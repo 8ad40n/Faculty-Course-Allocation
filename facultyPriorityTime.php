@@ -9,7 +9,8 @@ if (isset($_POST["add"])) {
     $end = $_POST["end"];
 
     if (empty($start) || empty($end) || empty($_POST['selectedFaculty'])) {
-        echo "Please fill in all the fields.";
+        echo "<script>alert('Please fill in all the fields.');</script>";
+
     } else {
         $sql = "SELECT Day FROM prioritytime WHERE FacultyID='$facultyID' and Day ='$day'";
         $result = mysqli_query($conn, $sql);
@@ -19,12 +20,15 @@ if (isset($_POST["add"])) {
             $addSectionResult = mysqli_query($conn, $addSectionQuery);
             
             if ($addSectionResult) {
-                echo "Priority Time has been added!";
+                echo "<script>alert('Priority Time for $facultyID has been added!');</script>";
+
             } else {
-                echo "Invalid!";
+                echo "<script>alert('Invalid!');</script>";
+
             }
         } else {
-            echo "You already have a priority time set.";
+            echo "<script>alert('Invalid!');</script>";
+
         }
     }
 }

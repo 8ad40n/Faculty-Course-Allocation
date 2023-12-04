@@ -9,9 +9,10 @@ if (isset($_POST['del'])) {
     $result = mysqli_query($conn, $sql1);
 
     if ($result) {
-        echo $sectionID . " has been deleted!";
+        echo "<script>alert('$sectionID has been deleted!');</script>";
     } else {
-        echo "Try Again!";
+        echo "<script>alert('Try Again!');</script>";
+
     }
 } elseif (isset($_POST['edit'])) {
     $sectionID = $_POST['edit'];
@@ -62,9 +63,11 @@ if (isset($_POST['del'])) {
     $result = mysqli_query($conn, $updateSectionQuery);
 
     if ($result) {
-        echo $sectionID . " has been updated";
+        echo "<script>alert('$sectionID has been updated');</script>";
+
     } else {
-        echo "Invalid Section ID";
+        echo "<script>alert('Invalid Section ID');</script>";
+
     }
 }
 ?>

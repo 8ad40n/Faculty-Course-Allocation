@@ -35,6 +35,9 @@
 
         $sql4 = "DELETE FROM prioritycourses WHERE FacultyID='$FacultyID'";
         mysqli_query($conn, $sql4);
+
+        echo "<script>alert('Faculty: $FacultyID has been deleted successfully');</script>";
+
     }
 
     if (isset($_POST['edit'])) {
@@ -69,9 +72,11 @@
         $Query = "UPDATE faculty SET FacultyName = '$facultyName', Email = '$email', Picture = '$file_name' WHERE FacultyID = '$FacultyID'";
         $a = mysqli_query($conn, $Query);
         if ($a) {
-            echo $FacultyID . " has been Updated";
+            echo "<script>alert('$FacultyID has been Updated');</script>";
+
         } else {
-            echo "Invalid";
+            echo "<script>alert('Invalid');</script>";
+
         }
     }
     ?>

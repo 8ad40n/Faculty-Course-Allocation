@@ -8,6 +8,9 @@ if (isset($_POST['del'])) {
 
     $sql3 = "DELETE FROM prioritycourses WHERE FacultyID='$facultyID' and CourseID = '$courseID'";
     mysqli_query($conn, $sql3);
+
+    echo "<script>alert('The priority course: $courseID of $facultyID has been deleted.');</script>";
+
 }
 
 if (isset($_POST['submit'])) {
@@ -33,17 +36,21 @@ if (isset($_POST['submit'])) {
                     $insertQuery = "INSERT INTO prioritycourses (FacultyID, CourseID) VALUES ('$facultyID', '$selectedCourseID')";
                     $insertResult = mysqli_query($conn, $insertQuery);
 
+                    echo "<script>alert('The priority course: $selectedCourseID for $facultyID has been added.');</script>";
+
+
                 }
                 else
                 {
-                    echo "Faculty has already 2 priority course.";
+                    echo "<script>alert('Faculty has already 2 priority course.');</script>";
+
                 }
                    
             }
         }
 
     } else {
-        echo "Try Again!";
+        echo "<script>alert('Try again!');</script>";
     }
 }
 

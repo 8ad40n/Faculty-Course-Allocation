@@ -16,7 +16,8 @@ if (isset($_POST['btnAdd'])) {
 
     if (empty($sectionID) || empty($courseID) || empty($section) || empty($day1) || empty($startTime1) || empty($endTime1))
     {
-        echo "Please fill in all the fields.";
+        echo "<script>alert('Please fill in all the fields.');</script>";
+
     }
     else
     {
@@ -57,11 +58,11 @@ if (isset($_POST['btnAdd'])) {
     
             if($addSectionResult || $addSectionResult1)
             {
-                echo "The section ".$section." for ".$courseID. " has been added sucessfully"; 
+                echo "<script>alert('The section $section for $courseID has been added sucessfully');</script>";
     
             }
         } else {
-            echo "Invalid.";
+            echo "<script>alert('Invalid!');</script>";
         }
     }
     
@@ -80,23 +81,26 @@ if (isset($_POST['btnAdd'])) {
 
 <body>
     <fieldset>
-    <div class="container">
+        <div class="container">
             <div class="login">
                 <div class="content">
                     <img src="Images/addSection.gif" alt="">
                 </div>
-                
+
 
                 <div class="loginform">
                     <form action="" method="POST">
-                        <center><h1>Add Section</h1></center><br>
-                       <b> <label for="secID">Section ID:</label>
-                        <br> <input type="text" name="SectionID"><br>
-                        <label for="courseID">Course ID:</label>
-                        <br><input type="text" name="CourseID"><br>
-                        <label for="sec">Section:</label>
-                        <br> <input type="text" name="Section"><br>
-                        <hr></b>
+                        <center>
+                            <h1>Add Section</h1>
+                        </center><br>
+                        <b> <label for="secID">Section ID:</label>
+                            <br> <input type="text" name="SectionID"><br>
+                            <label for="courseID">Course ID:</label>
+                            <br><input type="text" name="CourseID"><br>
+                            <label for="sec">Section:</label>
+                            <br> <input type="text" name="Section"><br>
+                            <hr>
+                        </b>
                         <b><label for="firstDay">First Day:</label><br> </b>
                         <select name="Day1">
                             <option value="Sunday">Sunday</option>
@@ -106,12 +110,13 @@ if (isset($_POST['btnAdd'])) {
                             <option value="Thursday">Thursday</option>
                         </select><br><br>
                         <b><label for="startDay">Start Time:</label>
-                        <br> <input type="text" name="StartTime1"><br>
-                        <label for="endDay">End Time:</label>
-                        <br><input type="text" name="EndTime1"><br>
-                        <small>Time Format: (hh:mm:ss)</small><br>
-                        <hr></b>
-                       <b> <label for="secondDay">Second Day:</label><br> </b>
+                            <br> <input type="text" name="StartTime1"><br>
+                            <label for="endDay">End Time:</label>
+                            <br><input type="text" name="EndTime1"><br>
+                            <small>Time Format: (hh:mm:ss)</small><br>
+                            <hr>
+                        </b>
+                        <b> <label for="secondDay">Second Day:</label><br> </b>
                         <select name="Day2">
                             <option value="Sunday">Sunday</option>
                             <option value="Monday">Monday</option>
@@ -136,4 +141,3 @@ if (isset($_POST['btnAdd'])) {
 </body>
 
 </html>
-
