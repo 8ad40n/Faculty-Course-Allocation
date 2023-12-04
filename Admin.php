@@ -180,7 +180,6 @@ elseif (isset($_POST['btnGenerate'])) {
                         }
 
                     }
-
                     
                 }
             }
@@ -188,201 +187,274 @@ elseif (isset($_POST['btnGenerate'])) {
     }
 
 
-    // $facultyQuery1 = "SELECT FacultyID, FacultyName FROM faculty ORDER BY FacultyID ASC, TotalHours ASC";
-    // $facultyResult1 = mysqli_query($conn, $facultyQuery1);
+    $facultyQuery1 = "SELECT FacultyID, FacultyName FROM faculty ORDER BY FacultyID ASC, TotalHours ASC";
+    $facultyResult1 = mysqli_query($conn, $facultyQuery1);
 
-    // if ($facultyResult1) {
-    //     while ($faculty = mysqli_fetch_assoc($facultyResult1)) {
-    //         $facultyID = $faculty['FacultyID'];
+    if ($facultyResult1) {
+        while ($faculty = mysqli_fetch_assoc($facultyResult1)) {
+            $facultyID = $faculty['FacultyID'];
 
-    //         $availableCoursesQuery = "SELECT * FROM section WHERE FacultyID IS NULL";
-    //         $availableCoursesResult = mysqli_query($conn, $availableCoursesQuery);
+            $availableCoursesQuery = "SELECT * FROM section WHERE FacultyID IS NULL";
+            $availableCoursesResult = mysqli_query($conn, $availableCoursesQuery);
 
-    //         if ($availableCoursesResult && mysqli_num_rows($availableCoursesResult) > 0) {
-    //             while ($course = mysqli_fetch_assoc($availableCoursesResult)) {
-    //                 $sectionID = $course['SectionID'];
-    //                 $courseID = $course['CourseID'];
-    //                 $day = $course['Day'];
-    //                 $startTime = $course['startTime'];
-    //                 $endTime = $course['endTime'];
+            if ($availableCoursesResult && mysqli_num_rows($availableCoursesResult) > 0) {
+                while ($course = mysqli_fetch_assoc($availableCoursesResult)) {
+                    $sectionID = $course['SectionID'];
+                    $courseID = $course['CourseID'];
+                    $day = $course['Day'];
+                    $startTime = $course['startTime'];
+                    $endTime = $course['endTime'];
 
-    //                 if (isPriorityTimeAvailable($conn, $facultyID, $day, $startTime, $endTime)) {
+                    $sql= "select * from prioritytime where FacultyID ='$facultyID'";
+                    $r=mysqli_query($conn, $sql);
+                 
+                    while($res = mysqli_fetch_assoc($r))
+                    {
+                        $d=$res['Day'];
+                        $s=$res['startTime'];
+                        $e=$res['endTime'];
+
+                        if($day==$d && $s<=$startTime && $e>=$endTime)
+                        {
+                            $sql1= "select * from prioritycourses where FacultyID ='$facultyID'";
+                            $r1=mysqli_query($conn, $sql1);
+
+                            if (mysqli_num_rows($r1)==0) {
+               
+                                if (!hasCourseClashes($conn, $facultyID, $startTime, $endTime,$day)) {
+        
+                                    $totalHours = getFacultyTotalHours($conn, $facultyID);
+        
+                                    $q= "SELECT SUM(TIME_TO_SEC(TIMEDIFF(endTime, startTime))) AS TotalHours 
+                                        FROM section 
+                                        WHERE SectionID = '$sectionID'";
+                                        $r = mysqli_query($conn, $q);
+                                        $r1 = mysqli_fetch_assoc($r);
+                                        $time = $r1['TotalHours'];
+                                        $hour = $time / 3600;
+        
+                                    if (($totalHours + $hour) <= 16) {
+        
+                                        $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
+                                        mysqli_query($conn, $assignSectionQuery);
+        
+                                        $totalHoursQuery = "SELECT SUM(TIME_TO_SEC(TIMEDIFF(endTime, startTime))) AS TotalHours 
+                                        FROM section 
+                                        WHERE FacultyID = '$facultyID'";
+        
+                                        $totalHoursResult = mysqli_query($conn, $totalHoursQuery);
+        
+                                        if ($totalHoursResult) {
+                                            $row = mysqli_fetch_assoc($totalHoursResult);
+                                            $totalHours = $row['TotalHours'];
+        
+                                            $totalHoursInHours = $totalHours / 3600;
+        
+                                            $updateTotalHoursQuery = "UPDATE faculty SET TotalHours = '$totalHoursInHours' WHERE FacultyID = '$facultyID'";
+                                            mysqli_query($conn, $updateTotalHoursQuery);
+                                        }                                    
+        
+                                    }
+                                }
+                                
+                            }
+                        }
+                        elseif($day!=$d)
+                        {
+                            $sql1= "select * from prioritycourses where FacultyID ='$facultyID'";
+                            $r1=mysqli_query($conn, $sql1);
+
+                            if (mysqli_num_rows($r1)==0) {
+               
+                                if (!hasCourseClashes($conn, $facultyID, $startTime, $endTime,$day)) {
+        
+                                    $totalHours = getFacultyTotalHours($conn, $facultyID);
+        
+                                    $q= "SELECT SUM(TIME_TO_SEC(TIMEDIFF(endTime, startTime))) AS TotalHours 
+                                        FROM section 
+                                        WHERE SectionID = '$sectionID'";
+                                        $r = mysqli_query($conn, $q);
+                                        $r1 = mysqli_fetch_assoc($r);
+                                        $time = $r1['TotalHours'];
+                                        $hour = $time / 3600;
+        
+                                    if (($totalHours + $hour) <= 16) {
+        
+                                        $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
+                                        mysqli_query($conn, $assignSectionQuery);
+        
+                                        $totalHoursQuery = "SELECT SUM(TIME_TO_SEC(TIMEDIFF(endTime, startTime))) AS TotalHours 
+                                        FROM section 
+                                        WHERE FacultyID = '$facultyID'";
+        
+                                        $totalHoursResult = mysqli_query($conn, $totalHoursQuery);
+        
+                                        if ($totalHoursResult) {
+                                            $row = mysqli_fetch_assoc($totalHoursResult);
+                                            $totalHours = $row['TotalHours'];
+        
+                                            $totalHoursInHours = $totalHours / 3600;
+        
+                                            $updateTotalHoursQuery = "UPDATE faculty SET TotalHours = '$totalHoursInHours' WHERE FacultyID = '$facultyID'";
+                                            mysqli_query($conn, $updateTotalHoursQuery);
+                                        }                                    
+        
+                                    }
+                                }
+                                
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    $facultyQuery2 = "SELECT FacultyID, FacultyName FROM faculty ORDER BY FacultyID ASC, TotalHours ASC";
+    $facultyResult2 = mysqli_query($conn, $facultyQuery2);
+
+    if ($facultyResult2) {
+        while ($faculty = mysqli_fetch_assoc($facultyResult2)) {
+            $facultyID = $faculty['FacultyID'];
+
+            $availableCoursesQuery = "SELECT * FROM section WHERE FacultyID IS NULL";
+            $availableCoursesResult = mysqli_query($conn, $availableCoursesQuery);
+
+            if ($availableCoursesResult && mysqli_num_rows($availableCoursesResult) > 0) {
+                while ($course = mysqli_fetch_assoc($availableCoursesResult)) {
+                    $sectionID = $course['SectionID'];
+                    $courseID = $course['CourseID'];
+                    $day = $course['Day'];
+                    $startTime = $course['startTime'];
+                    $endTime = $course['endTime'];
+
+                    $sql1= "select * from prioritytime where FacultyID ='$facultyID'";
+                    $r1=mysqli_query($conn, $sql1);
+
+                    if (mysqli_num_rows($r1)==0) {
+
+                        if (hasPriorityCourse($conn, $facultyID, $courseID)) {
+        
+                            if (!hasCourseClashes($conn, $facultyID, $startTime, $endTime,$day)) {
+    
+                                $totalHours = getFacultyTotalHours($conn, $facultyID);
+    
+                                $q= "SELECT SUM(TIME_TO_SEC(TIMEDIFF(endTime, startTime))) AS TotalHours 
+                                    FROM section 
+                                    WHERE SectionID = '$sectionID'";
+                                    $r = mysqli_query($conn, $q);
+                                    $r1 = mysqli_fetch_assoc($r);
+                                    $time = $r1['TotalHours'];
+                                    $hour = $time / 3600;
+    
+                                if (($totalHours + $hour) <= 16) {
+    
+                                    $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
+                                    mysqli_query($conn, $assignSectionQuery);
+    
+                                    $totalHoursQuery = "SELECT SUM(TIME_TO_SEC(TIMEDIFF(endTime, startTime))) AS TotalHours 
+                                    FROM section 
+                                    WHERE FacultyID = '$facultyID'";
+    
+                                    $totalHoursResult = mysqli_query($conn, $totalHoursQuery);
+    
+                                    if ($totalHoursResult) {
+                                        $row = mysqli_fetch_assoc($totalHoursResult);
+                                        $totalHours = $row['TotalHours'];
+    
+                                        $totalHoursInHours = $totalHours / 3600;
+    
+                                        $updateTotalHoursQuery = "UPDATE faculty SET TotalHours = '$totalHoursInHours' WHERE FacultyID = '$facultyID'";
+                                        mysqli_query($conn, $updateTotalHoursQuery);
+                                    }                                    
+    
+                                }
+                            }
+                            
+                        }  
+                    }
+
+                }
+            }
+        }
+    }
+
+
+
+    $facultyQuery3 = "SELECT FacultyID, FacultyName FROM faculty ORDER BY FacultyID ASC, TotalHours ASC";
+    $facultyResult3 = mysqli_query($conn, $facultyQuery3);
+
+    if ($facultyResult3) {
+        while ($faculty = mysqli_fetch_assoc($facultyResult3)) {
+            $facultyID = $faculty['FacultyID'];
+
+            $availableCoursesQuery = "SELECT * FROM section WHERE FacultyID IS NULL";
+            $availableCoursesResult = mysqli_query($conn, $availableCoursesQuery);
+
+            if ($availableCoursesResult && mysqli_num_rows($availableCoursesResult) > 0) {
+                while ($course = mysqli_fetch_assoc($availableCoursesResult)) {
+                    $sectionID = $course['SectionID'];
+                    $courseID = $course['CourseID'];
+                    $day = $course['Day'];
+                    $startTime = $course['startTime'];
+                    $endTime = $course['endTime'];
+
+                    $sql1= "select * from prioritytime where FacultyID ='$facultyID'";
+                    $res1=mysqli_query($conn, $sql1);
+
+                    if (mysqli_num_rows($res1)==0) {
+
+                        $sql2= "select * from prioritycourses where FacultyID ='$facultyID'";
+                        $res2=mysqli_query($conn, $sql2);
+
+                        if (mysqli_num_rows($res2)==0) {
+
+                            if (!hasCourseClashes($conn, $facultyID, $startTime, $endTime,$day)) {
+
+                                $totalHours = getFacultyTotalHours($conn, $facultyID);
+        
+                                $q= "SELECT SUM(TIME_TO_SEC(TIMEDIFF(endTime, startTime))) AS TotalHours 
+                                    FROM section 
+                                    WHERE SectionID = '$sectionID'";
+                                    $r = mysqli_query($conn, $q);
+                                    $r1 = mysqli_fetch_assoc($r);
+                                    $time = $r1['TotalHours'];
+                                    $hour = $time / 3600;
+        
+                                if (($totalHours + $hour) <= 16) {
+        
+                                    $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
+                                    mysqli_query($conn, $assignSectionQuery);
+        
+                                    $totalHoursQuery = "SELECT SUM(TIME_TO_SEC(TIMEDIFF(endTime, startTime))) AS TotalHours 
+                                    FROM section 
+                                    WHERE FacultyID = '$facultyID'";
+        
+                                    $totalHoursResult = mysqli_query($conn, $totalHoursQuery);
+        
+                                    if ($totalHoursResult) {
+                                        $row = mysqli_fetch_assoc($totalHoursResult);
+                                        $totalHours = $row['TotalHours'];
+        
+                                        $totalHoursInHours = $totalHours / 3600;
+        
+                                        $updateTotalHoursQuery = "UPDATE faculty SET TotalHours = '$totalHoursInHours' WHERE FacultyID = '$facultyID'";
+                                        mysqli_query($conn, $updateTotalHoursQuery);
+                                    }                                    
+           
+                                }
+                            }
+
+                        }
+                    }
                     
-    //                     if (hasPriorityCourse($conn, $facultyID, $courseID)) {
-
-    //                         if (!hasCourseClashes($conn, $facultyID, $startTime, $endTime,$day)) {
-
-    //                             $totalHours = getFacultyTotalHours($conn, $facultyID);
-
-    //                             $q= "SELECT SUM(TIME_TO_SEC(TIMEDIFF(endTime, startTime))) AS TotalHours 
-    //                                 FROM section 
-    //                                 WHERE SectionID = '$sectionID'";
-    //                                 $r = mysqli_query($conn, $q);
-    //                                 $r1 = mysqli_fetch_assoc($r);
-    //                                 $time = $r1['TotalHours'];
-    //                                 $hour = $time / 3600;
-
-    //                             if (($totalHours + $hour) <= 16) {
-
-    //                                 $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
-    //                                 mysqli_query($conn, $assignSectionQuery);
-
-    //                                 $totalHoursQuery = "SELECT SUM(TIME_TO_SEC(TIMEDIFF(endTime, startTime))) AS TotalHours 
-    //                                 FROM section 
-    //                                 WHERE FacultyID = '$facultyID'";
-
-    //                                 $totalHoursResult = mysqli_query($conn, $totalHoursQuery);
-
-    //                                 if ($totalHoursResult) {
-    //                                     $row = mysqli_fetch_assoc($totalHoursResult);
-    //                                     $totalHours = $row['TotalHours'];
-
-    //                                     $totalHoursInHours = $totalHours / 3600;
-
-    //                                     $updateTotalHoursQuery = "UPDATE faculty SET TotalHours = '$totalHoursInHours' WHERE FacultyID = '$facultyID'";
-    //                                     mysqli_query($conn, $updateTotalHoursQuery);
-    //                                 }                                    
-
-    //                             }
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-
-
-
-    // $facultyQuery2 = "SELECT FacultyID, FacultyName FROM faculty ORDER BY FacultyID ASC, TotalHours ASC";
-    // $facultyResult2 = mysqli_query($conn, $facultyQuery2);
-
-    // if ($facultyResult2) {
-    //     while ($faculty = mysqli_fetch_assoc($facultyResult2)) {
-    //         $facultyID = $faculty['FacultyID'];
-
-    //         $availableCoursesQuery = "SELECT * FROM section WHERE FacultyID IS NULL";
-    //         $availableCoursesResult = mysqli_query($conn, $availableCoursesQuery);
-
-    //         if ($availableCoursesResult && mysqli_num_rows($availableCoursesResult) > 0) {
-    //             while ($course = mysqli_fetch_assoc($availableCoursesResult)) {
-    //                 $sectionID = $course['SectionID'];
-    //                 $courseID = $course['CourseID'];
-    //                 $day = $course['Day'];
-    //                 $startTime = $course['startTime'];
-    //                 $endTime = $course['endTime'];
-
-    //                 if (isPriorityTimeAvailable($conn, $facultyID, $day, $startTime, $endTime)) {
-                    
-    //                     if (hasPriorityCourse($conn, $facultyID, $courseID)) {
-
-    //                         if (!hasCourseClashes($conn, $facultyID, $startTime, $endTime,$day)) {
-
-    //                             $totalHours = getFacultyTotalHours($conn, $facultyID);
-
-    //                             $q= "SELECT SUM(TIME_TO_SEC(TIMEDIFF(endTime, startTime))) AS TotalHours 
-    //                                 FROM section 
-    //                                 WHERE SectionID = '$sectionID'";
-    //                                 $r = mysqli_query($conn, $q);
-    //                                 $r1 = mysqli_fetch_assoc($r);
-    //                                 $time = $r1['TotalHours'];
-    //                                 $hour = $time / 3600;
-
-    //                             if (($totalHours + $hour) <= 16) {
-
-    //                                 $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
-    //                                 mysqli_query($conn, $assignSectionQuery);
-
-    //                                 $totalHoursQuery = "SELECT SUM(TIME_TO_SEC(TIMEDIFF(endTime, startTime))) AS TotalHours 
-    //                                 FROM section 
-    //                                 WHERE FacultyID = '$facultyID'";
-
-    //                                 $totalHoursResult = mysqli_query($conn, $totalHoursQuery);
-
-    //                                 if ($totalHoursResult) {
-    //                                     $row = mysqli_fetch_assoc($totalHoursResult);
-    //                                     $totalHours = $row['TotalHours'];
-
-    //                                     $totalHoursInHours = $totalHours / 3600;
-
-    //                                     $updateTotalHoursQuery = "UPDATE faculty SET TotalHours = '$totalHoursInHours' WHERE FacultyID = '$facultyID'";
-    //                                     mysqli_query($conn, $updateTotalHoursQuery);
-    //                                 }                                    
-
-    //                             }
-    //                         }
-    //                     }
-    //                 }   
-    //             }
-    //         }
-    //     }
-    // }
-
-
-
-    // $facultyQuery3 = "SELECT FacultyID, FacultyName FROM faculty ORDER BY FacultyID ASC, TotalHours ASC";
-    // $facultyResult3 = mysqli_query($conn, $facultyQuery3);
-
-    // if ($facultyResult3) {
-    //     while ($faculty = mysqli_fetch_assoc($facultyResult3)) {
-    //         $facultyID = $faculty['FacultyID'];
-
-    //         $availableCoursesQuery = "SELECT * FROM section WHERE FacultyID IS NULL";
-    //         $availableCoursesResult = mysqli_query($conn, $availableCoursesQuery);
-
-    //         if ($availableCoursesResult && mysqli_num_rows($availableCoursesResult) > 0) {
-    //             while ($course = mysqli_fetch_assoc($availableCoursesResult)) {
-    //                 $sectionID = $course['SectionID'];
-    //                 $courseID = $course['CourseID'];
-    //                 $day = $course['Day'];
-    //                 $startTime = $course['startTime'];
-    //                 $endTime = $course['endTime'];
-
-    //                 if (!isPriorityTimeAvailable($conn, $facultyID, $day, $startTime, $endTime)) {
-                    
-    //                     if (!hasPriorityCourse($conn, $facultyID, $courseID)) {
-
-    //                         if (!hasCourseClashes($conn, $facultyID, $startTime, $endTime,$day)) {
-
-    //                             $totalHours = getFacultyTotalHours($conn, $facultyID);
-
-    //                             $q= "SELECT SUM(TIME_TO_SEC(TIMEDIFF(endTime, startTime))) AS TotalHours 
-    //                                 FROM section 
-    //                                 WHERE SectionID = '$sectionID'";
-    //                                 $r = mysqli_query($conn, $q);
-    //                                 $r1 = mysqli_fetch_assoc($r);
-    //                                 $time = $r1['TotalHours'];
-    //                                 $hour = $time / 3600;
-
-    //                             if (($totalHours + $hour) <= 16) {
-
-    //                                 $assignSectionQuery = "UPDATE section SET FacultyID = '$facultyID' WHERE SectionID = '$sectionID'";
-    //                                 mysqli_query($conn, $assignSectionQuery);
-
-    //                                 $totalHoursQuery = "SELECT SUM(TIME_TO_SEC(TIMEDIFF(endTime, startTime))) AS TotalHours 
-    //                                 FROM section 
-    //                                 WHERE FacultyID = '$facultyID'";
-
-    //                                 $totalHoursResult = mysqli_query($conn, $totalHoursQuery);
-
-    //                                 if ($totalHoursResult) {
-    //                                     $row = mysqli_fetch_assoc($totalHoursResult);
-    //                                     $totalHours = $row['TotalHours'];
-
-    //                                     $totalHoursInHours = $totalHours / 3600;
-
-    //                                     $updateTotalHoursQuery = "UPDATE faculty SET TotalHours = '$totalHoursInHours' WHERE FacultyID = '$facultyID'";
-    //                                     mysqli_query($conn, $updateTotalHoursQuery);
-    //                                 }                                    
-
-    //                             }
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
+                }
+            }
+        }
+    }
  }
 
 
