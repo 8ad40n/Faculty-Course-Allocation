@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 18, 2023 at 06:04 PM
+-- Generation Time: Dec 04, 2023 at 02:27 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -51,27 +51,18 @@ CREATE TABLE `course` (
   `CourseID` varchar(10) NOT NULL,
   `CourseName` varchar(40) NOT NULL,
   `DepartmentName` varchar(10) NOT NULL,
-  `Credit` int(11) DEFAULT NULL
+  `Credit` int(11) DEFAULT NULL,
+  `Type` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `course`
 --
 
-INSERT INTO `course` (`CourseID`, `CourseName`, `DepartmentName`, `Credit`) VALUES
-('BAE2101', 'COMPUTER AIDED DESIGN & DRAFTING', 'CSE', 1),
-('CSC1101', 'INTRODUCTION TO COMPUTER STUDIES', 'CSE', 1),
-('CSC1103', 'INTRODUCTION TO PROGRAMMING', 'CSE', 3),
-('CSC1204', 'DISCRETE MATHEMATICS', 'CSE', 3),
-('CSC1205', 'OBJECT ORIENTED PROGRAMMING 1', 'CSE', 3),
-('CSC2106', 'DATA STRUCTURE', 'CSE', 3),
-('CSC2210', 'OBJECT ORIENTED PROGRAMMING 2', 'CSE', 3),
-('CSC2211', 'ALGORITHMS', 'CSE', 3),
-('CSC3112', 'SOFTWARE ENGINEERING', 'CSE', 3),
-('CSC3215', 'WEB TECHNOLOGIES', 'CSE', 3),
-('CSC4118', 'COMPUTER GRAPHICS', 'CSE', 3),
-('ENG1202', 'ENGLISH WRITING SKILLS & COMMUNICATIONS', 'CSE', 3),
-('PHY1203', 'PHYSICS 2', 'CSE', 3);
+INSERT INTO `course` (`CourseID`, `CourseName`, `DepartmentName`, `Credit`, `Type`) VALUES
+('CSC1103', 'Web', 'CSE', 3, 'Theory+Lab'),
+('CSC2210', 'C#', 'CSE', 3, NULL),
+('CSC4197', 'AI', 'CSE', 3, 'Theory+Lab');
 
 -- --------------------------------------------------------
 
@@ -109,10 +100,10 @@ CREATE TABLE `faculty` (
 --
 
 INSERT INTO `faculty` (`FacultyID`, `FacultyName`, `Email`, `Picture`, `TotalHours`) VALUES
-('21-45388-3', 'Sakib Hossain', 'shsakibhossain21@gmail.com', 'sakib.jpg', 16),
-('Akib1234', 'Akib Shahriar', 'ak@gmail.com', 'akib.jpg', 14),
-('logno1234', 'Hasin Anjum Logno', 'hasin.anjum19@gmail.com', 'logno.jpg', 14),
-('Maria123', 'Maria Nawar', 'mariannuha@gmail.com', 'maria.jpg', 15);
+('12-181-2', 'Alamin ', 'alamin@gmail.com', 'addSection.gif', 15),
+('21-45388-3', 'hasib', 'hasib@gmail.com', 'addCourse.jpg', 5),
+('21-45555-3', 'tabin', 'tabin@gmail.com', 'AddFacutly.jpg', 10),
+('23-3456-2', 'shafi', 'shafi@gmail.com', 'addCourse.jpg', 15);
 
 -- --------------------------------------------------------
 
@@ -130,9 +121,9 @@ CREATE TABLE `prioritycourses` (
 --
 
 INSERT INTO `prioritycourses` (`FacultyID`, `CourseID`) VALUES
-('logno1234', 'CSC3112'),
-('Maria123', 'CSC2211'),
-('21-45388-3', 'CSC3215');
+('12-181-2', 'CSC1103'),
+('21-45555-3', 'CSC4197'),
+('21-45388-3', 'CSC2210');
 
 -- --------------------------------------------------------
 
@@ -152,8 +143,10 @@ CREATE TABLE `prioritytime` (
 --
 
 INSERT INTO `prioritytime` (`FacultyID`, `Day`, `startTime`, `endTime`) VALUES
-('Maria123', 'Sunday', '08:00:00', '14:00:00'),
-('logno1234', 'Wednesday', '09:30:00', '17:00:00');
+('21-45555-3', 'Sunday', '08:00:00', '17:00:00'),
+('12-181-2', 'Monday', '08:00:00', '17:00:00'),
+('12-181-2', 'Sunday', '08:00:00', '17:00:00'),
+('21-45555-3', 'Monday', '08:00:00', '17:00:00');
 
 -- --------------------------------------------------------
 
@@ -176,35 +169,24 @@ CREATE TABLE `section` (
 --
 
 INSERT INTO `section` (`SectionID`, `CourseID`, `Sec`, `Day`, `startTime`, `endTime`, `FacultyID`) VALUES
-('oop1A', 'CSC1205', 'A', 'Sunday', '08:00:00', '11:00:00', 'logno1234'),
-('oop1A', 'CSC1205', 'A', 'Tuesday', '08:00:00', '10:00:00', 'logno1234'),
-('oop2A', 'CSC2210', 'A', 'Monday', '11:00:00', '14:00:00', '21-45388-3'),
-('oop2A', 'CSC2210', 'A', 'Wednesday', '12:00:00', '14:00:00', '21-45388-3'),
-('algoC', 'CSC2211', 'C', 'Sunday', '08:00:00', '11:00:00', 'Maria123'),
-('algoC', 'CSC2211', 'C', 'Tuesday', '08:00:00', '10:00:00', 'Maria123'),
-('ipF', 'CSC1103', 'F', 'Monday', '14:00:00', '15:30:00', 'logno1234'),
-('ipF', 'CSC1103', 'F', 'Wednesday', '14:00:00', '15:30:00', 'logno1234'),
-('dsE', 'CSC2106', 'E', 'Sunday', '11:00:00', '12:30:00', 'logno1234'),
-('dsE', 'CSC2106', 'E', 'Tuesday', '11:00:00', '12:30:00', 'logno1234'),
-('dsG', 'CSC2106', 'G', 'Monday', '08:00:00', '09:30:00', '21-45388-3'),
-('dsG', 'CSC2106', 'G', 'Wednesday', '08:00:00', '09:30:00', '21-45388-3'),
-('cgH', 'CSC4118', 'H', 'Sunday', '14:00:00', '16:00:00', 'Maria123'),
-('cgH', 'CSC4118', 'H', 'Tuesday', '14:00:00', '17:00:00', 'Maria123'),
-('cgB', 'CSC4118', 'B', 'Monday', '08:00:00', '11:00:00', 'Akib1234'),
-('cgB', 'CSC4118', 'B', 'Wednesday', '08:00:00', '10:00:00', 'Akib1234'),
-('icsF', 'CSC1101', 'F', 'Tuesday', '14:00:00', '17:00:00', 'Akib1234'),
-('dmH', 'CSC1204', 'H', 'Monday', '11:00:00', '12:30:00', 'Akib1234'),
-('dmH', 'CSC1204', 'H', 'Wednesday', '11:00:00', '12:30:00', 'Akib1234'),
-('sweD', 'CSC3112', 'D', 'Monday', '12:30:00', '14:00:00', 'logno1234'),
-('sweD', 'CSC3112', 'D', 'Wednesday', '12:30:00', '14:00:00', 'logno1234'),
-('phy2H', 'PHY1203', 'H', 'Sunday', '12:30:00', '14:00:00', 'Akib1234'),
-('phy2H', 'PHY1203', 'H', 'Tuesday', '12:30:00', '14:00:00', 'Akib1234'),
-('icsA', 'CSC1101', 'A', 'Thursday', '08:00:00', '11:00:00', '21-45388-3'),
-('cadH', 'BAE2101', 'H', 'Thursday', '11:00:00', '14:00:00', NULL),
-('wtE', 'CSC3215', 'E', 'Sunday', '14:00:00', '17:00:00', '21-45388-3'),
-('wtE', 'CSC3215', 'E', 'Tuesday', '14:00:00', '16:00:00', '21-45388-3'),
-('algoA', 'CSC2211', 'A', 'Monday', '11:00:00', '14:00:00', 'Maria123'),
-('algoA', 'CSC2211', 'A', 'Wednesday', '10:00:00', '12:00:00', 'Maria123');
+('webA', 'CSC1103', 'A', 'Sunday', '08:00:00', '11:00:00', '12-181-2'),
+('webA', 'CSC1103', 'A', 'Tuesday', '08:00:00', '10:00:00', '12-181-2'),
+('AIA', 'CSC4197', 'A', 'Sunday', '08:00:00', '11:00:00', '21-45555-3'),
+('AIA', 'CSC4197', 'A', 'Tuesday', '08:00:00', '10:00:00', '21-45555-3'),
+('AIB', 'CSC4197', 'B', 'Sunday', '08:00:00', '11:00:00', '23-3456-2'),
+('AIB', 'CSC4197', 'B', 'Tuesday', '08:00:00', '10:00:00', '23-3456-2'),
+('webB', 'CSC1103', 'B', 'Monday', '08:00:00', '11:00:00', '12-181-2'),
+('webB', 'CSC1103', 'B', 'Wednesday', '08:00:00', '10:00:00', '12-181-2'),
+('AIC', 'CSC4197', 'C', 'Monday', '14:00:00', '16:00:00', '21-45555-3'),
+('AIC', 'CSC4197', 'C', 'Wednesday', '14:00:00', '17:00:00', '21-45555-3'),
+('AID', 'CSC4197', 'D', 'Monday', '14:00:00', '17:00:00', '23-3456-2'),
+('AID', 'CSC4197', 'D', 'Wednesday', '14:00:00', '16:00:00', '23-3456-2'),
+('webC', 'CSC1103', 'C', 'Monday', '08:00:00', '10:00:00', '23-3456-2'),
+('webC', 'CSC1103', 'C', 'Wednesday', '08:00:00', '11:00:00', '23-3456-2'),
+('webF', 'CSC1103', 'F', 'Monday', '14:00:00', '17:00:00', '12-181-2'),
+('webF', 'CSC1103', 'F', 'Wednesday', '14:00:00', '16:00:00', '12-181-2'),
+('oop2A', 'CSC2210', 'A', 'Sunday', '11:00:00', '14:00:00', '21-45388-3'),
+('oop2A', 'CSC2210', 'A', 'Tuesday', '12:00:00', '14:00:00', '21-45388-3');
 
 -- --------------------------------------------------------
 
@@ -223,11 +205,11 @@ CREATE TABLE `userinfo` (
 --
 
 INSERT INTO `userinfo` (`ID`, `Password`, `Type`) VALUES
+('12-181-2', '123', 'Faculty'),
 ('21-45388-3', '123', 'Faculty'),
 ('21-45390-3', '123', 'Admin'),
-('Akib1234', '123', 'Faculty'),
-('logno1234', '123', 'Faculty'),
-('Maria123', '123', 'Faculty');
+('21-45555-3', '123', 'Faculty'),
+('23-3456-2', '123', 'Faculty');
 
 --
 -- Indexes for dumped tables
