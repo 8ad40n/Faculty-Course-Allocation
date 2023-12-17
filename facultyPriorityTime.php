@@ -3,32 +3,28 @@ include("dbConnect.php");
 include("AdminDashboard.php");
 
 if (isset($_POST["add"])) {
-    $facultyID = $_POST["selectedFaculty"]; 
+    $facultyID = $_POST["selectedFaculty"];
     $day = $_POST["day"];
     $start = $_POST["start"];
     $end = $_POST["end"];
 
     if (empty($start) || empty($end) || empty($_POST['selectedFaculty'])) {
         echo "<script>alert('Please fill in all the fields.');</script>";
-
     } else {
         $sql = "SELECT Day FROM prioritytime WHERE FacultyID='$facultyID' and Day ='$day'";
         $result = mysqli_query($conn, $sql);
-        
+
         if (mysqli_num_rows($result) == 0) {
             $addSectionQuery = "INSERT INTO prioritytime (FacultyID, Day, startTime, endTime) VALUES ('$facultyID', '$day', '$start', '$end')";
             $addSectionResult = mysqli_query($conn, $addSectionQuery);
-            
+
             if ($addSectionResult) {
                 echo "<script>alert('Priority Time for $facultyID has been added!');</script>";
-
             } else {
                 echo "<script>alert('Invalid!');</script>";
-
             }
         } else {
             echo "<script>alert('Invalid!');</script>";
-
         }
     }
 }
@@ -56,25 +52,25 @@ if (isset($_POST['del'])) {
     <div class="main">
         <form method="post">
             <?php
-        include("dbConnect.php");
+            include("dbConnect.php");
 
-        echo "<fieldset>
+            echo "<fieldset>
         <legend><h2>Faculty:</h2></legend>";
-        $sql1 = "SELECT FacultyID, FacultyName FROM faculty";
-        $result1 = mysqli_query($conn, $sql1);
+            $sql1 = "SELECT FacultyID, FacultyName FROM faculty";
+            $result1 = mysqli_query($conn, $sql1);
 
-        if (mysqli_num_rows($result1) > 0) {
-            while ($row1 = mysqli_fetch_assoc($result1)) {
-                $facultyID = $row1['FacultyID'];
-                $facultyName = $row1['FacultyName'];
-                // Create a checkbox for each course name with CourseID as the value
-                
-                echo '<label><input type="radio" name="selectedFaculty" value="' . $facultyID . '">' . $facultyName . '</label><br>';
+            if (mysqli_num_rows($result1) > 0) {
+                while ($row1 = mysqli_fetch_assoc($result1)) {
+                    $facultyID = $row1['FacultyID'];
+                    $facultyName = $row1['FacultyName'];
+                    // Create a checkbox for each course name with CourseID as the value
+
+                    echo '<label><input type="radio" name="selectedFaculty" value="' . $facultyID . '">' . $facultyName . '</label><br>';
+                }
+            } else {
+                echo "No faculty found.";
             }
-        } else {
-            echo "No faculty found.";
-        }
-        ?>
+            ?>
             <br>
             </fieldset>
 
@@ -105,27 +101,27 @@ if (isset($_POST['del'])) {
                     <th>Actions</th>
                 </tr>
                 <?php
-            $sql = "SELECT * FROM prioritytime;";
-            $res = mysqli_query($conn, $sql);
-            if (mysqli_num_rows($res) > 0) {
-                while ($r = mysqli_fetch_assoc($res)) {
-                    echo "<tr>";
-                    echo "<td>" . $r["FacultyID"] . "</td>";
-                    echo "<td>" . $r["Day"] . "</td>";
-                    echo "<td>" . $r["startTime"] . "</td>";
-                    echo "<td>" . $r["endTime"] . "</td>";
-                    echo '<td>      
+                $sql = "SELECT * FROM prioritytime;";
+                $res = mysqli_query($conn, $sql);
+                if (mysqli_num_rows($res) > 0) {
+                    while ($r = mysqli_fetch_assoc($res)) {
+                        echo "<tr>";
+                        echo "<td>" . $r["FacultyID"] . "</td>";
+                        echo "<td>" . $r["Day"] . "</td>";
+                        echo "<td>" . $r["startTime"] . "</td>";
+                        echo "<td>" . $r["endTime"] . "</td>";
+                        echo '<td>      
                             <form method="post">
-                            <input type="hidden" name = "facultyID" value="'.$r["FacultyID"].'">
+                            <input type="hidden" name = "facultyID" value="' . $r["FacultyID"] . '">
                             <button type="submit" name="del" value="' . $r["Day"] . '">Delete</button>
                             </form>
                          </td>';
-                    echo "</tr>";
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='4'>No priority time found.</td></tr>";
                 }
-            } else {
-                echo "<tr><td colspan='4'>No priority time found.</td></tr>";
-            }
-            ?>
+                ?>
             </table>
         </form>
     </div>

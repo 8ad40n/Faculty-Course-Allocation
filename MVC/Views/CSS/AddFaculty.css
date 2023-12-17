@@ -1,0 +1,126 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px;
+  padding-left: 400px;
+}
+.login {
+  width: 1000px;
+  height: 574px;
+  overflow: hidden;
+  border-radius: 100px;
+  display: flex;
+  background-color: #fffafa;
+  box-shadow: 0 0 20px rgba(8, 7, 16, 0.6);
+}
+
+.login:hover {
+  box-shadow: 0 0 40px rgba(8, 7, 16, 0.8);
+}
+
+.content {
+  flex-basis: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.content img {
+  height: inherit;
+  width: 100%;
+}
+
+.loginform {
+  flex-basis: 60%;
+  padding: 25px;
+  background-color: #fffafa;
+}
+
+.loginform h1 {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 45px;
+  margin-bottom: 1px;
+  border-bottom: 2px solid #ccc;
+}
+
+showPassword {
+  margin-top: 10px;
+  margin-bottom: 100px;
+}
+
+label {
+  font-size: larger;
+  font-weight: bold;
+}
+
+input[type="file"] {
+  margin-bottom: 10px;
+  padding: 8px;
+  padding-right: 10px;
+  padding-left: 90px;
+}
+
+input[type="text"] {
+  margin-bottom: 10px;
+  padding: 8px;
+  padding-right: 18px;
+  padding-left: 18px;
+  border: 2px solid #ef4a23;
+  border-radius: 4px;
+}
+input[type="email"] {
+  margin-bottom: 10px;
+  padding: 8px;
+  padding-right: 18px;
+  padding-left: 18px;
+  border: 2px solid #ef4a23;
+  border-radius: 4px;
+}
+
+input[type="password"] {
+  margin-bottom: 10px;
+  padding: 8px;
+  padding-right: 18px;
+  padding-left: 18px;
+  border: 2px solid #ef4a23;
+  border-radius: 4px;
+}
+input:hover[type="text"] {
+  border: 2px solid #45a049;
+}
+
+input:hover[type="email"] {
+  border: 2px solid #45a049;
+}
+
+input:hover[type="password"] {
+  border: 2px solid #45a049;
+}
+
+button[name="btnAddFaculty"] {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button[name="btnAddFaculty"]:hover {
+  background-color: #ef4a23;
+  transform: scale(1.1);
+}
+
+button[name="btnAdd"] {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}

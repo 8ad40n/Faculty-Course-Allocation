@@ -15,7 +15,8 @@ if (isset($_POST['del'])) {
 
     }
 } elseif (isset($_POST['edit'])) {
-    $sectionID = $_POST['edit'];
+    $sectionID = $_POST['edit_section_id'];
+    $day = $_POST['edit_day'];
     $sql1 = "SELECT section.*, course.CourseName 
              FROM section 
              JOIN course ON section.CourseID = course.CourseID
@@ -27,7 +28,7 @@ if (isset($_POST['del'])) {
         $courseID = $row["CourseID"];
         $courseName = $row["CourseName"];
         $section = $row["Sec"];
-        $day = $row["Day"];
+        
         $start = $row["startTime"];
         $end = $row["endTime"];
         
@@ -112,7 +113,12 @@ if (isset($_POST['del'])) {
                     echo "<td>" . $row["Day"] . "</td>";
                     echo "<td>" . $row["startTime"] . "</td>";
                     echo "<td>" . $row["endTime"] . "</td>";
-                    echo '<td><button type="submit" name="edit" value="' . $row["SectionID"] . '">Edit</button></td>';
+                    echo '<td>
+                    <input type="hidden" name="edit_section_id" value="' . $row["SectionID"] . '">
+                    <input type="hidden" name="edit_day" value="' . $row["Day"] . '">
+                    <button type="submit" name="edit" value="' . $row["SectionID"] . '">Edit</button>
+                    </td>';
+
                     echo '<td><button type="submit" name="del" value="' . $row["SectionID"] . '">Delete</button></td>';
                     echo "</tr>";
                 }
