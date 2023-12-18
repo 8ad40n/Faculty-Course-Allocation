@@ -16,7 +16,7 @@ function login()
                 $_SESSION['id'] = $user["ID"];
 
                 if ($user["Type"] == "Admin") {
-                    header("location: ../Views/AdminHome.php");
+                    header("location: AdminHomeControllerC.php");
                 } elseif ($user["Type"] == "Faculty") {
                     header("location: ../FacultyHome.php");
                 }

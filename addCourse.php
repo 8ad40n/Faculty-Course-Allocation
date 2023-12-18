@@ -7,8 +7,9 @@ if (isset($_POST["btnAdd"])) {
     $name = $_POST["name"];
     $dept = $_POST["dept"];
     $credit = $_POST["credit"];
+    $type = $_POST["type"];
 
-    if (empty($courseID) || empty($name) || empty($dept) || empty($credit)) {
+    if (empty($courseID) || empty($name) || empty($dept) || empty($credit) || empty($type)) {
         echo "<script>alert('Please fill in all the fields.');</script>";
 
         
@@ -18,7 +19,7 @@ if (isset($_POST["btnAdd"])) {
 
         if (mysqli_num_rows($res) == 0) {
 
-            $addCourseQuery = "INSERT INTO course (CourseID, CourseName, DepartmentName, Credit) VALUES ('$courseID','$name','$dept','$credit')";
+            $addCourseQuery = "INSERT INTO course (CourseID, CourseName, DepartmentName, Credit, Type) VALUES ('$courseID','$name','$dept','$credit' ,'$type')";
             $r = mysqli_query($conn, $addCourseQuery);
 
             if ($r) {
@@ -61,13 +62,19 @@ if (isset($_POST["btnAdd"])) {
                             <select name="dept">
                                 <option value="CSE">CSE</option>
                             </select><br><br>
-                            <label><b>Credit:<br>
+                            <label><b>Credit:</b><br>
                                     <select name="credit">
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
                                     </select><br><br>
-                                    <button type="submit" name="btnAdd">Add</button>
+                            <label><b>Type:</b><br>
+                                    <select name="type">
+                                        <option value="Theory">Theory</option>
+                                        <option value="LAB">LAB</option>
+                                        <option value="Theory+LAB">Theory+LAB</option>
+                                    </select><br><br>
+                            <button type="submit" name="btnAdd">Add</button>
                 </form>
             </div>
         </div>

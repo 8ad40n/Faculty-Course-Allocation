@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <form action="Controllers/LogController.php">
+    <form action="Controllers/LoginControllerC.php">
         <button>Login</button>
     </form>
 </body>

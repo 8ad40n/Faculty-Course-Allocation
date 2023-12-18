@@ -591,11 +591,6 @@ if (isset($_POST['edit'])) {
         <br><br>
         <button name='btnClear'>Clear All</button><br><br>";
 
-            // echo "
-
-            // <input type='text' name='search' id='search' placeholder='Search by faculty name'><br>";
-
-            // echo "<button name='btnSearch'>Search</button>";
 
 
             echo "<h1>Data:</h1>";
