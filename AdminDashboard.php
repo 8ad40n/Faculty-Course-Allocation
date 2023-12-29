@@ -24,6 +24,7 @@
                     <li><a href="tsf_Admin.php">Faculty TSF</a></li>
                     <li><a href="addCourse.php">Add Course</a></li>
                     <li><a href="AddSection.php">Add Section</a></li>
+                    <li><a href="excelSection.php">Import Section</a></li>
                     <li><a href="editSection.php">Edit Section</a></li>
                     <li><a href="AddFaculty.php">Add Faculty</a></li>
                     <li><a href="EditFacultyInfo.php">Edit Faculty Information</a></li>

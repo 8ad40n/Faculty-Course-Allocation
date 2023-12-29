@@ -1,20 +1,5 @@
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <form method="post" enctype="multipart/form-data">
-        <input type="file" name="excel_file" accept=".csv">
-        <input type="submit" name="import" value="Import">
-    </form>
-</body>
-</html>
-
 <?php
+include ("AdminDashboard.php");
 use SimpleExcel\SimpleExcel;
 if(isset($_POST['import']))
 {
@@ -67,3 +52,18 @@ if(isset($_POST['import']))
 
 }
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="excel_file" accept=".csv">
+        <input type="submit" name="import" value="Import">
+    </form>
+</body>
+</html>
+
