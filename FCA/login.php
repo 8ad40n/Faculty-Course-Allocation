@@ -66,10 +66,10 @@ if (isset($_POST['login'])) {
                             }
                         </script>
                         <div class="form-group">
-                            <input type="text" name="id" class="form-control" placeholder="Your ID"/>
+                            <input type="text" name="id" class="form-control" placeholder="Your ID">
                         </div><br>
                         <div class="form-group">
-                            <input type="password" name="pass" class="form-control" placeholder="Your Password"/>
+                            <input type="password" name="pass" class="form-control" placeholder="Your Password" id="pass">
                         </div>
                         <br><div style="text-align: left;">
                             <input type="checkbox" class="form-check-input" id="showPassword" onclick="togglePassword()">

@@ -43,45 +43,54 @@ if (isset($_POST["btnAdd"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Courses:</title>
     <link rel="stylesheet" href="bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <script src="bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
+    <script src="bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="CSS/style.css">
+   
 </head>
 
 <body>
-
-    <div class="container">
-        <div class="login">
-            <div class="content">
-                <img src="Images/addCourse.jpg" alt="Course Image">
+    <div class="main">
+        <div class="container">
+        <div class="addCourse">
+        <center><h2>Add Courses:</h2></center>
+        <div class="row">
+            <div class="col-sm-6">
+                <img style="height: 500px; width: 500px" src="Images/addCourse.jpg" alt="Course Image">
             </div>
-            <div class="loginform">
-                <h1>Add Courses:</h1>
-                <br>
+            <div class="col-sm-6">
+                <br><br><br>
                 <form method="post" enctype="multipart/form-data">
-                    <label><b> Course ID:<br><input type="text" name="courseID"></b></label><br>
-                    <label><b>Course Name:<br><input type="text" name="name"></b></label><br>
-                    <label><b>Department:<br>
-                            <select name="dept">
+                <div class="form-group">
+                    <label>Course ID:</label><br><input type="text" class="form-control" name="courseID"><br>
+                </div>
+                <div class="form-group">
+                    <label>Course Name:</label><br><input type="text" class="form-control" name="name"><br>
+                </div>
+                    <label>Department:<br>
+                            <select name="dept" class="form-select form-select-sm" aria-label=".form-select-sm example">
                                 <option value="CSE">CSE</option>
-                            </select><br><br>
-                            <label><b>Credit:</b><br>
-                                    <select name="credit">
+                            </select><br>
+                            <label>Credit:<br>
+                                    <select name="credit" class="form-select form-select-sm" aria-label=".form-select-sm example">
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
-                                    </select><br><br>
-                            <label><b>Type:</b><br>
-                                    <select name="type">
+                                    </select><br>
+                            <label>Type:<br>
+                                    <select name="type" class="form-select form-select-sm" aria-label=".form-select-sm example">
                                         <option value="Theory">Theory</option>
                                         <option value="LAB">LAB</option>
                                         <option value="Theory+LAB">Theory+LAB</option>
-                                    </select><br><br>
-                            <button type="submit" name="btnAdd">Add</button>
+                                    </select><br>
+                            <button type="submit" class="btn btn-primary" name="btnAdd">Add</button>
                 </form>
             </div>
         </div>
+        </div>
     </div>
-
-    <script src="bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
-    <script src="bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
+    </div>
 </body>
 
 </html>

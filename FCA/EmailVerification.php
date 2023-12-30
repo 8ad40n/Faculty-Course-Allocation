@@ -23,7 +23,7 @@ if(isset($_POST['send']))
     }
     else
     {
-        echo "Invalid Email! Please, Try Again.";
+        echo "<script>alert('Invalid Email! Please, Try Again.')</script>";
     }
    
 }
@@ -61,11 +61,20 @@ function smtp_mailer($to,$subject, $msg){
 <html lang="en">
 <head>
     <title>OTP Send</title>
+    <link rel="stylesheet" href="bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <script src="bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
+    <script src="bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="CSS/style.css">
 </head>
 <body>
-    <form method="POST"> 
-        Email: <input type="email" name="email">
-        <button name="send">Send OTP Code</button>
-    </form>
+    <div class="container">
+        <br><br><center><h1>Email Validation:</h1></center><br><br>
+        <form method="POST"> 
+        Email: <br><input type="email" class="form-control" name="email">
+        <button name="send" class="btn btn-primary">Send OTP Code</button>
+        </form>
+    </div>
+    
 </body>
 </html>

@@ -49,21 +49,24 @@ if (isset($_POST["btnAddFaculty"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Faculty:</title>
-    <link rel="stylesheet" href="CSS/AddFaculty.css">
+    <!-- <link rel="stylesheet" href="CSS/AddFaculty.css"> -->
+    <link rel="stylesheet" href="bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <script src="bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
+    <script src="bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="CSS/style.css">
 </head>
 
 <body>
-
+    <br><center><h1>Add Faculty</h1></center><br><br>
     <div class="container">
-        <div class="login">
+        <div class="row">
 
-            <div class="content">
-                <img src="Images/AddFacutly.jpg" alt="Faculty Image">
+            <div class="col-sm-6">
+                <img style="height: 400px; width: 500px" src="Images/addFacultyy.gif" alt="Faculty Image">
             </div>
 
-            <div class="loginform">
-                <h1>Add Faculty</h1>
-                <br>
+            <div class="col-sm-6">
                 <form method="post" enctype="multipart/form-data">
                     <script>
                     function togglePassword() {
@@ -75,16 +78,17 @@ if (isset($_POST["btnAddFaculty"])) {
                         }
                     }
                     </script>
-                    <label><b> Faculty ID:<br><input type="text" name="facultyId"></b></label><br>
-                    <label><b>Faculty Name:<br><input type="text" name="name"></b></label><br>
-                    <label><b>Email:<br><input type="email" name="mail"></b></label><br>
-                    <label><b>Password:<br><input type="password" name="pass" id="pass"></b></label><br>
+                    <label>Faculty ID:</label><br><input type="text" class="form-control" name="facultyId"><br>
+                    <label>Faculty Name:</label><br><input type="text" class="form-control" name="name"><br>
+                    <label>Email:</label><br><input type="email" class="form-control" name="mail"><br>
+                    <label>Password:</label><br><input type="password" class="form-control" name="pass" id="pass">
                     <input type="checkbox" id="showPassword" onclick="togglePassword()">
-                    <label for="showPassword">Show Password</label><br>
+                    <label for="showPassword">Show Password</label><br><br>
                     <label for="picture">Upload Your Picture:</label>
-                    <input type="file" name="pic" accept="image/*"><br>
-                    <button type="submit" name="btnAddFaculty">Add</button>
+                    <input type="file" class="form-control" name="pic" accept="image/*"><br>
+                    <button type="submit" class="btn btn-primary" name="btnAddFaculty">Add</button>
                 </form>
+                <br><br>
             </div>
         </div>
     </div>

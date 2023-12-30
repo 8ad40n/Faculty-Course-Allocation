@@ -12,7 +12,13 @@ include("AdminDashboard.php");
 
 <head>
     <title>TSF</title>
-    <link rel="stylesheet" href="CSS/TryAgain.css">
+    <!-- <link rel="stylesheet" href="CSS/TryAgain.css"> -->
+    <link rel="stylesheet" href="bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <script src="bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
+    <script src="bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 
 <body>
@@ -51,9 +57,10 @@ if (isset($_POST["btnSearch"])) {
 
     if (!empty($facultyName) && mysqli_num_rows($result) > 0) {
         echo "<div class='main'>";
+        echo '<div class="container">';
         echo "<center><h2>Data for Faculty Name:</h2> $facultyName </center>";
 
-        echo '<table border="1">
+        echo '<table class="table table-bordered">
                 <tr>
                     <th>Time</th>
                     <th>Sunday</th>
@@ -113,7 +120,7 @@ if (isset($_POST["btnSearch"])) {
         }
 
         echo '</table>';
-        echo '</div>';
+        echo '</div></div>';
     }
 }
 

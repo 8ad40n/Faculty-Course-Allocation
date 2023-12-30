@@ -16,13 +16,15 @@ if(isset($_POST["change"])) {
         $sql1 = "UPDATE userinfo SET Password = '$con' where ID = '$id'";
         $res1 = mysqli_query($conn, $sql1);
         if($res1) {
-            echo "Password has been recovered!";
+            echo "<script>alert('Password has been recovered!')</script>";
+            header("location: login.php");
         } else {
-            echo "Invalid! Try Again.";
+            echo "<script>alert('Invalid! Try Again.')</script>";
+            
         }
     }
     else {
-        echo "Invalid! Try Again.";
+        echo "<script>alert('Invalid! Try Again.')</script>";
     }
 }
 ?>
@@ -33,12 +35,18 @@ if(isset($_POST["change"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Change Password</title>
-    <link rel="stylesheet" href="CSS/AdminDashboard.css">
+    <!-- <link rel="stylesheet" href="CSS/AdminDashboard.css"> -->
+    <link rel="stylesheet" href="bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <script src="bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
+    <script src="bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="CSS/style.css">
 </head>
 <body>
+    <div class="container">
     <form method="post">
         <fieldset>
-            <legend><h1>Reset Password</h1></legend> 
+            <br><br><center><legend><h1>Reset Password</h1></legend> </center>
 
             <script>
             function togglePassword1() 
@@ -70,14 +78,16 @@ if(isset($_POST["change"])) {
             }
             </script>
 
-            New Password: <br> <input type="password" name="newPass" id="newPass"><br>
+            New Password: <br> <input class="form-control" type="password" name="newPass" id="newPass">
             <input type="checkbox" id="showPassword1" onclick="togglePassword1()">
             <small>Show Password</small><br><br>
-            Confirm Password: <br> <input type="password" name="conPass" id="conPass"><br>
+            Confirm Password: <br> <input type="password" class="form-control" name="conPass" id="conPass">
             <input type="checkbox" id="showPassword2" onclick="togglePassword2()">
             <small>Show Password</small><br><br>
-            <button type="submit" name="change">Confirm</button>
+            <button type="submit" class="btn btn-success" name="change">Confirm</button>
         </fieldset>
     </form>
+    </div>
+    
 </body>
 </html>

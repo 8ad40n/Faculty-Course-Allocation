@@ -461,18 +461,18 @@ if (isset($_POST['edit'])) {
     $courseName = $r1["CourseName"];
     $dept = $r1["DepartmentName"];
 
-    echo "<form method='post'>";
+    echo "<div class='main'><div class='container'><form method='post'>";
 
-    echo "<h2>Edit Assignment:<h2>";
+    echo "<center><h2>Edit Assignment:</h2></center>";
     echo "<br>";
-    echo "<h4>Course ID: </h4><input type='text' name='courseID' value='$courseID' readonly><br>";
-    echo "<h4>Course Name:</h4><input type='text' name='courseName' value='$courseName' readonly><br>";
-    echo "<h4>Department:</h4><input type='text' name='dept' value='$dept' readonly><br>";
-    echo "<h4>Section: </h4><input type='text' name='sec' value='$section' readonly><br>";
-    echo "<h4>Faculty ID:</h4><input type='text' name='facultyID' value='$facultyID'><br>";
-    echo '<button type="submit" name="EditSubmit" value="' . $SectionID . '">Submit</button><br><br>';
+    echo "<h6>Course ID: </h5><input type='text' class='form-control' name='courseID' value='$courseID' readonly><br>";
+    echo "<h6>Course Name:</h6><input type='text' class='form-control' name='courseName' value='$courseName' readonly><br>";
+    echo "<h6>Department:</h6><input type='text' class='form-control' name='dept' value='$dept' readonly><br>";
+    echo "<h6>Section: </h6><input type='text' class='form-control' name='sec' value='$section' readonly><br>";
+    echo "<h6>Faculty ID:</h6><input type='text' class='form-control' name='facultyID' value='$facultyID'><br>";
+    echo '<button type="submit" class="btn btn-success" name="EditSubmit" value="' . $SectionID . '">Submit</button><br><br>';
 
-    echo "</form>";
+    echo "</form></div></div>";
 } elseif (isset($_POST['EditSubmit'])) {
     $facultyID = $_POST["facultyID"];
     $sectionID = $_POST['EditSubmit'];
@@ -598,9 +598,9 @@ if (isset($_POST['edit'])) {
 
 
 
-            echo "<center><h2>Data:</h2></center>";
             echo '<div class="container">';
             echo "<center><input type='text' class='form-control' placeholder='Search...' id='search_field'></center><br></div>";
+            echo "<center><h2>Data:</h2></center>";
             echo '<div class="container">';
             echo '<table id="myTable" class="table table-bordered">
             
@@ -613,7 +613,7 @@ if (isset($_POST['edit'])) {
                 <th>Start Time</th>
                 <th>End Time</th>
                 <th>Faculty Name</th>
-                <th colspan="2">Operations</th>
+                <th colspan="2"><center>Operations</center</th>
             </tr>';
 
             $sql = "SELECT
