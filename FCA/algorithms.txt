@@ -1,0 +1,142 @@
+DB:
+
+Course:
+	1. courseId
+	2. courseName
+	3. Section
+	4. Time
+	5. Day
+	6. Credit
+
+Faculty:
+	1. Name
+	2. Id
+	3. Email
+	4. priorityCourses
+	5. prioritytime
+	6. Password
+	7. Type
+	8. Picture
+
+Admin: 
+	1. Name
+	2. Id
+	3. Email
+	4. Password
+	5. Type
+	6. Picture
+
+
+3NF:
+	
+Table 1: department
+• DepartmentName 
+
+Table 2: course
+• CourseID
+• CourseName
+• DepartmentName 
+• Credit
+
+Table 3: section
+• SectionID
+• CourseID 
+• Sec
+• startTime
+• endTime
+• Day
+
+Table 4: faculty
+• FacultyID 
+• FacultyName
+• Email
+• Picture
+• TotalHours
+
+Table 5: prioritycourses
+• FacultyID 
+• CourseID 
+
+Table 6: prioritytime
+• FacultyID 
+• Day
+• startTime
+• endTime
+
+Table 7: admin
+• AdminID (Primary Key)
+• AdminName
+• Email
+• Picture
+
+Table 8: userinfo
+• ID
+• Password
+• Type
+
+
+
+
+Psuesdocode:
+
+	Reset assignments for all sections -> FacultyID = null in section table
+	Get the list of all faculty members
+	while ($faculty = mysqli_fetch_assoc($facultyResult))
+	{
+		check section availability -> faculty not assigned
+		while ($course = mysqli_fetch_assoc($availableCoursesResult)) 
+		{
+			if (PriorityTimeAvailable)
+			{
+				if(hasPriorityCourse)
+				{
+					if(!hasCourseClashes)
+					{
+						if ($totalHours <= 16)
+						{
+							Assign him
+						}
+					}
+				}
+			}
+		}
+	}
+
+	Get the list of all faculty members -> ORDER BY TotalHours ASC
+	while ($faculty = mysqli_fetch_assoc($facultyResult))
+	{
+		check section availability -> faculty not assigned
+		while ($course = mysqli_fetch_assoc($availableCoursesResult)) 
+		{
+			
+			if(hasPriorityCourse)
+			{
+				if(!hasCourseClashes)
+				{
+					if ($totalHours <= 16)
+					{
+						Assign him
+					}
+				}
+			}
+			
+		}
+	}
+
+	Get the list of all faculty members -> ORDER BY TotalHours ASC
+	while ($faculty = mysqli_fetch_assoc($facultyResult))
+	{
+		check section availability -> faculty not assigned
+		while ($course = mysqli_fetch_assoc($availableCoursesResult)) 
+		{
+			if(!hasCourseClashes)
+			{
+				if ($totalHours <= 16)
+				{
+					Assign him
+				}
+			}
+			
+		}
+	}
+	

@@ -1,0 +1,74 @@
+.main{
+    margin-top: 10px;
+}
+
+/* login.php */
+.login-container{
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+.login-form-1{
+    padding: 5%;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+    max-width: 600px; /* Adjust the width as needed */
+    margin: auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+.login-form-1 h3{
+    text-align: center;
+    color: #333;
+}
+
+.login-container form{
+    padding: 10%;
+}
+.btnSubmit
+{
+    width: 100%;
+    border-radius: 1rem;
+    padding: 1.5%;
+    border: none;
+    cursor: pointer;
+}
+.login-form-1 .btnSubmit{
+    font-weight: 600;
+    color: #fff;
+    background-color: #0062cc;
+}
+
+.login-form-1 .ForgetPwd{
+    color: #0062cc;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+
+/* AdminDashboard.php */
+#aiubBanner{
+    position: -webkit-sticky;
+    position: sticky;
+    margin-left: 5px;
+    padding-left: 5px;
+    top: 0;
+}
+
+/* AdminHome.php */
+.span4 img{
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+.center-block{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
