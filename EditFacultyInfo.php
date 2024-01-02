@@ -4,21 +4,25 @@
 <head>
     <title>Edit Faculty</title>
     <style>
-    img {
+    .imgFaculty {
         height: 80px;
         width: 80px;
     }
     </style>
-    <link rel="stylesheet" href="CSS/AdminDashboard.css">
+    <!-- <link rel="stylesheet" href="CSS/AdminDashboard.css"> -->
+    <link rel="stylesheet" href="bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <script src="bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
+    <script src="bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="CSS/style.css">
 </head>
 
 <body>
 
-
     <?php 
     include("dbConnect.php");
     include("AdminDashboard.php");
-    echo '<div class="main">';
+    echo '<div class="main"><div class="container">';
 
     echo "<center><h1>Faculty Info:</h1></center>";
 
@@ -50,12 +54,12 @@
 
         echo "<form method='post' enctype='multipart/form-data'>";
         echo "<br><br><br>";
-        echo "Faculty ID: <br><input type='text' name='facultyID' value='$FacultyID' readonly><br>";
-        echo "Faculty Name:<br> <input type='text' name='facultyName' value='$facultyName'><br>";
-        echo "Email:<br> <input type='email' name='email' value='$email'><br>";
+        echo "Faculty ID: <br><input type='text' class='form-control' name='facultyID' value='$FacultyID' readonly><br>";
+        echo "Faculty Name:<br> <input type='text' class='form-control' name='facultyName' value='$facultyName'><br>";
+        echo "Email:<br> <input type='email' class='form-control' name='email' value='$email'><br>";
         echo "<label for='picture'>Upload Your Picture:</label><br>";
-        echo "<input type='file' name='pic' accept='image/*'><br><br> ";
-        echo '<button type="submit" name="EditSubmit" value="' . $FacultyID . '">Submit</button>';
+        echo "<input type='file' class='form-control' name='pic' accept='image/*'><br> ";
+        echo '<button type="submit" class="btn btn-primary" name="EditSubmit" value="' . $FacultyID . '">Submit</button><br>';
         
 
         echo "</form>";
@@ -80,13 +84,14 @@
         }
     }
     ?>
-    <table border="1">
+    <br><br>
+    <table class="table table-bordered">
         <tr>
             <th>Faculty ID</th>
             <th>Faculty Name</th>
             <th>Email</th>
             <th>Image</th>
-            <th colspan="2">Action</th>
+            <th colspan="2"><center>Action</center></th>
         </tr>
         <?php
         $sql = "SELECT * FROM faculty;";
@@ -98,16 +103,16 @@
                 echo "<td>" . $r["FacultyName"] . "</td>";
                 echo "<td>" . $r["Email"] . "</td>";
                 ?>
-        <td><img src="Images/<?php echo $r["Picture"] ?>"><br></td>
+        <td><img class="imgFaculty" src="Images/<?php echo $r["Picture"] ?>"><br></td>
         <?php
                 echo '<td>
                         <form method="post">
-                            <button type="submit" name="edit" value="' . $r["FacultyID"] . '">Edit</button>
+                            <center><button type="submit" class="btn btn-success" name="edit" value="' . $r["FacultyID"] . '">Edit</button></center>
                         </form>
                      </td>';
                 echo '<td>
                         <form method="get">
-                            <button type="submit" name="del" value="' . $r["FacultyID"] . '">Delete</button>
+                            <center><button type="submit" class="btn btn-danger" name="del" value="' . $r["FacultyID"] . '">Delete</button></center>
                         </form>
                      </td>';
                 echo "</tr>";
@@ -117,7 +122,7 @@
         }
         ?>
     </table>
-    </div>
+    </div></div>
 </body>
 
 </html>

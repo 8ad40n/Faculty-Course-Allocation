@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 04, 2023 at 02:27 PM
+-- Generation Time: Jan 01, 2024 at 02:54 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -61,7 +61,7 @@ CREATE TABLE `course` (
 
 INSERT INTO `course` (`CourseID`, `CourseName`, `DepartmentName`, `Credit`, `Type`) VALUES
 ('CSC1103', 'Web', 'CSE', 3, 'Theory+Lab'),
-('CSC2210', 'C#', 'CSE', 3, NULL),
+('CSC2210', 'C#', 'CSE', 3, 'Theory+Lab'),
 ('CSC4197', 'AI', 'CSE', 3, 'Theory+Lab');
 
 -- --------------------------------------------------------
@@ -101,7 +101,7 @@ CREATE TABLE `faculty` (
 
 INSERT INTO `faculty` (`FacultyID`, `FacultyName`, `Email`, `Picture`, `TotalHours`) VALUES
 ('12-181-2', 'Alamin ', 'alamin@gmail.com', 'addSection.gif', 15),
-('21-45388-3', 'hasib', 'hasib@gmail.com', 'addCourse.jpg', 5),
+('21-45388-3', 'hasib', 'joy184110@gmail.com', 'addCourse.jpg', 15),
 ('21-45555-3', 'tabin', 'tabin@gmail.com', 'AddFacutly.jpg', 10),
 ('23-3456-2', 'shafi', 'shafi@gmail.com', 'addCourse.jpg', 15);
 
@@ -186,7 +186,11 @@ INSERT INTO `section` (`SectionID`, `CourseID`, `Sec`, `Day`, `startTime`, `endT
 ('webF', 'CSC1103', 'F', 'Monday', '14:00:00', '17:00:00', '12-181-2'),
 ('webF', 'CSC1103', 'F', 'Wednesday', '14:00:00', '16:00:00', '12-181-2'),
 ('oop2A', 'CSC2210', 'A', 'Sunday', '11:00:00', '14:00:00', '21-45388-3'),
-('oop2A', 'CSC2210', 'A', 'Tuesday', '12:00:00', '14:00:00', '21-45388-3');
+('oop2A', 'CSC2210', 'A', 'Tuesday', '12:00:00', '14:00:00', '21-45388-3'),
+('oop2B', 'CSC2210', 'B', 'Monday', '08:00:00', '11:00:00', '21-45388-3'),
+('oop2B', 'CSC2210', 'B', 'Wednesday', '08:00:00', '10:00:00', '21-45388-3'),
+('oop2D', 'CSC2210', 'D', 'Sunday', '08:00:00', '11:00:00', '21-45388-3'),
+('oop2D', 'CSC2210', 'D', 'Tuesday', '08:00:00', '10:00:00', '21-45388-3');
 
 -- --------------------------------------------------------
 

@@ -45,17 +45,24 @@ if (isset($_POST['del'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Set Priority Time</title>
-    <link rel="stylesheet" href="CSS/AdminDashboard.css">
+    <!-- <link rel="stylesheet" href="CSS/AdminDashboard.css"> -->
+    <link rel="stylesheet" href="bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <script src="bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
+    <script src="bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="CSS/style.css">
 </head>
 
 <body>
     <div class="main">
+        <div class="container">
         <form method="post">
+            <center><h1>Add Priority Time</h1></center>
             <?php
             include("dbConnect.php");
 
             echo "<fieldset>
-        <legend><h2>Faculty:</h2></legend>";
+        <legend><h3>Faculty:</h3></legend>";
             $sql1 = "SELECT FacultyID, FacultyName FROM faculty";
             $result1 = mysqli_query($conn, $sql1);
 
@@ -76,29 +83,29 @@ if (isset($_POST['del'])) {
 
             <fieldset>
                 <legend>
-                    <h2>Set Priority Time</h2>
+                    <h3>Set Priority Time:</h3>
                 </legend>
                 Day:<br>
-                <select name="day">
+                <select name="day" class="form-select form-select-sm" aria-label=".form-select-sm example">
                     <option value="Sunday">Sunday</option>
                     <option value="Monday">Monday</option>
                     <option value="Tuesday">Tuesday</option>
                     <option value="Wednesday">Wednesday</option>
                     <option value="Thursday">Thursday</option>
-                </select><br><br>
-                Start Time: <br><input type="text" name="start"><br><br>
-                End Time: <br><input type="text" name="end"><br>
+                </select><br>
+                Start Time: <br><input type="text" class='form-control' name="start"><br>
+                End Time: <br><input type="text" class='form-control' name="end">
                 <small>Time Format = hh:mm:ss</small><br><br>
-                <button type="submit" name="add">Add</button>
-            </fieldset><br><br>
+                <button type="submit" class="btn btn-primary" name="add">Add</button>
+            </fieldset><br>
 
-            <table border="1">
+            <table class="table table-bordered">
                 <tr>
                     <th>Faculty ID</th>
                     <th>Day</th>
                     <th>Start Time</th>
                     <th>End Time</th>
-                    <th>Actions</th>
+                    <th><center>Actions</center></th>
                 </tr>
                 <?php
                 $sql = "SELECT * FROM prioritytime;";
@@ -113,7 +120,7 @@ if (isset($_POST['del'])) {
                         echo '<td>      
                             <form method="post">
                             <input type="hidden" name = "facultyID" value="' . $r["FacultyID"] . '">
-                            <button type="submit" name="del" value="' . $r["Day"] . '">Delete</button>
+                            <center><button type="submit" class="btn btn-danger" name="del" value="' . $r["Day"] . '">Delete</button></center>
                             </form>
                          </td>';
                         echo "</tr>";
@@ -124,6 +131,7 @@ if (isset($_POST['del'])) {
                 ?>
             </table>
         </form>
+        </div>
     </div>
 </body>
 

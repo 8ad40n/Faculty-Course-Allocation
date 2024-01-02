@@ -7,7 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-    <link rel="stylesheet" href="CSS/AdminHome.css">
+    <!-- <link rel="stylesheet" href="CSS/AdminHome.css"> -->
+    <link rel="stylesheet" href="bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <script src="bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
+    <script src="bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="CSS/style.css">
 
 </head>
 
@@ -19,9 +24,9 @@ include("AdminDashboard.php");
 
         <form method="post">
 
-            <label for="Welcome">
+            <center><label for="Welcome">
                 <h1>Welcome!</h1>
-            </label>
+            </label></center><fieldset>
             <?php
 include("dbConnect.php");
 
@@ -36,24 +41,21 @@ $data = mysqli_fetch_assoc($res);
     
     $image = $data['Picture'];
 
-    echo "<fieldset>";
     ?>
-            <div class="content">
-                <img src="Images/<?php echo $image ?>"><br>
-            </div>
+        <div class="span4"><img class="center-block" src="Images/<?php echo $image ?>" /></div>
 
-            <?php
-    echo "
-    <label><b>Name:</b>$name<br></label>
-    <label><b>ID:</b>$id<br></label>
-   <label> <b>Email:</b>$email<br></label>
-   <label><b>Role:</b>Admin<br></label>"; 
+    <?php
+    echo "<center>
+    <label><b>Name:</b>$name<br></label><br>
+    <label><b>ID:</b>$id<br></label><br>
+    <label> <b>Email:</b>$email<br></label><br>
+    <label><b>Role:</b>Admin</label></center>"; 
     
 
 ?>
 
             <br>
-            <button name="logout">Logout</button>
+            <center><button class="btn btn-danger" name="logout">Logout</button></center></fieldset>
         </form>
     </div>
 </body>

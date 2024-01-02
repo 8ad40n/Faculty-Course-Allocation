@@ -39,35 +39,54 @@ if (isset($_POST['login'])) {
 
 <head>
     <title>Login Page</title>
-    <link rel="stylesheet" href="CSS/loginDesign.css">
+    <!-- <link rel="stylesheet" href="CSS/loginDesign.css"> -->
+    <link rel="stylesheet" href="bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <script src="bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
+    <script src="bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="CSS/style.css">
+
+
 </head>
 
 <body>
-    <form method="post">
-        <fieldset>
-            <h1>LOGIN</h1>
-            <script>
-                function togglePassword() {
-                    var passwordInput = document.getElementById("pass");
-                    if (passwordInput.type == "password") {
-                        passwordInput.type = "text";
-                    } else {
-                        passwordInput.type = "password";
-                    }
-                }
-            </script>
-            <label for="id">ID:</label><br>
+    <div class="container login-container">
+        <div class="row">
+            <div class="col-md-6 login-form-1">
+                <br><br><h3>LOGIN</h3>
+                <form method="post">
+                        <script>
+                            function togglePassword() {
+                                var passwordInput = document.getElementById("pass");
+                                if (passwordInput.type == "password") {
+                                    passwordInput.type = "text";
+                                } else {
+                                    passwordInput.type = "password";
+                                }
+                            }
+                        </script>
+                        <div class="form-group">
+                            <input type="text" name="id" class="form-control" placeholder="Your ID">
+                        </div><br>
+                        <div class="form-group">
+                            <input type="password" name="pass" class="form-control" placeholder="Your Password" id="pass">
+                        </div>
+                        <br><div style="text-align: left;">
+                            <input type="checkbox" class="form-check-input" id="showPassword" onclick="togglePassword()">
+                            <small>Show Password</small><br><br>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" name="login" class="btnSubmit" value="Login" />
+                        </div>
+                        <br><a href="EmailVerification.php">Forgot Password?</a>
+                        <br> <br>
+                </form>
 
-            <input type="text" name="id" placeholder="User Name"><br><br>
-            <label for="password">Password:</label>
-            <br><input type="password" name="pass" id="pass" placeholder="Password"><br>
-            <input type="checkbox" id="showPassword" onclick="togglePassword()">
-            <small><b>Show Password</b></small><br><br>
-            <button name="login"><b>Login</b></button><br> <br>
-            <a href="EmailVerification.php">Forgot Password?</a>
-            <br> <br>
-        </fieldset>
-    </form>
+
+            </div>
+        </div>
+    </div>
+
 </body>
 
 </html>

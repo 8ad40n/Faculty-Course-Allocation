@@ -1,7 +1,7 @@
 <?php
 include("dbConnect.php");
 include("AdminDashboard.php");
-
+echo "<center><h1> Add Priority Courses</h1></center>";
 if (isset($_POST['del'])) {
     $facultyID = $_POST["facultyID"];
     $courseID = $_POST['del'];
@@ -67,40 +67,44 @@ if (isset($_POST['submit'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Selection</title>
+    <link rel="stylesheet" href="bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <script src="bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
+    <script src="bootstrap-5.3.2-dist/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="CSS/style.css">
 </head>
 
 <body>
     <div class="main">
-        <form method="post">
+        <div class="container">
+            <form method="post">
 
             <?php
-        include("dbConnect.php");
+            include("dbConnect.php");
 
-        echo "<fieldset>
-        <legend><h2>Faculty:</h2></legend>";
-        $sql1 = "SELECT FacultyID, FacultyName FROM faculty";
-        $result1 = mysqli_query($conn, $sql1);
+            echo "<fieldset>
+            <h3>Faculty:</h3>";
+            $sql1 = "SELECT FacultyID, FacultyName FROM faculty";
+            $result1 = mysqli_query($conn, $sql1);
 
-        if (mysqli_num_rows($result1) > 0) {
+            if (mysqli_num_rows($result1) > 0) {
             while ($row1 = mysqli_fetch_assoc($result1)) {
                 $facultyID = $row1['FacultyID'];
                 $facultyName = $row1['FacultyName'];
                 // Create a checkbox for each course name with CourseID as the value
                 echo '<label><input type="radio" name="selectedFaculty" value="' . $facultyID . '">' . $facultyName . '</label><br>';
             }
-        } else {
+            } else {
             echo "No faculty found.";
-        }
-        ?>
+            }
+            ?>
             <br>
             </fieldset>
 
             <?php
 
-        echo "<fieldset>
-            <legend>
-                <h2>Select Courses:</h2>
-            </legend>";
+            echo "<fieldset>
+                <h3>Select Courses:</h3>";
 
             // Fetch course names and CourseID from the course table
             $sql = "SELECT CourseID, CourseName FROM course";
@@ -119,23 +123,24 @@ if (isset($_POST['submit'])) {
             }
             ?>
             <br>
-            <input type="submit" name="submit" value="Submit">
+            <input type="submit" class="btn btn-primary" name="submit" value="Submit">
             </fieldset>
-        </form>
+            </form>
+            <br><br>
 
-        <table border="1">
+            <table class="table table-bordered">
             <tr>
                 <th>Faculty ID</th>
                 <th>Course ID</th>
                 <th>Course Name</th>
-                <th>Actions</th>
+                <th><center>Actions</center></th>
 
             </tr>
             <?php
-        $sql = "SELECT prioritycourses.*, course.CourseName FROM prioritycourses 
-        JOIN course ON prioritycourses.CourseID = course.CourseID;";
-        $res = mysqli_query($conn, $sql);
-        if (mysqli_num_rows($res) > 0) {
+            $sql = "SELECT prioritycourses.*, course.CourseName FROM prioritycourses 
+            JOIN course ON prioritycourses.CourseID = course.CourseID;";
+            $res = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($res) > 0) {
             while ($r = mysqli_fetch_assoc($res)) {
                 echo "<tr>";
                 echo "<td>" . $r["FacultyID"] . "</td>";
@@ -144,19 +149,20 @@ if (isset($_POST['submit'])) {
                 echo '<td>
                     <form method="post">
                         <input type="hidden" name = "facultyID" value="'.$r["FacultyID"].'">
-                        <button type="submit" name="del" value="' . $r["CourseID"] . '">Delete</button>
+                        <center><button type="submit" class="btn btn-danger" name="del" value="' . $r["CourseID"] . '">Delete</button></center>
                     </form>
                 </td>';
                 echo "</tr>";
             }
-        } else {
+            } else {
             echo "<tr><td colspan='4'>No priority Courses found.</td></tr>";
-        }
+            }
 
-        
-        ?>
-        </table>
 
+            ?>
+            </table>
+            
+        </div>
     </div>
 
 </body>
